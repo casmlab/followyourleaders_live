@@ -1,0 +1,216 @@
+# Data Model
+We store our data in a MongoDB database. Below are descriptions and examples of each collection.
+
+## tweets
+The ```tweets``` collection is the heart of the database. Documents here mirror the structure returned by the Twitter API.
+
+```
+{
+    "_id" : ObjectId("588fc23503fa02a1c221568b"),
+    "contributors" : null,
+    "truncated" : false,
+    "text" : "Glad I could discuss tribal housing issues with the @FallonPaiuteSho &amp; the Walker River Tribe in Schurz today. #NV04 https://t.co/KGvpIAR1zq",
+    "is_quote_status" : false,
+    "in_reply_to_status_id" : null,
+    "id" : NumberLong(697902775301238784),
+    "favorite_count" : 1,
+    "source" : "<a href=\"http://twitter.com\" rel=\"nofollow\">Twitter Web Client</a>",
+    "retweeted" : false,
+    "coordinates" : null,
+    "entities" : {
+        "symbols" : [],
+        "user_mentions" : [],
+        "hashtags" : [ 
+            {
+                "indices" : [ 
+                    115, 
+                    120
+                ],
+                "text" : "NV04"
+            }
+        ],
+        "urls" : [],
+        "media" : [ 
+            {
+                "expanded_url" : "http://twitter.com/RepHardy/status/697902775301238784/photo/1",
+                "display_url" : "pic.twitter.com/KGvpIAR1zq",
+                "url" : "https://t.co/KGvpIAR1zq",
+                "media_url_https" : "https://pbs.twimg.com/media/Ca9y4DhWwAA8ShG.jpg",
+                "id_str" : "697902774609166336",
+                "sizes" : {
+                    "large" : {
+                        "h" : 680,
+                        "resize" : "fit",
+                        "w" : 1024
+                    },
+                    "small" : {
+                        "h" : 226,
+                        "resize" : "fit",
+                        "w" : 340
+                    },
+                    "medium" : {
+                        "h" : 399,
+                        "resize" : "fit",
+                        "w" : 600
+                    },
+                    "thumb" : {
+                        "h" : 150,
+                        "resize" : "crop",
+                        "w" : 150
+                    }
+                },
+                "indices" : [ 
+                    121, 
+                    144
+                ],
+                "type" : "photo",
+                "id" : NumberLong(697902774609166336),
+                "media_url" : "http://pbs.twimg.com/media/Ca9y4DhWwAA8ShG.jpg"
+            }
+        ]
+    },
+    "in_reply_to_screen_name" : null,
+    "id_str" : "697902775301238784",
+    "retweet_count" : 3,
+    "in_reply_to_user_id" : null,
+    "favorited" : false,
+    "user" : {
+        "follow_request_sent" : false,
+        "has_extended_profile" : false,
+        "profile_use_background_image" : true,
+        "default_profile_image" : false,
+        "id" : NumberLong(2964222544),
+        "profile_background_image_url_https" : "https://abs.twimg.com/images/themes/theme1/bg.png",
+        "verified" : true,
+        "profile_text_color" : "333333",
+        "profile_image_url_https" : "https://pbs.twimg.com/profile_images/552515282728521729/bazgL2JV_normal.jpeg",
+        "profile_sidebar_fill_color" : "DDEEF6",
+        "entities" : {
+            "url" : {
+                "urls" : [ 
+                    {
+                        "url" : "http://t.co/RPDLpARNAe",
+                        "indices" : [ 
+                            0, 
+                            22
+                        ],
+                        "expanded_url" : "http://hardy.house.gov",
+                        "display_url" : "hardy.house.gov"
+                    }
+                ]
+            },
+            "description" : {
+                "urls" : []
+            }
+        },
+        "followers_count" : 1920,
+        "profile_sidebar_border_color" : "C0DEED",
+        "id_str" : "2964222544",
+        "profile_background_color" : "C0DEED",
+        "listed_count" : 129,
+        "is_translation_enabled" : true,
+        "utc_offset" : -18000,
+        "statuses_count" : 793,
+        "description" : "Proudly representing Nevada's 4th Congressional District",
+        "friends_count" : 392,
+        "location" : "Nevada, USA",
+        "profile_link_color" : "0084B4",
+        "profile_image_url" : "http://pbs.twimg.com/profile_images/552515282728521729/bazgL2JV_normal.jpeg",
+        "following" : false,
+        "geo_enabled" : true,
+        "profile_banner_url" : "https://pbs.twimg.com/profile_banners/2964222544/1446734903",
+        "profile_background_image_url" : "http://abs.twimg.com/images/themes/theme1/bg.png",
+        "screen_name" : "RepHardy",
+        "lang" : "en",
+        "profile_background_tile" : false,
+        "favourites_count" : 97,
+        "name" : "Rep. Cresent Hardy",
+        "notifications" : false,
+        "url" : "http://t.co/RPDLpARNAe",
+        "created_at" : "Tue Jan 06 14:08:31 +0000 2015",
+        "contributors_enabled" : false,
+        "time_zone" : "Eastern Time (US & Canada)",
+        "protected" : false,
+        "default_profile" : true,
+        "is_translator" : false
+    },
+    "geo" : null,
+    "in_reply_to_user_id_str" : null,
+    "possibly_sensitive" : false,
+    "lang" : "en",
+    "created_at" : "Thu Feb 11 21:59:22 +0000 2016",
+    "in_reply_to_status_id_str" : null,
+    "place" : null,
+    "extended_entities" : {
+        "media" : [ 
+            {
+                "expanded_url" : "http://twitter.com/RepHardy/status/697902775301238784/photo/1",
+                "display_url" : "pic.twitter.com/KGvpIAR1zq",
+                "url" : "https://t.co/KGvpIAR1zq",
+                "media_url_https" : "https://pbs.twimg.com/media/Ca9y4DhWwAA8ShG.jpg",
+                "id_str" : "697902774609166336",
+                "sizes" : {
+                    "large" : {
+                        "h" : 680,
+                        "resize" : "fit",
+                        "w" : 1024
+                    },
+                    "small" : {
+                        "h" : 226,
+                        "resize" : "fit",
+                        "w" : 340
+                    },
+                    "medium" : {
+                        "h" : 399,
+                        "resize" : "fit",
+                        "w" : 600
+                    },
+                    "thumb" : {
+                        "h" : 150,
+                        "resize" : "crop",
+                        "w" : 150
+                    }
+                },
+                "indices" : [ 
+                    121, 
+                    144
+                ],
+                "type" : "photo",
+                "id" : NumberLong(697902774609166336),
+                "media_url" : "http://pbs.twimg.com/media/Ca9y4DhWwAA8ShG.jpg"
+            }
+        ]
+    }
+}
+```
+
+## leaders
+This collection contains information about the leaders. For members of the U.S. Congress, this data comes from [the unitedstates project](https://github.com/unitedstates/congress-legislators).
+
+```
+{
+    "_id" : ObjectId("58f67c3099fec16d7678ec5a"),
+    "bioguide" : "R000600",
+    "description" : "Congresswoman Representing American Samoa",
+    "birthday" : "1947-12-29",
+    "wikidata" : "Q18684027",
+    "name" : "Aumua Amata Coleman Radewagen",
+    "gender" : "F",
+    "religion" : "Unknown",
+    "state" : "AS",
+    "twitter_name" : "RepAmata",
+    "party" : "Republican",
+    "type" : "house"
+}
+```
+
+## timeline
+This collection supports the timeline views and organizes tweets by date and person.
+
+```
+{
+    "_id" : ObjectId("R000600"),
+    "date" : {},
+    "tweet_ids" : []
+}
+```
