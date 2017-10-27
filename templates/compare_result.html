@@ -1,0 +1,301 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <!--  <link rel="stylesheet" href="{{ url_for('static', filename='compare.css') }}"> -->
+
+	<div class="container">
+
+		<!-- for loading ???-->
+		<div id="loading"></div>
+		<div id="page"></div>
+		<center><h1> Compare Legislators </h1></center>
+
+
+
+
+
+		<div class="row" style='margin-bottom:30px'>
+	        <div class="col-sm-6">
+	          <div  style='text-align:center;font-size:30px;border:1px solid #ddd;background-color: #f5f5f5'>
+	            <div>
+	              <!-- <h3 class="panel-title">Panel title</h3> -->
+	              <img src="{{basic0['twitter_url']}}" alt="img0" style="width:75%;margin:20px" class="img-thumbnail">
+	              <a href="https://twitter.com/{{basic0['twitter']}}"">@{{basic0['twitter']}}</a>
+	              <p> Chamber 	{{basic0['terms']['type']}}<br/> Party 	{{basic0['terms']['party']}}<br/> State 	{{basic0['terms']['state']}}</p>
+
+	            </div>
+
+	          </div>
+	        </div><!-- /.col-sm-6 -->
+
+	        <div class="col-sm-6">
+	          <div style='text-align:center;font-size:30px;border:1px solid #ddd;background-color: #f5f5f5'>
+	            <div>
+	              <!-- <h3 class="panel-title">Panel title</h3> -->
+	              <img src="{{basic1['twitter_url']}}" alt="img1" style="width:75%;margin:20px" class="img-thumbnail">
+	              <a href="https://twitter.com/{{basic1['twitter']}}"">@{{basic1['twitter']}}</a>
+	              <p> Chamber 	{{basic1['terms']['type']}}<br/> Party 	{{basic1['terms']['party']}}<br/> State 	{{basic1['terms']['state']}}</p>
+
+	            </div>
+
+	          </div>
+	        </div><!-- /.col-sm-6 -->
+
+        </div>
+
+
+
+
+<!-- 		<div class="row" id="tweet-number">
+			<div id="column_chart" class="col-sm-6" style="width: 100%; height: 300px"></div>
+		</div> -->
+
+		<!-- <div class="row" id="d3plot"></div> -->
+
+
+		<div class="row" id="word-counts" style='text-align:center;border:1px solid #ddd;background-color: #f5f5f5;padding:10px;margin-bottom:30px'>
+			<h2> word count for tweet</h2>
+			<div class="col-sm-3" id="bar_chart0" style="width: 50%; height: 300px"></div>
+			<div class="col-sm-3" id="bar_chart1" style="width: 50%; height: 300px"></div>
+		</div>
+
+		<div class="row" id="tenure" style='text-align:center;border:1px solid #ddd;background-color: #f5f5f5;padding:10px;margin-bottom:30px' >	
+		<h2> tenure</h2>
+			<div class="col-sm-12" id="tenure_chart" style="width: 100%; height: 150px"></div>
+		</div>
+
+
+
+		<div class="row" id="themes" style='text-align:center;border:1px solid #ddd;background-color: #f5f5f5;padding:10px;margin-bottom:30px'>
+		<h2> Duration</h2>
+			<div class="col-sm-6" id="piechart0" style="width: 50%; height: 300px"></div>
+			<div class="col-sm-6" id="piechart1" style="width: 50%; height: 300px"></div>
+	    </div>
+
+
+		
+<!-- 	    <select>
+		  <option value="volvo">Volvo</option>
+		  <option value="saab">Saab</option>
+		  <option value="mercedes">Mercedes</option>
+		  <option value="audi">Audi</option>
+		</select> -->
+
+	</div>
+
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript">
+		google.charts.load('current', {'packages':['corechart', 'timeline']});
+		google.charts.setOnLoadCallback(drawChart0);
+
+		function drawChart0() {
+			var container = document.getElementById('column_chart');
+			var chart0 = new google.visualization.ColumnChart(container);
+
+			var data = google.visualization.arrayToDataTable([
+			  ['Month', '{{user0}}', '{{user1}}'],
+			  ['Jan',  {{timelines_0_dic['Jan']}}, {{timelines_1_dic['Jan']}}],
+			  ['Feb',  {{timelines_0_dic['Feb']}}, {{timelines_1_dic['Feb']}}],
+			  ['Mar',  {{timelines_0_dic['Mar']}}, {{timelines_1_dic['Mar']}}],
+			  ['Apr',  {{timelines_0_dic['Apr']}}, {{timelines_1_dic['Apr']}}],
+				['May',  {{timelines_0_dic['May']}}, {{timelines_1_dic['May']}}],
+				['Jun',  {{timelines_0_dic['Jun']}}, {{timelines_1_dic['Jun']}}],
+				['Jul',  {{timelines_0_dic['Jul']}}, {{timelines_1_dic['Jul']}}],
+				['Aug',  {{timelines_0_dic['Aug']}}, {{timelines_1_dic['Aug']}}],
+				['Sep',  {{timelines_0_dic['Sep']}}, {{timelines_1_dic['Sep']}}],
+				['Oct',  {{timelines_0_dic['Oct']}}, {{timelines_1_dic['Oct']}}],
+				['Nov',  {{timelines_0_dic['Nov']}}, {{timelines_1_dic['Nov']}}],
+				['Dec',  {{timelines_0_dic['Dec']}}, {{timelines_1_dic['Dec']}}],
+			]);
+
+			var options = {
+			  title: 'Tweet Numbers',
+			  curveType: 'function',
+			  legend: { position: 'bottom' }
+			};
+
+			chart0.draw(data, options);
+		}
+    </script> 
+	<script type="text/javascript">
+		google.charts.setOnLoadCallback(drawChart1);
+		function drawChart1() {
+			
+			var container = document.getElementById('bar_chart0');
+			var chart1 = new google.visualization.BarChart(container);
+
+			var data = google.visualization.arrayToDataTable([
+				['Word', 'Count'],
+				{%- for x in wordfreq_0_li %}
+				['{{x[0]}}', {{x[1]}}],
+				{%- endfor %}
+			]);
+
+			var options = {
+				title: 'Word counts',
+				curveType: 'function',
+				legend: {position: 'none'}
+			};
+
+			chart1.draw(data, options);
+		}
+	</script>
+
+	<script type="text/javascript">    	
+		google.charts.setOnLoadCallback(drawChart2);
+		function drawChart2() {
+        	var container = document.getElementById('bar_chart1');
+        	var chart2 = new google.visualization.BarChart(container);
+      
+			var data = google.visualization.arrayToDataTable([	
+				['Word', 'Count'],
+				{%- for x in wordfreq_1_li %}
+				['{{x[0]}}', {{x[1]}}],
+				{%- endfor %}
+			]);
+			var options = {
+				title: 'Word counts',
+					curveType: 'function',
+					legend: {position: 'none'}
+				};
+
+			chart2.draw(data, options);
+		}
+    </script>
+
+	<script type="text/javascript">
+		google.charts.setOnLoadCallback(drawChart3);
+		function drawChart3() {
+			var container = document.getElementById('tenure_chart');
+			var chart = new google.visualization.Timeline(container);
+			var dataTable = new google.visualization.DataTable();
+			
+			dataTable.addColumn({ type: 'string', id: 'Tenure' });
+			dataTable.addColumn({ type: 'string', id: 'Num' });
+			dataTable.addColumn({ type: 'date', id: 'Start' });
+			dataTable.addColumn({ type: 'date', id: 'End' });	
+			dataTable.addRows([
+				[ '{{tenure0['name']}}', '0', new Date({{tenure0['start']['year']}}, {{tenure0['start']['month']}}, {{tenure0['start']['day']}}), new Date({{tenure0['end']['year']}}, {{tenure0['end']['month']}}, {{tenure0['end']['day']}})],
+				
+				[ '{{tenure1['name']}}', '0', new Date({{tenure1['start']['year']}}, {{tenure1['start']['month']}}, {{tenure1['start']['day']}}), new Date({{tenure1['end']['year']}}, {{tenure1['end']['month']}}, {{tenure1['end']['day']}})]	
+			]);
+
+			var options = {
+			timeline: { groupByRowLabel: true, colorByRowLabel: true }
+		};	
+			chart.draw(dataTable, options);
+		}
+	</script>	
+	<script type="text/javascript"> 
+		google.charts.setOnLoadCallback(drawChart4);
+	    function drawChart4() {
+	    	var container = document.getElementById('piechart0');
+	    	var chart = new google.visualization.PieChart(container);
+	        var data = google.visualization.arrayToDataTable([
+				['Category', 'Num'],
+				['Narrative',     {{sentiment0['Narrative']}}],
+				['Other',      {{sentiment0['Other']}}],
+				['Position',  {{sentiment0['Position']}}],
+				['Provinfo', {{sentiment0['Provinfo']}}],
+				['Reqaction', {{sentiment0['Reqaction']}}],
+				['Thanks',    {{sentiment0['Thanks']}}]
+	        ]);
+
+	        var options = {
+				legend: 'none',
+	            title: 'Sentiment Analysis'
+	        };
+
+	        chart.draw(data, options);
+	      }
+	</script>
+	<script type="text/javascript">
+		google.charts.setOnLoadCallback(drawChart5);
+		function drawChart5() {
+			var container = document.getElementById('piechart1');
+			var chart = new google.visualization.PieChart(container);
+	        var data = google.visualization.arrayToDataTable([
+				['Category', 'Number'],
+				['Narrative',     {{sentiment1['Narrative']}}],
+				['Other',      {{sentiment1['Other']}}],
+				['Position',  {{sentiment1['Position']}}],
+				['Provinfo', {{sentiment1['Provinfo']}}],
+				['Reqaction',    {{sentiment1['Reqaction']}}],
+				['Thanks', {{sentiment1['Thanks']}}]
+	        ]);
+
+	        var options = {
+	          legend: 'none',
+	          title: 'Sentiment Analysis'
+	        };
+
+	        chart.draw(data, options);
+	    }
+    </script>	
+    <script type="text/javascript">
+    	
+    </script>
+
+
+
+    <script type="text/javascript">
+
+	
+// //Width and height of map
+// var width = 960;
+// var height = 500;
+
+// // D3 Projection
+// var projection = d3.geo.albersUsa()
+// 				   .translate([width/2, height/2])    // translate to center of screen
+// 				   .scale([1000]);          // scale things down so see entire US
+        
+// // Define path generator
+// var path = d3.geo.path()               // path generator that will convert GeoJSON to SVG paths
+// 		  	 .projection(projection);  // tell path generator to use albersUsa projection
+
+		
+// // Define linear scale for output
+// var color = d3.scale.linear()
+// 			  .range(["rgb(213,222,217)","rgb(69,173,168)","rgb(84,36,55)","rgb(217,91,67)"]);
+
+// var legendText = ["Cities Lived", "States Lived", "States Visited", "Nada"];
+
+// //Create SVG element and append map to the SVG
+// var svg = d3.select("body")
+// 			.append("svg")
+// 			.attr("width", width)
+// 			.attr("height", height);
+        
+// // Append Div for tooltip to SVG
+// var div = d3.select("body")
+// 		    .append("div")   
+//     		.attr("class", "tooltip")               
+//     		.style("opacity", 0);
+
+// // Load in my states data!
+
+
+// // Load GeoJSON data and merge with states data
+
+// //d3.json("us-states.json", function(json) {
+// d3.json("{{ url_for('static', filename='us-states.json') }}", function(json) {
+
+// svg.selectAll("path")
+// 	.data(json.features)
+// 	.enter()
+// 	.append("path")
+// 	.attr("d", path)
+// 	.style("stroke", "#fff")
+// 	.style("stroke-width", "1")
+// 	.style("fill", "rgb(213,222,217)");
+
+		         
+
+// });
+</script>
+
+</body>
+
+{% endblock %}

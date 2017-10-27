@@ -1,0 +1,4 @@
+flask==0.12
+flask_pymongo==0.4.1
+flask_mongoengine==0.8.2
+yaml==3.12

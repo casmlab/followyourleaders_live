@@ -1,0 +1,435 @@
+{% extends 'base.html' %} {% block content %}
+<!-- https://bl.ocks.org/as-eldlc/75f403770ad147dc52b4248661f94958 -->
+<link rel="stylesheet" href="{{ url_for('static', filename='leader.css') }}">
+<style type="text/css">
+
+.linedot {
+    fill: "#ffffd9";
+}
+
+.linedot:hover {
+    fill: orangered;
+}
+
+
+</style>
+<div class="container">
+    <div id="page"></div>
+    <center>
+        <h1> Your Leader </h1></center>
+    <div class="row leaderRow">
+        <div class="col-sm-8" style="float: none; margin:0 auto;">
+            <div>
+                <div>
+                    <!-- <h3 class="panel-title">Panel title</h3> -->
+                    <img src="{{basic0['twitter_url']}}" alt="img0" style="width:75%;margin:20px" class="img-thumbnail">
+                    <a href="https://twitter.com/{{basic0['twitter']}}"">@{{basic0['twitter']}}</a>
+                  <p> Chamber   {{basic0['terms']['type']}}<br/> Party  {{basic0['terms']['party']}}<br/> State     {{basic0['terms']['state']}}</p>
+
+                </div>
+
+              </div>
+            </div><!-- /.col-sm-6 -->
+        </div>
+        <div class="row leaderRow" id="time-series"  >
+            <h2> Time series of #Tweets</h2>
+            <div class="col-sm-12" id="line_chart0" style="float: none; margin:0 auto;"></div>
+        </div>
+
+        <div class="row leaderRow" id="word-counts"  >
+            <h2> world count</h2>
+            <div class="col-sm-12" id="bar_chart0" style="float: none; margin:0 auto;"></div>
+        </div>
+        <div class="row leaderRow" id="themes">
+        <h2> Duration</h2>
+            <div class="col-sm-10" id="piechart0" style=";float: none; margin:0 auto;"></div>
+        </div>
+    </div>
+
+
+    <!-- loading function -->
+    <script src="http://getbootstrap.com/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='drawFunction2.js') }}"></script>
+
+
+    <!-- http://bl.ocks.org/dbuezas/9306799 -->
+    <script type="text/javascript">
+
+    var colors = ["#ffffd9","#edf8b1","#c7e9b4","#7fcdbb","#41b6c4","#1d91c0","#225ea8","#253494","#081d58"];
+    var color = d3.scale.ordinal().range(colors);
+
+    //data for pie
+    pieData={{sentiment0|tojson}}
+    data=makeArrayObject(pieData,'type','num')
+
+    data.forEach(function(d) {
+        d.num=+d.num
+    });
+
+    //draw pie
+    drawPie ("#piechart0",color,data)
+
+    
+    </script>
+
+    <script>
+
+
+    //Load Data for time series plot
+    lineData={{timeseries_0|tojson}}
+
+    //change data formate
+    //data=makeArrayObject(lineData,'date','value').slice(0, 100)
+    data=makeArrayObject(lineData,'date','value')
+    //console.log(data)
+
+    // Get define time formate
+    //var parseDate = d3.time.format('%Y-%m-%d').parse;
+    parseDate = d3.time.format('%b %d %Y').parse;
+
+    // redefine data type
+    data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.value = +d.value;
+    });
+
+
+function sortByDateAscending(a, b) {return a.date - b.date;}
+
+
+
+// aggreate by Month
+data2=d3.nest()
+  .key(function(d){ return d3.time.month(d.date); })
+  .rollup(function(d) { 
+   return d3.sum(d, function(g) {return g.value; });
+  }).entries(data);
+
+
+// change data Fomart
+    data2.forEach(function(d) {
+        d.date = new Date(d.key);
+        d.value = +d.values;
+    });
+
+// sorted by Date
+data = data2.sort(sortByDateAscending);
+
+
+    // define plot size
+    var margin = { top: 30, right: 50, bottom: 30, left: 100 },
+        width = $('#line_chart0').width() - margin.left - margin.right,
+        height = $('#line_chart0').width()*0.5 - margin.top - margin.bottom;
+
+    // making axis
+    var minY = d3.min(data, function(d) { return d.value });
+    var maxY = d3.max(data, function(d) { return d.value });
+    var mindate = d3.extent(data, function(d) { return d.date; })[0];
+    var maxdate = d3.extent(data, function(d) { return d.date; })[1];
+
+
+    var scaleX = d3.time.scale()
+        .domain([mindate, maxdate]) // values between for month of january
+        .range([0, width])
+
+    var scaleY = d3.scale.linear()
+        .range([height, 0])
+        .domain([0, maxY]);
+
+
+// Define the div for the tooltip
+var div = d3.select("body").append("div")   
+    .attr("class", "tooltip")               
+    .style("opacity", 0);
+
+
+
+    //define line
+    var line = d3.svg.line()
+        .x(function(d) {
+            return scaleX(d.date);
+        }).y(function(d) {
+            return scaleY(d.value);
+        });
+
+    //define area
+    var area = d3.svg.area()
+        .x(function(d) { return scaleX(d.date); })
+        .y0(height)
+        .y1(function(d) { return scaleY(d.value); });
+
+
+
+    // adding svg
+    var svg = d3.select('#line_chart0').append("svg").attr({
+        'width': width + margin.left + margin.right,
+        'height': height + margin.top + margin.bottom,
+    }).style({
+        'border': '1px dotted #ccc'
+    });
+
+
+    var s = svg.append("g")
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    //start plotting
+    linepath = s.append('path')
+        .attr({
+            'd': line(data),
+            'stroke': '#06c',
+            'fill': 'none',
+            // 'transform': 'translate(35,20)'
+        });
+
+
+      var svg_aline = s.append("line")
+        .attr("class", "line")  
+        .style("stroke-dasharray", ("3, 10"))   
+        .attr("x1",100)
+        .attr("x2",400)
+        .attr("y1",200)
+          .attr("y2",200)
+
+    // adding dot
+    s.selectAll("linedot")
+        .data(data)
+        .enter().append("circle")
+        .attr("class", "linedot")
+        .attr("r", 6)
+        .attr("cx", function(d) { return scaleX(d.date); })
+        .attr("cy", function(d) { return scaleY(d.value); })
+        .attr("fill", "steelblue")
+        .attr("stroke", "steelblue")
+        .on("mouseover", function(d) {      
+            div.transition()        
+                .duration(200)      
+                .style("opacity", .9);      
+            div .html(d.date + "<br/>"  + d.value)  
+                .style("left", (d3.event.pageX) + "px")     
+                .style("top", (d3.event.pageY - 28) + "px");    
+            })                  
+        .on("mouseout", function(d) {       
+            div.transition()        
+                .duration(500)      
+                .style("opacity", 0);   
+        });
+
+    // area(not animation)
+    // s.append("path")
+    // .attr({
+    //         'd': area(data),
+    //         'fill': 'rgba(0,150,255,.1)',
+    //         'transform': 'translate(35,20)'
+    //     });
+
+    // animation of Line
+    var totalLength = linepath.node().getTotalLength();
+    linepath
+        .attr("stroke-dasharray", totalLength + " " + totalLength)
+        .attr("stroke-dashoffset", totalLength)
+        .transition()
+        .duration(1500)
+        .ease("linear")
+        .attr("stroke-dashoffset", 0);
+
+    // animation of area
+
+    var startData = data.map(function(datum) {
+        return {
+            date: datum.date,
+            value: 0
+        };
+    });
+
+    s.append('path')
+        .datum(startData)
+        .attr({
+            'd': area(data),
+            'fill': 'rgba(0,150,255,.1)',
+            // 'transform': 'translate(35,20)'
+        })
+        .transition().duration(1500)
+        .attrTween('d', function() {
+            var interpolator = d3.interpolateArray(startData, data);
+
+            return function(t) {
+                return area(interpolator(t));
+            }
+        });
+
+
+
+    // define axis
+    var axisX = d3.svg.axis().scale(scaleX)
+        .orient("bottom").ticks(10).tickFormat(d3.time.format('%Y-%m-%d'));
+
+    var axisY = d3.svg.axis().scale(scaleY)
+        .orient("left").ticks(5);
+
+    // define grid
+    var axisXGrid = d3.svg.axis()
+        .scale(scaleX)
+        .orient("bottom")
+        .ticks(10)
+        //.tickFormat(d3.time.format('%Y-%m-%d'))
+        .tickFormat(d3.time.format(""))
+        .tickSize(-height, 0);
+
+    var axisYGrid = d3.svg.axis()
+        .scale(scaleY)
+        .orient("left")
+        .ticks(10)
+        .tickFormat("")
+        .tickSize(-width, 0);
+
+    // add grid
+    s.append('g')
+        .call(axisXGrid)
+        .attr({
+            'fill': 'none',
+            'stroke': 'rgba(0,0,0,.1)',
+            'transform': 'translate(0,' + height + ')'
+        });
+
+    s.append('g')
+        .call(axisYGrid)
+        .attr({
+            'fill': 'none',
+            'stroke': 'rgba(0,0,0,.1)',
+            // 'transform': 'translate(35,20)'
+        });
+
+    // add axis
+    s.append('g')
+        .call(axisX)
+        .attr({
+            'fill': 'none',
+            'stroke': '#000',
+            'transform': 'translate(0,' + height + ')'
+        }).selectAll('text')
+        .attr({
+            'fill': '#000',
+            'stroke': 'none',
+        }).style({
+            'font-size': '11px'
+        });
+
+    s.append('g')
+        .call(axisY)
+        .attr({
+            'fill': 'none',
+            'stroke': '#000',
+            // 'transform': 'translate(35,20)'
+        }).selectAll('text')
+        .attr({
+            'fill': '#000',
+            'stroke': 'none',
+        }).style({
+            'font-size': '10px'
+        });
+    </script>
+
+    <script type="text/javascript">
+
+
+    //console.log({{wordfreq_0_li|tojson}})
+    barraw={{wordfreq_0_li|tojson}}
+    databar=[]
+    for (i = 0; i < barraw.length; i++) { 
+    //console.log(barraw[i])
+    var obj = {};
+        obj['label'] = barraw[i][0];
+        obj['value'] = barraw[i][1];
+        databar.push(obj);
+    }
+        
+
+    // var div = d3.select("#bar_chart0").append("div").attr("class", "toolTip");
+
+    var axisMargin = 20,
+            margin = 40,
+            valueMargin = 4,
+            width = 800,
+            height = 600,
+            barHeight = (height-axisMargin-margin*2)* 0.4/databar.length,
+            barPadding = (height-axisMargin-margin*2)*0.6/databar.length,
+            bar, svg, xAxis=0,
+            labelWidth = 100;
+
+    max = d3.max(databar, function(d) { return d.value; });
+
+    svg = d3.select('#bar_chart0')
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+
+    bar = svg.selectAll("g")
+            .data(databar)
+            .enter()
+            .append("g");
+
+    bar.attr("class", "bar")
+            .attr("cx",0)
+            .attr("transform", function(d, i) {
+                return "translate(" + margin + "," + (i * (barHeight + barPadding) + barPadding) + ")";
+            })
+            .style("fill",'steelblue')
+            .style("opacity",'0.9');
+
+    bar.append("text")
+            .attr("class", "label")
+            .attr("y", barHeight / 2)
+            .attr("dy", ".35em") //vertical align middle
+            .attr("fill",'steelblue')
+            .style('font-size','15px')
+            .text(function(d){
+                return d.label;
+            })
+            //.each(function() {labelWidth = Math.ceil(Math.max(labelWidth, this.getBBox().width));});
+
+    var scale = d3.scale.linear()
+            .domain([0, max])
+            .range([0, width - margin*2 - labelWidth]);
+
+    xAxis = d3.svg.axis()
+            .scale(scale)
+            .tickSize(-height + 2*margin + axisMargin)
+            .orient("bottom");
+
+    bar.append("rect")
+            .attr("transform", "translate("+labelWidth+", 0)")
+            .attr("height", barHeight)
+                        .attr("width", 0)
+                        .transition()
+                        .duration(1500)
+            .attr("width", function(d){
+                return scale(d.value);
+            });
+
+    bar.append("text")
+            .attr("class", "value")
+            .attr("y", barHeight / 2)
+            .attr("dx", -valueMargin + labelWidth) //margin right
+            .attr("dy", ".35em") //vertical align middle
+            .attr("text-anchor", "end")
+            .attr('fill','white')
+            .text(function(d){
+                //return (d.value+"%");
+                return d.value
+            })
+            .attr("x", function(d){
+                var width = this.getBBox().width;
+                return Math.max(width + valueMargin, scale(d.value));
+            });
+
+    </script>
+
+
+
+
+</body>
+
+{% endblock %}
