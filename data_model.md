@@ -199,18 +199,49 @@ This collection contains information about the leaders. For members of the U.S. 
     "religion" : "Unknown",
     "state" : "AS",
     "twitter_name" : "RepAmata",
+    "twitter_id" : 3026622545,
     "party" : "Republican",
     "type" : "house"
 }
 ```
 
-## timeline
+## timelines
 This collection supports the timeline views and organizes tweets by date and person.
 
 ```
 {
-    "_id" : ObjectId("R000600"),
-    "date" : {},
+    "_id" : ObjectId("58e6828e99fec16ab94ee0fa"),
+    "bioguide" : "R000600"
+    "date" : ISODate("2017-02-10"),
     "tweet_ids" : []
+}
+```
+
+## hashtags
+This collection supports the hashtag clouds.
+
+```
+{
+    "_id" : ObjectId("58e6828e99fec16ab94ee0fa"),
+    "bioguide" : "F000448",
+    "date" : ISODate("2017-27-10"),
+    "hashtag" : "emp",
+    "tweet_ids" : [
+        923900301895262209
+    ]
+}
+```
+
+## urls
+This collection supports the URL views
+```
+{
+    "_id" : ObjectId("58e6828e99fec16ab94ee0fa"),
+    "bioguide" : "F000448",
+    "date" : ISODate("2017-27-10"),
+    "url" : "https://t.co/57NVkRl8kC",
+    "tweet_ids" : [
+        923900301895262209
+    ]
 }
 ```
