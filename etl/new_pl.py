@@ -20,26 +20,7 @@ import itertools
 
 
 
-
-#link to mongo and linke to fyl_Umich database
-MONGODB_HOST = 'localhost'
-MONGODB_PORT = 27017
-connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-collection = connection['fyl_Umich']
-
-
-# connect collection
-collection = connection['fyl_Umich']
-collection_yaml = collection['yaml']		#yaml collection
-collection_tweet = collection['tweets']		# tweets collection
-collection_user = collection['users']		# users collection
-collection_timeline = collection['timeline'] # timeline collection (objectid, hashtage, time)
-collection_tweetNew=collection['tweets_new'] # for updating tweets 
-
-# number of tweets show in recent tweets section
-show_number=5
-
-
+# define class
 class fyl_etl(object):
 	def __init__(self):
 		self.a = 1
@@ -281,11 +262,31 @@ class fyl_etl(object):
 		self.update_recent_tweets(show_number)
 
 
+if __name__ == '__main__':
+	#link to mongo and linke to fyl_Umich database
+	MONGODB_HOST = 'localhost'
+	MONGODB_PORT = 27017
+	connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+	collection = connection['fyl_Umich']
 
-def main():
+
+	# connect collection
+	collection = connection['fyl_Umich']
+	collection_yaml = collection['yaml']		#yaml collection
+	collection_tweet = collection['tweets']		# tweets collection
+	collection_user = collection['users']		# users collection
+	collection_timeline = collection['timeline'] # timeline collection (objectid, hashtage, time)
+	collection_tweetNew=collection['tweets_new'] # for updating tweets 
+
+	# number of tweets show in recent tweets section
+	show_number=5
+
+
+
+
+	######################################### run here##########################################
 
 	etl = fyl_etl()
-	
 	###################### When starting a new data base ########################################
 	etl.initial_database(show_number)
 
@@ -293,8 +294,4 @@ def main():
 	#etl.update_database(show_number)
 
 	connection.close()
-
-if __name__ == '__main__':
-	main()
-
 
