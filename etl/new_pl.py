@@ -3,13 +3,13 @@ import pymongo
 import json
 from bson import json_util
 from bson.json_util import dumps
-import re
+#import re
 import numpy as np
-from sklearn.pipeline import Pipeline
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.svm import LinearSVC
-from sklearn.feature_extraction.text import TfidfTransformer
-from sklearn.multiclass import OneVsRestClassifier
+# from sklearn.pipeline import Pipeline
+# from sklearn.feature_extraction.text import CountVectorizer
+# from sklearn.svm import LinearSVC
+# from sklearn.feature_extraction.text import TfidfTransformer
+# from sklearn.multiclass import OneVsRestClassifier
 import pickle
 import time
 from bson.objectid import ObjectId
@@ -176,9 +176,9 @@ class fyl_etl(object):
 						
 
 
-				count.append(twitter_name)
-				if len(count)>1000:
-					break
+				# count.append(twitter_name)
+				# if len(count)>1000:
+				# 	break
 
 
 
