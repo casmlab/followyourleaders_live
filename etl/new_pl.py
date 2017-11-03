@@ -240,9 +240,40 @@ class fyl_etl(object):
 
 				# update user collection
 				collection_user.update( { '_id': user['_id'] },{ '$set': { "recent_tweets": text_index } } )
-				print('>>> update_recent_tweets(show_number) ends!')
+
+		print('>>> update_recent_tweets(show_number) ends!')
 
 
+	############################# for creating hastage collection #############################
+	def create_hastage_count(self):
+		# reset hashtage collection
+		collection_hashtage.drop()
+		# read data from timeline
+		timelines= collection_timeline.find()
+
+		
+		for timeline in timelines:
+
+			dic={}
+			dic['bioguide']=timeline['bioguide']
+			dic.setdefault('hashtage', {})
+
+			for date in timeline['time']:
+				for a in timeline['time'][date]:
+					url= a['url']
+					tweets_id= a['tweets_id']
+					timeTemp= a['time']
+					tweetText= collection_tweet.find_one({"_id" : a['tweets_id']})['text']
+					for hash_item in a['hashtage']:
+						dic['hashtage'].setdefault(hash_item, [])
+
+						dic['hashtage'][hash_item].append({'text':tweetText,'url':url,'time':timeTemp})
+
+			#sorting
+			for key in dic['hashtage']:
+				dic['hashtage'][key].sort(key=lambda x: time.mktime(time.strptime(x['time'],"%Y-%m-%d %H:%M:%S")),reverse=True)
+
+			collection_hashtage.insert(dic)
 
 
 
@@ -253,6 +284,7 @@ class fyl_etl(object):
 		self.create_user_collection()
 		self.create_timeline_collection()
 		self.update_recent_tweets(show_number)
+		self.create_hastage_count()
 
 
 	# updating database from tweetNew collections:
@@ -260,6 +292,7 @@ class fyl_etl(object):
 
 		self.update_timeline_from_newTweets()
 		self.update_recent_tweets(show_number)
+		self.create_hastage_count()
 
 
 if __name__ == '__main__':
@@ -277,21 +310,20 @@ if __name__ == '__main__':
 	collection_user = collection['users']		# users collection
 	collection_timeline = collection['timeline'] # timeline collection (objectid, hashtage, time)
 	collection_tweetNew=collection['tweets_new'] # for updating tweets 
+	collection_hashtage=collection['hashtage_count'] # for updating tweets 
 
 	# number of tweets show in recent tweets section
-	show_number=5
-
-
+	show_number=10
 
 
 	######################################### run here##########################################
 
 	etl = fyl_etl()
 	###################### When starting a new data base ########################################
-	etl.initial_database(show_number)
+	#etl.initial_database(show_number)
 
 	###################### when adding new data from collection tweet_new #########################
-	#etl.update_database(show_number)
+	etl.update_database(show_number)
 
 	connection.close()
 
