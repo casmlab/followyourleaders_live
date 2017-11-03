@@ -2,7 +2,7 @@
 We store our data in a MongoDB database. Below are descriptions and examples of each collection.
 
 ## tweets
-The ```tweets``` collection is the heart of the database. Documents here mirror the structure returned by the Twitter API.
+The ```tweets``` collection is the heart of the database. Documents here mirror the structure returned by the Twitter API. These documents are *read only*.
 
 ```
 {
@@ -184,6 +184,15 @@ The ```tweets``` collection is the heart of the database. Documents here mirror 
 }
 ```
 
+### Sources
+* .json files produced by purpletag queries
+
+## yaml
+
+### Source
+* [https://github.com/unitedstates/congress-legislators/blob/master/legislators-social-media.yaml](https://github.com/unitedstates/congress-legislators/blob/master/legislators-social-media.yaml)
+* [https://github.com/unitedstates/congress-legislators/blob/master/legislators-current.yaml](https://github.com/unitedstates/congress-legislators/blob/master/legislators-current.yaml)
+
 ## leaders
 This collection contains information about the leaders. For members of the U.S. Congress, this data comes from [the unitedstates project](https://github.com/unitedstates/congress-legislators).
 
@@ -201,9 +210,17 @@ This collection contains information about the leaders. For members of the U.S. 
     "twitter_name" : "RepAmata",
     "twitter_id" : 3026622545,
     "party" : "Republican",
-    "type" : "house"
+    "chamber" : "house",
+    "photo_url" : "https://pbs.twimg.com/profile_images/552515282728521729/bazgL2JV_normal.jpeg",
+    "followers" : 120,
+    "friends" : 5,
+    "recent_tweet_ids" : []
 }
 ```
+
+### Sources
+* last tweet: photo_url, followers, friends, recent_tweet_ids
+* yaml: the rest 
 
 ## timelines
 This collection supports the timeline views and organizes tweets by date and person.
@@ -212,8 +229,29 @@ This collection supports the timeline views and organizes tweets by date and per
 {
     "_id" : ObjectId("58e6828e99fec16ab94ee0fa"),
     "bioguide" : "R000600"
-    "date" : ISODate("2017-02-10"),
-    "tweet_ids" : []
+    "twitter_id" : 3026622545,
+    "twitter_name" : "RepAmata",
+    "dates" : {
+        "2015-02-09" : {
+            "564820451508383746" : {
+                "url" : "https://twitter.com/RepAmata/status/564820451508383746",
+                "created_at" : "2015-02-09 16:17:44",
+                "hashtags" : [ "fomo" ]
+            },
+            "564820451508383746" : {
+                "url" : "https://twitter.com/RepAmata/status/564820451508383746",
+                "created_at" : "2015-02-09 16:17:44",
+                "hashtags" : [ "repamata", "tcot" ]
+            }
+        }
+        "2015-02-10" : {
+            "564820451508383746" : {
+                "url" : "https://twitter.com/RepAmata/status/564820451508383746",
+                "created_at" : "2015-02-09 16:17:44",
+                "hashtags" : [ "fomo" ]
+            }
+        }
+    }
 }
 ```
 
@@ -224,13 +262,25 @@ This collection supports the hashtag clouds.
 {
     "_id" : ObjectId("58e6828e99fec16ab94ee0fa"),
     "bioguide" : "F000448",
-    "date" : ISODate("2017-27-10"),
-    "hashtag" : "emp",
-    "tweet_ids" : [
-        923900301895262209
-    ]
+    "hashtags": {
+        "emp" : {
+            "tweets" : {
+                "923900301895262209" : {
+                    "created_at" : "2015-02-09 16:17:44",
+                    "tweet_text" : "here's my tweet text #emp"
+                },
+                "923900301895262210" : {
+                    "created_at" : "2015-02-09 16:17:50",
+                    "tweet_text" : "here's my 2nd tweet text #emp"
+                }
+            }
+        }
+    }
 }
 ```
+
+### Sources:
+* tweets collection
 
 ## urls
 This collection supports the URL views
@@ -238,10 +288,22 @@ This collection supports the URL views
 {
     "_id" : ObjectId("58e6828e99fec16ab94ee0fa"),
     "bioguide" : "F000448",
-    "date" : ISODate("2017-27-10"),
-    "url" : "https://t.co/57NVkRl8kC",
-    "tweet_ids" : [
-        923900301895262209
+    "urls": [
+        "http://bit.ly/TonkoGrid" : {
+            "tweets" : {
+                "923900301895262209" : {
+                    "created_at" : "2015-02-09 16:17:44",
+                    "tweet_text" : "here's my tweet text http://bit.ly/TonkoGrid"
+                },
+                "923900301895262210" : {
+                    "created_at" : "2015-02-09 16:17:50",
+                    "tweet_text" : "here's my 2nd tweet text http://bit.ly/TonkoGrid"
+                }
+            }
+        }
     ]
 }
 ```
+
+### Sources
+* tweets collection
