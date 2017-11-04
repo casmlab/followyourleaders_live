@@ -1,5 +1,22 @@
 # Data Model
-We store our data in a MongoDB database. Below are descriptions and examples of each collection.
+We store our data in a MongoDB database. Below are descriptions and examples of each collection. The basic process for our data is
+
+1. run purpletag to collect tweets and store then in JSON
+2. run script to dump that JSON into ```tweets``` collection
+3. run script to parse ```tweets``` collection into the other collections to improve speed of views
+
+## parsing
+Here we store info about the parsing that we've done.
+
+```
+{
+    "_id": ObjectId("23590jlsglk23nlsdf"),
+    "last_processed_tweet_id" : NumberLong(697902775301238784),
+}
+```
+
+### Sources
+* last_processed_tweet_id get set by the parsing script; also checked by the script when it starts so it knows what data is new
 
 ## tweets
 The ```tweets``` collection is the heart of the database. Documents here mirror the structure returned by the Twitter API. These documents are *read only*.
@@ -189,12 +206,12 @@ The ```tweets``` collection is the heart of the database. Documents here mirror 
 
 ## yaml
 
-### Source
+### Sources
 * [https://github.com/unitedstates/congress-legislators/blob/master/legislators-social-media.yaml](https://github.com/unitedstates/congress-legislators/blob/master/legislators-social-media.yaml)
 * [https://github.com/unitedstates/congress-legislators/blob/master/legislators-current.yaml](https://github.com/unitedstates/congress-legislators/blob/master/legislators-current.yaml)
 
 ## leaders
-This collection contains information about the leaders. For members of the U.S. Congress, this data comes from [the unitedstates project](https://github.com/unitedstates/congress-legislators).
+This collection contains information about the leaders. For members of the U.S. Congress, this data comes from [the unitedstates project](https://github.com/unitedstates/congress-legislators), which we store in the ```yaml``` collection and then parse here for speed and to add Twitter info.
 
 ```
 {
@@ -256,7 +273,7 @@ This collection supports the timeline views and organizes tweets by date and per
 ```
 
 ## hashtags
-This collection supports the hashtag clouds.
+This collection supports the hashtag clouds. It organizes hashtags by person and allows us to restrict tags and tweets by date.
 
 ```
 {
@@ -283,7 +300,8 @@ This collection supports the hashtag clouds.
 * tweets collection
 
 ## urls
-This collection supports the URL views
+This collection supports the URL views. It works like the ```hashtags``` collection.
+
 ```
 {
     "_id" : ObjectId("58e6828e99fec16ab94ee0fa"),
