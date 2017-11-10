@@ -306,8 +306,8 @@ This collection supports the URL views. It works like the ```hashtags``` collect
 {
     "_id" : ObjectId("58e6828e99fec16ab94ee0fa"),
     "bioguide" : "F000448",
-    "urls": [
-        "http://bit.ly/TonkoGrid" : {
+    "urls": {
+        "http://bit\u002ely/TonkoGrid" : {
             "tweets" : {
                 "923900301895262209" : {
                     "created_at" : "2015-02-09 16:17:44",
@@ -319,7 +319,7 @@ This collection supports the URL views. It works like the ```hashtags``` collect
                 }
             }
         }
-    ]
+    }
 }
 ```
 
