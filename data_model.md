@@ -253,19 +253,22 @@ This collection supports the timeline views and organizes tweets by date and per
             "564820451508383746" : {
                 "url" : "https://twitter.com/RepAmata/status/564820451508383746",
                 "created_at" : "2015-02-09 16:17:44",
-                "hashtags" : [ "fomo" ]
+                "hashtags" : [ "fomo" ],
+                "tweet_text" : "here's what the tweet said"
             },
             "564820451508383746" : {
                 "url" : "https://twitter.com/RepAmata/status/564820451508383746",
                 "created_at" : "2015-02-09 16:17:44",
-                "hashtags" : [ "repamata", "tcot" ]
+                "hashtags" : [ "repamata", "tcot" ],
+                "tweet_text" : "here's what the tweet said"
             }
         }
         "2015-02-10" : {
             "564820451508383746" : {
                 "url" : "https://twitter.com/RepAmata/status/564820451508383746",
                 "created_at" : "2015-02-09 16:17:44",
-                "hashtags" : [ "fomo" ]
+                "hashtags" : [ "fomo" ],
+                "tweet_text" : "here's what the tweet said"
             }
         }
     }
