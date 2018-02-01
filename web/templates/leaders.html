@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+.no_show {
+    font-size:50px;
+    fill: grey !important;
+    margin:10% ;
+}
+
+.scroller {
+    display:block;
+    width: 50px;
+    height:50px;
+    line-height:50px;
+    border: 2px solid #f5f5f5;
+    border-radius: 50%;
+    color:black;
+    text-align:center;
+    text-decoration:none;
+    background: white;
+    box-shadow: 0 0 3px gray;
+    font-size:10px;
+    font-weight:bold;
+    float:left;
+    position: absolute;
+    left: 50%;
+    margin-top:10px;
+}
+.scroller:hover {
+    background: #262626;
+    color:white;
+}
+
+.fullscreen {
+    position:relative;
+}
+</style>
+<body>
+    <div class="wrap">
+        <div id="allplot">
+            <div id="search" class='searchCompare' action="" name="search">
+               
+                <div style="margin-left:10px">
+                    <div class='box2'>
+                        <div id="toggle_chart">
+                            <b>Chart Type:</b>
+                            <input type="checkbox" data-toggle="toggle" data-size="small" data-on="Compare" data-off="View" class="cd-filter-trigger" id='compare_choice'>
+                        </div>
+                    </div>
+
+                    <div><h2>Leader 1</h2></div>
+
+                    <div class='box2'>
+                        <label for="party_categories"><b>Party: </b></label>
+                        <select name="party_categories" id="party_categories" >
+                        </select>
+                    </div>
+                    <div class='box2'>
+                        <label for="chamber_categories"><b>Chamber: </b></label>
+                        <select name="chamber_categories" id="chamber_categories">
+                        </select>
+                    </div>
+                    <div class='box2'>
+                        <b>Name: </b>
+                        <select name="leader_select" id="leader_select" class="leader-tittle">
+                            <option value='default' >Select Leader ...</option>
+                        </select>
+                    </div>
+                    <div class='box2'>
+                        <b>Search:</b>
+                        <input type='text' title='Tags' value=" " id='tags' class='tags'/>
+                    </div>
+                  
+
+
+                    <div class='sec_leader'><h2>Leader 2</h2></div>
+                    
+                    <div class='box2 sec_leader'>
+                        <label for="party_categories"><b>Party: </b></label>
+                        <select name="party_categories" id="party_categories_sec" style="width:155px;">
+                        </select>
+                    </div>
+                    <div class='box2 sec_leader'>
+                        <label for="chamber_categories"><b>Chamber: </b></label>
+                        <select name="chamber_categories" id="chamber_categories_sec" style="width:155px;">
+                        </select>
+                    </div>
+                    <div class='box2 sec_leader'>
+                        <b>Name: </b>
+                        <select name="leader_select" id="leader_select_sec" class="leader-tittle" style="width:155px;">
+                            <option value='default'>Select Leader ...</option>
+                        </select>
+                    </div>
+                    <div class='box2 sec_leader'>
+                        <b>Search:</b>
+                        <input type='text' title='Tags' value=" " id='tags_sec' class='tags' style="width:155px;" />
+                    </div>
+
+                    <div class='box2'>
+                        <b>Date start:</b>
+                        <input type="text" id="datestart">
+                    </div>
+
+                    <div class='box2'>
+                        <b>Date end:</b>
+                        <input type="text" id="dateend">
+                    </div>
+
+
+                    <div class='box2'>
+                        <input type="button" id="submit" value="submit">
+                    </div>
+                </div>
+            </div>
+
+            <div id='plot' class='section'>
+                <div class="graph-wrapper fullscreen">
+                    <div id="graphic"></div>
+                    <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
+                </div>
+
+                <div class="graph-wrapper fullscreen">
+                    <div id="hash_chart0"></div>
+                    <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
+                </div>
+         
+
+                <div class="graph-wrapper fullscreen" >
+                    <div id="wcloud"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+   <footer class="footer">
+        <div class="container">
+            <div class="col-lg-3 col-md-6">
+                <h4>Follow</h4>
+                <ul>
+                    <li><a href="http://www.github.com/casmlab">GitHub</a></li>
+                    <li><a href="http://www.twitter.com/casmlab">Twitter</a></li>
+                </ul>
+                <p>Built with Bootstrap.</p>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:info@casmlab.org">info@casmlab.org</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- load drawing  function js files -->
+    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=1aa;;a22;;8"></script>
+    <script type="text/javascript" src="/static/drawBar.js?ver=ssssssdssssdsss8"></script>
+    <script type="text/javascript" src="/static/colorbrewer.min.js?ver=sdssss8"></script>
+    <script type="text/javascript" src="/static/drawWordCloud.js?ver=;01sssss2s2017"></script>
+    <script type="text/javascript" src="/static/dataFormate.js?ver=012s2ddsss017"></script>
+
+    <!-- making drop down file -->
+    <script type="text/javascript" src="/static/makeDD.js?ver=012s2017"></script>    
+    <!-- load execute function -->
+    <script>
+    
+    ////////////////////////////////// Load data//////////////////////////////////
+    //https://stackoverflow.com/questions/37447343/d3-js-starting-animations-when-a-section-is-in-view
+    $( "#datestart" ).datepicker();
+    $( "#dateend" ).datepicker();
+
+    // window.innerWidth 
+    //https://stackoverflow.com/questions/2474009/browser-size-width-and-height
+    // header height=50, footer height =119
+
+    $('.fullscreen').css('height',window.innerHeight-100)
+
+    // temp parameter
+    let searchParams = new URLSearchParams(window.location.search)
+    var compare=searchParams.get('compare')=='T'?true:false;
+
+    // color panal:
+    color_panal={
+        'Demo1': {
+            'main':'#039ADA',
+            'light':'#e5f6fd',
+            'word_color':['#039ada','#42a7dc','#60b5df','#78c3e1','#8ed2e3','#a2e1e5','#b4f0e7']
+        },
+        'Demo2': {
+            'main':'#3340DA',
+            'light':'#e5f6fd',
+            'word_color':['#1c24da','#4946da','#6164db','#7181da','#7e9fd9','#86bdd8','#8cdad6']
+        },
+        'Repu1':{
+            'main':'#d8171e',
+            'light':'#f7d0d2',
+            'word_color':['#d8171e','#e5513c','#f0765b','#f8997c','#feba9d','#ffddc1','#fffde4']
+        },
+        'Repu2':{
+            'main':'#FF7873',
+            'light':'#ffd8b3',
+            'word_color':['#ff822e','#ff904d','#ff9c66','#ffa77d','#fdb396','#f9bfaf','#f3cbca']
+        }
+    };
+
+    
+    // data for making dd
+    all_filter={{all_name_id|tojson}}
+    //data for making area plot
+    lineData={{timeseries_0|tojson}}
+
+    // data for bar chart
+    barraw={{hash_0|tojson}}
+
+    // data for url
+    url={{url_0|tojson}}
+    //
+    leader1={{basic0|tojson}}
+    var leader2;
+
+
+
+    /////////////////start:  data formatting /////////////////////////////////////////
+    // define time formate
+    parseDate = d3.time.format('%Y-%m-%d').parse;
+    
+    data_line0=format_linedata(lineData)
+    //databar=format_bardata(barraw)
+    databar=format_url(url)
+
+    // data for word cloud
+    datawc=format_wc_data(barraw)
+
+    // if it is a compare mode
+    if (compare==true) {
+        lineData2={{timeseries_2|tojson}};
+        barraw2={{hash_2|tojson}};
+        url2={{url_2|tojson}};
+        leader2={{basic2|tojson}};
+        data_line2=format_linedata(lineData2);
+        //databar2=format_bardata(barraw2);
+        databar2=format_url(url2);
+        datawc2=format_wc_data(barraw2);
+    }
+
+    ///////////////////////// making Dropdown in the filter //////////////////////////////////
+
+    generatedropdown(all_filter, '#chamber_categories','#party_categories','#leader_select')
+    generatedropdown(all_filter, '#chamber_categories_sec','#party_categories_sec','#leader_select_sec')
+
+    // add event listener
+    // toggle listener
+    $("#compare_choice").change(function() {
+        if(this.checked) {
+            $('.sec_leader').css('display','block')
+        }else {
+            $('.sec_leader').css('display','none')
+        }
+    });
+    // submit listener
+    $('#submit').click(function() { 
+
+        // single mode
+        if ($("#compare_choice")[0].checked==false) {
+            
+            if ($('#leader_select').val()=='default'){
+                alert('you must choose one leader')
+            }
+            else{
+                document.location = '/leaders?leader0='+$('#leader_select').val()+'&compare=F';
+            }
+
+        } else {
+            if ($('#leader_select').val()=='default' || $('#leader_select_sec').val()=='default' ){
+                alert('you must choose two leaders to compare')
+            }
+            else{
+                document.location = '/leaders?leader0='+$('#leader_select').val()+'&leader2='+$('#leader_select_sec').val()+'&compare=T';
+            }
+        }
+        
+    } );
+
+    ///////////////////////////////////////////////////// define plot setting /////////////////////////////////////////////
+    
+    // define plot size
+    var margin = { top: 70, right: 50, bottom: 70, left: 100 },
+        width = $('#graphic').width() - margin.left - margin.right-30;
+    var height = $(window).height()-margin.top - margin.bottom-300;
+
+    ///////////////////////////////////////////////// define right left user //////////////////////////////////////////////
+
+    // change it later
+    user_color=[color_panal['Demo1'],color_panal['Repu1']];
+
+    // single mode
+    if (compare==false) {
+        if (leader1['party']=="Republican") {
+
+            //http://0.0.0.0:5000/leaders?leader0=K000362&leader2=G000560&compare=T
+            user_color=[color_panal['Repu1'],color_panal['Repu1']];
+        }
+        if (leader1['party']=="Democrat") {
+            user_color=[color_panal['Demo1'],color_panal['Demo1']];
+        }
+    }
+    else {
+        // compare mode
+        if (leader1['party']==leader2['party']) {
+            user_color= leader1['party']=="Republican"? [color_panal['Repu1'],color_panal['Repu2']]:[color_panal['Demo1'],color_panal['Demo2']]
+        }
+
+        if (leader1['party']=="Republican" & leader2['party']=="Democrat") {
+            //http://0.0.0.0:5000/leaders?leader0=K000362&leader2=W000805&compare=T
+            user_color=[color_panal['Repu1'],color_panal['Demo1']];
+        }
+
+        if (leader1['party']=="Democrat" & leader2['party']=="Republican") {
+            //http://0.0.0.0:5000/leaders?leader0=K000362&leader2=W000805&compare=T
+            user_color=[color_panal['Repu1'],color_panal['Demo1']];
+            // switch
+            [leader1,leader2] = [leader2,leader1];
+            [data_line0,data_line2] = [data_line2,data_line0];
+            [databar,databar2] = [databar2,databar];
+            [datawc,datawc2] = [datawc2,datawc];
+
+        }
+    }
+
+
+   //////////////////////////////////////////////// draw area chart ///////////////////////////////////////////////////////
+    var numberOfItem = 15;
+    compare==true? drawLineplot('compare',data_line0,data_line2,[leader1['name']],[leader2['name']]):drawLineplot('single',data_line0,[],[leader1['name']],[]);
+   //////////////////////////////////////////////// draw bar chart ///////////////////////////////////////////////////////
+    var numberOfItem = 15;
+    compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),[leader1['name']],[leader2['name']]):drawbar('single',databar.splice(0,numberOfItem),[],[leader1['name']],[]);
+
+    //////////////////////////////////////////////// draw wc chart ///////////////////////////////////////////////////////
+    var numberOfWord=100;
+
+    compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),[leader1['name']],[leader2['name']]):drawWordCloud('single',datawc.splice(0,numberOfWord),[],[leader1['name']],[])
+
+    /////////////////////// thing to do /////////////////////////////////////////////////////////////////////////////////
+    // 1. slide page show recent tweet in area chart
+    // close button listener
+    $('.popup_button').click(function() {slideHide()});
+
+
+    //// set default /////
+    $("#party_categories").val(leader1['party']);
+    $("#chamber_categories").val(leader1['chamber']);
+    fun_makedd(all_filter,'#party_categories','#chamber_categories','party_cat','chamber_car','#leader_select')
+    $("#leader_select").val(leader1['bioguide'])
+
+    if (compare==true & leader2 != undefined) {
+
+            $("#party_categories_sec").val(leader2['party']);
+            $("#chamber_categories_sec").val(leader2['chamber']);
+            fun_makedd(all_filter,'#party_categories_sec','#chamber_categories_sec','party_cat','chamber_car','#leader_select_sec')
+            $("#leader_select_sec").val(leader2['bioguide'])
+            $('.sec_leader').css('display','block');
+            document.getElementById('compare_choice').checked = true;
+    }
+    
+
+
+
+    $('.scroller').click(function () {
+
+        var fuller = $(this).closest('.graph-wrapper').next('.graph-wrapper');
+        //console.log($(this).closest('.graph-wrapper').next('.graph-wrapper'))
+
+        $("html, body").animate({
+            scrollTop: $("html, body").scrollTop() + fuller.offset().top-50
+        }, 700);
+
+    });
+
+    $( document ).ready(function() {
+            $("html, body").scrollTop(0)
+    });
+
+    </script>
+
+</body>
+
+{% endblock %}
