@@ -38,13 +38,13 @@ class followyourleaders(object):
 	def create_yaml_collection(self):
 		# reset yaml collection
 		print('>>> create_yaml_collection() starts!')
-		collection_yaml.drop() # NOTE: check this colleciton name, i think it's just yaml
+		collection_yaml.drop()
 
 		#read yaml files
-		legislators_file = urllib.urlopen('https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml')
-		list_a = collection_yaml.load(legislators_file)
-		media = urllib.urlopen('https://theunitedstates.io/congress-legislators/legislators-social-media.yaml')
-		list_b = collection_yaml.load(media)
+		legislators_file = urllib.request.urlopen('https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml')
+		list_a = yaml.load(legislators_file)
+		media = urllib.request.urlopen('https://theunitedstates.io/congress-legislators/legislators-social-media.yaml')
+		list_b = yaml.load(media)
 
 
 		# merge yaml files
@@ -54,10 +54,10 @@ class followyourleaders(object):
 		    d = {}
 		    for dct in v:
 		        d.update(dct)
-		    lst_legilsators.append(d)
+		    lst_legislators.append(d)
 
-		# insert in database
-		for dct in lst_legilsators:
+		# insert into database
+		for dct in lst_legislators:
 		    collection_yaml.insert(dct)
 		print('>>> create_yaml_collection() ends!')
 
@@ -328,7 +328,7 @@ class followyourleaders(object):
 if __name__ == '__main__':
 	#link to mongo and linke to fyl_Umich database
 	MONGODB_HOST = 'localhost'
-	MONGODB_PORT = 27017
+	MONGODB_PORT = 27018
 	connection = MongoClient(MONGODB_HOST, MONGODB_PORT) # NOTE: find these by using getHostName(), find port by logging into SSH and checking waverly
 	collection = connection['fyl_Umich'] # NOTE: update 'fyl_Umich' to 'followyourleaders'
 
