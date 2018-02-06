@@ -8,24 +8,14 @@ __status__ = "Development"
 from pymongo import MongoClient
 import pymongo
 import json
-# from bson import json_util
-# from bson.json_util import dumps
-#import re
 import numpy as np
-# from sklearn.pipeline import Pipeline
-# from sklearn.feature_extraction.text import CountVectorizer
-# from sklearn.svm import LinearSVC
-# from sklearn.feature_extraction.text import TfidfTransformer
-# from sklearn.multiclass import OneVsRestClassifier
 import pickle
 import time
-# from bson.objectid import ObjectId
 import urllib
 import yaml
 from collections import defaultdict
 import itertools
 import requests
-
 
 
 # define class
@@ -34,21 +24,22 @@ class followyourleaders(object):
 		self.a = 1
 
 
-	############################# for creating yaml collection ( will be dropped after the leader collection is built)#############################
+	############################# for creating yaml collection (will be dropped after the leader collection is built) #############################
 	def create_yaml_collection(self):
 		# reset yaml collection
 		print('>>> create_yaml_collection() starts!')
 		collection_yaml.drop()
 
-		#read yaml files
+		# read yaml files
+		print('>>> reading yaml files')
 		legislators_file = urllib.request.urlopen('https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml')
-		list_a = yaml.load(legislators_file)
+		lst_a = yaml.load(legislators_file)
 		media = urllib.request.urlopen('https://theunitedstates.io/congress-legislators/legislators-social-media.yaml')
-		list_b = yaml.load(media)
+		lst_b = yaml.load(media)
 
 
 		# merge yaml files
-		lst = sorted(itertools.chain(list_b,list_a), key=lambda x:x['id']['bioguide'])
+		lst = sorted(itertools.chain(lst_b,lst_a), key=lambda x:x['id']['bioguide'])
 		lst_legislators = []
 		for k,v in itertools.groupby(lst, key=lambda x:x['id']['bioguide']):
 		    d = {}
@@ -56,9 +47,10 @@ class followyourleaders(object):
 		        d.update(dct)
 		    lst_legislators.append(d)
 
+
 		# insert into database
 		for dct in lst_legislators:
-		    collection_yaml.insert(dct)
+			collection_yaml.insert(dct)
 		print('>>> create_yaml_collection() ends!')
 
 
@@ -72,6 +64,8 @@ class followyourleaders(object):
 		yamls = collection_yaml.find()
 		collection_leader.drop()
 
+		# lst_leaders is for testing, will delete later
+		lst_leaders = []
 		for yaml in yamls:
 			# if this leader has used social media
 			if 'social' in yaml:
@@ -87,14 +81,24 @@ class followyourleaders(object):
 						state = yaml['terms'][0]['state']
 						chamber =  yaml['terms'][0]['type']
 						party = yaml['terms'][0]['party']
-						twitter_id=str(yaml['social']['twitter_id'])
-						photo_url =requests.get('https://twitter.com/'+yaml['social']['twitter']+'/profile_image?size=original').url
+						if 'twitter_id' in yaml['social']:
+							twitter_id = str(yaml['social']['twitter_id'])
+						else:
+							twitter_id = 'NA'
+
+						photo_url = requests.get('https://twitter.com/'+yaml['social']['twitter']+'/profile_image?size=original').url
 
 						# form data structure by datamodel.md
-						leader_dict= {'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
+						leader_dict = {'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
 						,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
 						 'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
+						lst_leaders.append(leader_dict)
+
+						# insert into database
 						collection_leader.insert(leader_dict)
+
+		with open('leader_test_output.json', 'w') as outfile:
+			outfile.write(json.dumps(lst_leaders))
 
 		# drop  yaml collection
 		# collection_yaml.drop()
@@ -106,7 +110,7 @@ class followyourleaders(object):
 	def create_time_hash_url_collection(self):
 
 		print('>>> create_time_hash_url_collection() starts!')
-		#reset collection_tweet collections
+		# reset collection_tweet collections
 		collection_timeline.drop()
 		collection_url.drop()
 		collection_hashtags.drop()
@@ -121,7 +125,7 @@ class followyourleaders(object):
 
 		print('>>> update_time_hash_url_collection() starts!')
 		# run function to update/add timeline collection from tweets_new collection
-		self.func_time_hash_url(collection_tweetNew.find())
+		self.func_time_hash_url(collection_tweetNew.find()) # tweetNew should be the uploaded json file from ssh /data folder
 
 		# add data from tweets_new  to tweet collection, then dump the tweets_new collection
 		self.move_tweetNew_to_tweet()
@@ -137,8 +141,9 @@ class followyourleaders(object):
 		for tweet in tweets:
 
 			leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
+			print(leader)
 
-			#check is or isnt this user a the leader
+			# check is or isnt this user a the leader
 			# Yes
 			if leader != None:
 
@@ -146,9 +151,9 @@ class followyourleaders(object):
 				post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
-				#create/update timelines collection
+				# create/update timelines collection
 				self.func_time(tweet,leader['bioguide'],post_date,post_date_time)
-				#create/update hashtags collection
+				# create/update hashtags collection
 				self.func_hash(tweet,leader['bioguide'],post_date_time)
 				#create/update urls collection
 				self.func_url(tweet,leader['bioguide'],post_date_time)
@@ -326,22 +331,21 @@ class followyourleaders(object):
 
 
 if __name__ == '__main__':
-	#link to mongo and linke to fyl_Umich database
+	# link to followyourleaders_prod db in mongo
+	print('>>> establishing mongo connection')
 	MONGODB_HOST = 'localhost'
 	MONGODB_PORT = 27018
-	connection = MongoClient(MONGODB_HOST, MONGODB_PORT) # NOTE: find these by using getHostName(), find port by logging into SSH and checking waverly
-	collection = connection['fyl_Umich'] # NOTE: update 'fyl_Umich' to 'followyourleaders'
-
+	connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
+	db = connection['followyourleaders_prod']
 
 	# connect collection
-	collection = connection['followyourleaders_prod']
-	collection_yaml = collection['yaml']		#yaml collection
-	collection_tweet = collection['tweets']		# tweets collection
-	collection_leader = collection['leaders']		# leader collection
-	collection_timeline = collection['timelines'] # timeline collection (objectid, hashtags, time)
-	collection_tweetNew = collection['tweets_new'] # for updating tweets
-	collection_hashtags = collection['hashtags'] # for updating tweets
-	collection_url = collection['urls'] # for urls
+	collection_yaml = db['yaml']		# yaml collection
+	collection_tweet = db['tweets']		# tweets collection
+	collection_leader = db['leaders']		# leader collection
+	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
+	collection_tweetNew = db['tweets_new'] # for updating tweets
+	collection_hashtags = db['hashtags'] # for updating tweets
+	collection_url = db['urls'] # for urls
 
 	# number of tweets show in recent tweets section
 	show_number=10
