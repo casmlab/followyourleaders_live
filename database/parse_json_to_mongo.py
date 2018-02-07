@@ -5,8 +5,13 @@ __status__ = "Development"
 
 # Something here about what the code does
 
+import sys
+sys.path.append('/Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/pymongo/__init__.py')
+
 from pymongo import MongoClient
 import pymongo
+from bson import json_util
+from bson.json_util import dumps
 import json
 import numpy as np
 import pickle
@@ -64,8 +69,7 @@ class followyourleaders(object):
 		yamls = collection_yaml.find()
 		collection_leader.drop()
 
-		# lst_leaders is for testing, will delete later
-		lst_leaders = []
+
 		for yaml in yamls:
 			# if this leader has used social media
 			if 'social' in yaml:
@@ -92,20 +96,17 @@ class followyourleaders(object):
 						leader_dict = {'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
 						,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
 						 'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
-						lst_leaders.append(leader_dict)
 
 						# insert into database
 						collection_leader.insert(leader_dict)
 
-		with open('leader_test_output.json', 'w') as outfile:
-			outfile.write(json.dumps(lst_leaders))
 
 		# drop  yaml collection
 		# collection_yaml.drop()
 		print('>>> create_leaders_collection() ends!')
 
 
-	############################# for creating timelines, hashtags, urls collections(starting new) (source: tweets collection)#########################
+	############################# for creating timelines, hashtags, urls collections(starting new) (source: tweets collection) #########################
 
 	def create_time_hash_url_collection(self):
 
@@ -119,17 +120,17 @@ class followyourleaders(object):
 		self.func_time_hash_url(collection_tweet.find())
 		print('>>> create_time_hash_url_collection() ends!')
 
-	###### for updating timelines, hashtags, urls collections(do not delete the old collections) form tweets_new collection (source: tweets_new collection)####
-
-	def update_time_hash_url_collection(self):
-
-		print('>>> update_time_hash_url_collection() starts!')
-		# run function to update/add timeline collection from tweets_new collection
-		self.func_time_hash_url(collection_tweetNew.find()) # tweetNew should be the uploaded json file from ssh /data folder
-
-		# add data from tweets_new  to tweet collection, then dump the tweets_new collection
-		self.move_tweetNew_to_tweet()
-		print('>>> update_time_hash_url_collection() ends!')
+	# ###### for updating timelines, hashtags, urls collections(do not delete the old collections) form tweets_new collection (source: tweets_new collection)####
+    #
+	# def update_time_hash_url_collection(self):
+    #
+	# 	print('>>> update_time_hash_url_collection() starts!')
+	# 	# run function to update/add timeline collection from tweets_new collection
+	# 	self.func_time_hash_url(collection_tweetNew.find()) # tweetNew should be the uploaded json file from ssh /data folder
+    #
+	# 	# add data from tweets_new  to tweet collection, then dump the tweets_new collection
+	# 	self.move_tweetNew_to_tweet()
+	# 	print('>>> update_time_hash_url_collection() ends!')
 
 
 	############################# excuting funcions for creating/updaing timelines, hashtags, urls collections#########################
