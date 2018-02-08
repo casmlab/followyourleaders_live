@@ -366,16 +366,15 @@ class followyourleaders(object):
 
 		self.create_yaml_collection()
 		self.create_leaders_collection()
-		self.create_time_hash_url_collection()
-		self.update_recent_info_by_tweets(show_number)
+		self.create_timeline_collection()
 
 
 
 	# updating database from tweetNew collections:
-	def update_database(self,show_number):
-
-		self.update_time_hash_url_collection()
-		self.update_recent_info_by_tweets(show_number)
+	# def update_database(self,show_number):
+    #
+	# 	self.update_time_hash_url_collection()
+	# 	self.update_recent_info_by_tweets(show_number)
 
 
 
