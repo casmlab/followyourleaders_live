@@ -110,18 +110,15 @@ class followyourleaders(object):
 
 	def create_timeline_collection(self, tweets):
 
-		print('>>> create_timeline_collection(self) starts!')
+		print('>>> create_timeline_collection(self, tweets) starts!')
 		collection_timeline.drop()
 
 		count=[]
 		for tweet in tweets:
-			print(tweet)
 
-			# for leader in collection_leader.find_one({"twitter_id" : tweet['user']['id_str']}):
 			leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
 
 			# check is or isnt this user a the leader
-			# Yes
 			if leader != None:
 
 				# define date/time formats
@@ -139,7 +136,6 @@ class followyourleaders(object):
 				item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
 				'url':url}
 
-				################## check if the leader is already in timelines collection######################
 				# if we dont have the leader's information in timeline collection, insert one for him/her
 				if  leader_timeline == None:
 
@@ -156,7 +152,7 @@ class followyourleaders(object):
 				collection_timeline.insert( { 'bioguide': leader['bioguide']},{ '$set': { keyidx: item_push } } )
 
 
-		print('>>> func_time_hash_url(self, tweets) ends!')
+		print('>>> create_timeline_collection(self, tweets) ends!')
 
 	# def create_time_hash_url_collection(self):
     #
