@@ -106,7 +106,7 @@ class followyourleaders(object):
 		print('>>> create_leaders_collection() ends!')
 
 
-	############################# for creating timelines, hashtags, urls collections(starting new) (source: tweets collection) #########################
+	############################# for creating timelines (source: tweets collection) #########################
 
 	def create_timeline_collection(self):
 
@@ -168,17 +168,6 @@ class followyourleaders(object):
 	# 	self.func_time_hash_url(collection_tweet.find())
 	# 	print('>>> create_time_hash_url_collection() ends!')
     #
-	# # ###### for updating timelines, hashtags, urls collections(do not delete the old collections) form tweets_new collection (source: tweets_new collection)####
-    # #
-	# # def update_time_hash_url_collection(self):
-    # #
-	# # 	print('>>> update_time_hash_url_collection() starts!')
-	# # 	# run function to update/add timeline collection from tweets_new collection
-	# # 	self.func_time_hash_url(collection_tweetNew.find()) # tweetNew should be the uploaded json file from ssh /data folder
-    # #
-	# # 	# add data from tweets_new  to tweet collection, then dump the tweets_new collection
-	# # 	self.move_tweetNew_to_tweet()
-	# # 	print('>>> update_time_hash_url_collection() ends!')
     #
     #
 	# ############################# excuting funcions for creating/updaing timelines, hashtags, urls collections#########################
@@ -293,18 +282,6 @@ class followyourleaders(object):
     #
     #
     #
-	# #############################  move data from tweetNew to tweets collection, then drop the tweetNew collection #############################
-	# def move_tweetNew_to_tweet(self):
-    #
-	# 	print('>>> move_tweetNew_to_tweet() starts!')
-    #
-	# 	tweets = collection_tweetNew.find()
-	# 	for tweet in tweets:
-	# 		collection_tweet.insert(tweet)
-	# 	# when finishing, drop the database
-	# 	collection_tweetNew.drop()
-	# 	print('>>> move_tweetNew_to_tweet() ends!')
-    #
     #
     #
 	# #############for updating "recent_tweets", "followers", "friends", "description" in leader collection (by timeline, tweets, leaders collections)#############################
@@ -370,13 +347,6 @@ class followyourleaders(object):
 
 
 
-	# updating database from tweetNew collections:
-	# def update_database(self,show_number):
-    #
-	# 	self.update_time_hash_url_collection()
-	# 	self.update_recent_info_by_tweets(show_number)
-
-
 
 if __name__ == '__main__':
 	# link to followyourleaders_prod db in mongo
@@ -391,7 +361,6 @@ if __name__ == '__main__':
 	collection_tweet = db['tweets']		# tweets collection
 	collection_leader = db['leaders']		# leader collection
 	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
-	collection_tweetNew = db['tweets_new'] # for updating tweets
 	collection_hashtags = db['hashtags'] # for updating tweets
 	collection_url = db['urls'] # for urls
 
