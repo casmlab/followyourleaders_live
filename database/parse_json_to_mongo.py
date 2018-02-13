@@ -119,7 +119,6 @@ class followyourleaders(object):
 
 			# for leader in collection_leader.find_one({"twitter_id" : tweet['user']['id_str']}):
 			leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
-			print(leader)
 
 			# check is or isnt this user a the leader
 			# Yes
