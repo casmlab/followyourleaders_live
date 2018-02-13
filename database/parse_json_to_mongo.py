@@ -344,8 +344,8 @@ class followyourleaders(object):
 	# initial database
 	def initial_database(self,show_number):
 
-		self.create_yaml_collection()
-		self.create_leaders_collection()
+		# self.create_yaml_collection()
+		# self.create_leaders_collection()
 		self.create_timeline_collection()
 
 
