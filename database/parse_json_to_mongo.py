@@ -1,3 +1,7 @@
+mongoimport --db followyourleaders_prod --collection tweets--drop --file /data/N.json
+
+
+
 __author__ = "Pai-ju Chang, Libby Hemphill"
 __maintainer__ = "Pai-ju Chang"
 __email__ = "paiju@umich.edu"
@@ -108,13 +112,13 @@ class followyourleaders(object):
 
 	############################# for creating timelines (source: tweets collection) #########################
 
-	def create_timeline_collection(self):
+	def create_timeline_collection(self, tweets):
 
 		print('>>> create_timeline_collection(self) starts!')
 		collection_timeline.drop()
 
 		count=[]
-		for tweet in collection_tweet.find():
+		for tweet in tweets:
 			print(tweet)
 
 			for leader in collection_leader.find_one({"twitter_id" : tweet['user']['id_str']}):
@@ -346,7 +350,7 @@ class followyourleaders(object):
 
 		# self.create_yaml_collection()
 		# self.create_leaders_collection()
-		self.create_timeline_collection()
+		self.create_timeline_collection(collection_tweet.find())
 
 
 
@@ -361,7 +365,7 @@ if __name__ == '__main__':
 
 	# connect collection
 	collection_yaml = db['yaml']		# yaml collection
-	collection_tweet = db['tweets']		# tweets collection
+	collection_tweet = db['tweets--drop']		# tweets collection
 	collection_leader = db['leaders']		# leader collection
 	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
 	collection_hashtags = db['hashtags'] # for updating tweets
