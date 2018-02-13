@@ -176,9 +176,9 @@ class followyourleaders(object):
 				# check if the leader is already in hashtags collection, if not, insert information for them to collection
 				if leader_hashtags == None:
 
-					print('start inserting ' + leader + ' into hashtags collection')
+					print('start inserting ' + leader['bioguide'] + ' into hashtags collection')
 					dic = {}
-					dic['bioguide'] = leader
+					dic['bioguide'] = leader['bioguide']
 					dic.setdefault('hashtags', {})
 					collection_hashtags.insert(dic)
 
@@ -187,7 +187,7 @@ class followyourleaders(object):
 				for a in tweet['entities']['hashtags']:
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
 					collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx+'.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
-					
+
 
 		print('>>> create_hashtags_collection(self, tweets) ends!')
 
