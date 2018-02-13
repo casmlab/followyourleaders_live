@@ -148,7 +148,7 @@ class followyourleaders(object):
 
 
 	# 			# update timeline collection from tweets
-	# 			collection_timeline.insert( { 'bioguide': leader['bioguide']},{ '$set': { keyidx: item_push } } )
+	# 			collection_timeline.update( { 'bioguide': leader['bioguide']},{ '$set': { keyidx: item_push } } )
 
 
 	# 	print('>>> create_timeline_collection(self, tweets) ends!')
@@ -186,7 +186,8 @@ class followyourleaders(object):
 				# update hashtags collection from tweets
 				for a in tweet['entities']['hashtags']:
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
-					collection_hashtags.insert({ 'bioguide': leader }, { '$set': {key_idx'.text':tweet['text'].key_idx + '.created_at':post_date_time} } )
+					collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx+'.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
+					
 
 		print('>>> create_hashtags_collection(self, tweets) ends!')
 
