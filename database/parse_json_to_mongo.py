@@ -30,80 +30,80 @@ class followyourleaders(object):
 
 
 	############################# for creating yaml collection (will be dropped after the leader collection is built) #############################
-	def create_yaml_collection(self):
-		# reset yaml collection
-		print('>>> create_yaml_collection() starts!')
-		collection_yaml.drop()
+	# def create_yaml_collection(self):
+	# 	# reset yaml collection
+	# 	print('>>> create_yaml_collection() starts!')
+	# 	collection_yaml.drop()
 
-		# read yaml files
-		print('>>> reading yaml files')
-		legislators_file = urllib.request.urlopen('https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml')
-		lst_a = yaml.load(legislators_file)
-		media = urllib.request.urlopen('https://theunitedstates.io/congress-legislators/legislators-social-media.yaml')
-		lst_b = yaml.load(media)
-
-
-		# merge yaml files
-		lst = sorted(itertools.chain(lst_b,lst_a), key=lambda x:x['id']['bioguide'])
-		lst_legislators = []
-		for k,v in itertools.groupby(lst, key=lambda x:x['id']['bioguide']):
-		    d = {}
-		    for dct in v:
-		        d.update(dct)
-		    lst_legislators.append(d)
+	# 	# read yaml files
+	# 	print('>>> reading yaml files')
+	# 	legislators_file = urllib.request.urlopen('https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml')
+	# 	lst_a = yaml.load(legislators_file)
+	# 	media = urllib.request.urlopen('https://theunitedstates.io/congress-legislators/legislators-social-media.yaml')
+	# 	lst_b = yaml.load(media)
 
 
-		# insert into database
-		for dct in lst_legislators:
-			collection_yaml.insert(dct)
-		print('>>> create_yaml_collection() ends!')
+	# 	# merge yaml files
+	# 	lst = sorted(itertools.chain(lst_b,lst_a), key=lambda x:x['id']['bioguide'])
+	# 	lst_legislators = []
+	# 	for k,v in itertools.groupby(lst, key=lambda x:x['id']['bioguide']):
+	# 	    d = {}
+	# 	    for dct in v:
+	# 	        d.update(dct)
+	# 	    lst_legislators.append(d)
 
 
-	############################# for creating leader collection and dropping yaml collection (source: yaml collection)#############################
-	############################# this leader collection is not completed, the recent tweets, followers, friends and description need ###############
-	############################# to be updated by update_recent_info_by_tweets function ###########################################################
-	def create_leaders_collection (self) :
-		print('>>> create_leaders_collection() starts!')
-
-		# read from yamls collection
-		yamls = collection_yaml.find()
-		collection_leader.drop()
+	# 	# insert into database
+	# 	for dct in lst_legislators:
+	# 		collection_yaml.insert(dct)
+	# 	print('>>> create_yaml_collection() ends!')
 
 
-		for yaml in yamls:
-			# if this leader has used social media
-			if 'social' in yaml:
-				# if this leader has used twitter
-				if 'twitter' in yaml['social']:
-					# if this leader is in yamls.
-					if 'bio' in yaml:
+	# ############################# for creating leader collection and dropping yaml collection (source: yaml collection)#############################
+	# ############################# this leader collection is not completed, the recent tweets, followers, friends and description need ###############
+	# ############################# to be updated by update_recent_info_by_tweets function ###########################################################
+	# def create_leaders_collection (self) :
+	# 	print('>>> create_leaders_collection() starts!')
 
-						if 'religion' in yaml['bio']:
-							religion = yaml['bio']['religion']
-						else:
-							religion = 'Unknown'
-						state = yaml['terms'][0]['state']
-						chamber =  yaml['terms'][0]['type']
-						party = yaml['terms'][0]['party']
-						if 'twitter_id' in yaml['social']:
-							twitter_id = str(yaml['social']['twitter_id'])
-						else:
-							twitter_id = 'NA'
-
-						photo_url = requests.get('https://twitter.com/'+yaml['social']['twitter']+'/profile_image?size=original').url
-
-						# form data structure by datamodel.md
-						leader_dict = {'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
-						,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
-						 'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
-
-						# insert into database
-						collection_leader.insert(leader_dict)
+	# 	# read from yamls collection
+	# 	yamls = collection_yaml.find()
+	# 	collection_leader.drop()
 
 
-		# drop  yaml collection
-		# collection_yaml.drop()
-		print('>>> create_leaders_collection() ends!')
+	# 	for yaml in yamls:
+	# 		# if this leader has used social media
+	# 		if 'social' in yaml:
+	# 			# if this leader has used twitter
+	# 			if 'twitter' in yaml['social']:
+	# 				# if this leader is in yamls.
+	# 				if 'bio' in yaml:
+
+	# 					if 'religion' in yaml['bio']:
+	# 						religion = yaml['bio']['religion']
+	# 					else:
+	# 						religion = 'Unknown'
+	# 					state = yaml['terms'][0]['state']
+	# 					chamber =  yaml['terms'][0]['type']
+	# 					party = yaml['terms'][0]['party']
+	# 					if 'twitter_id' in yaml['social']:
+	# 						twitter_id = str(yaml['social']['twitter_id'])
+	# 					else:
+	# 						twitter_id = 'NA'
+
+	# 					photo_url = requests.get('https://twitter.com/'+yaml['social']['twitter']+'/profile_image?size=original').url
+
+	# 					# form data structure by datamodel.md
+	# 					leader_dict = {'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
+	# 					,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
+	# 					 'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
+
+	# 					# insert into database
+	# 					collection_leader.insert(leader_dict)
+
+
+	# 	# drop  yaml collection
+	# 	# collection_yaml.drop()
+	# 	print('>>> create_leaders_collection() ends!')
 
 
 	############################# for creating timelines (source: tweets collection) #########################
@@ -115,46 +115,49 @@ class followyourleaders(object):
 
 		count=[]
 		for tweet in collection_tweet.find():
+			print(tweet)
 
-			leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
+			for leader in collection_leader.find_one({"twitter_id" : tweet['user']['id_str']}):
+				# leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
+				print(leader)
 
 			# check is or isnt this user a the leader
 			# Yes
-			if leader != None:
+				if leader != None:
 
-				# define date/time formats
-				post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
-				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
+					# define date/time formats
+					post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
+					post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
-				# create/update timelines collection
-				leader_timeline = collection_timeline.find_one({"bioguide" : leader['bioguide']})
+					# create/update timelines collection
+					leader_timeline = collection_timeline.find_one({"bioguide" : leader['bioguide']})
 
-				# define update location
-				keyinde = "dates."+post_date+"."+tweet['id_str']
+					# define update location
+					keyidx = "dates."+post_date+"."+tweet['id_str']
 
-				# define inserting/updating item format
-				url = 'https://twitter.com/'+tweet['user']['screen_name']+'/status/'+tweet['id_str']
-				item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
-				'url':url}
+					# define inserting/updating item format
+					url = 'https://twitter.com/'+tweet['user']['screen_name']+'/status/'+tweet['id_str']
+					item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
+					'url':url}
 
-				################## check if the leader is already in timelines collection######################
-				# if we dont have the leader's information in timeline collection, insert one for him/her
-				if  leader_timeline == None:
+					################## check if the leader is already in timelines collection######################
+					# if we dont have the leader's information in timeline collection, insert one for him/her
+					if  leader_timeline == None:
 
-					print('start inserting '+leader['bioguide'] +' into timelines collection')
-					dic={}
-					dic['twitter_name']=tweet['user']['screen_name']
-					dic['twitter_id']=tweet['user']['id_str']
-					dic['bioguide']=leader['bioguide']
-					dic.setdefault('dates', {})
-					collection_timeline.insert(dic)
-
-
-				# update timeline collection from tweets
-				collection_timeline.insert( { 'bioguide': leader['bioguide']},{ '$set': { keyinde: item_push } } )
+						print('start inserting '+leader['bioguide'] +' into timelines collection')
+						dic={}
+						dic['twitter_name']=tweet['user']['screen_name']
+						dic['twitter_id']=tweet['user']['id_str']
+						dic['bioguide']=leader['bioguide']
+						dic.setdefault('dates', {})
+						collection_timeline.insert(dic)
 
 
-		print('>>> func_time_hash_url(self, tweets) ends!')
+					# update timeline collection from tweets
+					collection_timeline.insert( { 'bioguide': leader['bioguide']},{ '$set': { keyidx: item_push } } )
+
+
+			print('>>> func_time_hash_url(self, tweets) ends!')
 
 	# def create_time_hash_url_collection(self):
     #
@@ -209,7 +212,7 @@ class followyourleaders(object):
 	# 	leader_timeline = collection_timeline.find_one({"bioguide" : leader})
     #
 	# 	# define update location
-	# 	keyinde = "dates."+post_date+"."+tweet['id_str']
+	# 	keyidx = "dates."+post_date+"."+tweet['id_str']
     #
 	# 	# define inserting/updating item format
 	# 	url = 'https://twitter.com/'+tweet['user']['screen_name']+'/status/'+tweet['id_str']
@@ -230,7 +233,7 @@ class followyourleaders(object):
     #
     #
 	# 	# update timeline collection from tweets
-	# 	collection_timeline.update( { 'bioguide': leader},{ '$set': { keyinde: item_push } } )
+	# 	collection_timeline.update( { 'bioguide': leader},{ '$set': { keyidx: item_push } } )
     #
     #
 	# #############################  funcion for creating/updaing hashtags collections#########################
@@ -252,8 +255,8 @@ class followyourleaders(object):
     #
 	# 	# update hashtags collection from tweets
 	# 	for a in tweet['entities']['hashtags']:
-	# 		keyinde = "hashtags."+a['text']+".tweets."+tweet['id_str']
-	# 		collection_hashtags.update( { 'bioguide': leader },{ '$set': {keyinde+'.text':tweet['text'],keyinde+'.created_at':post_date_time} } )
+	# 		keyidx = "hashtags."+a['text']+".tweets."+tweet['id_str']
+	# 		collection_hashtags.update( { 'bioguide': leader },{ '$set': {keyidx+'.text':tweet['text'],keyidx+'.created_at':post_date_time} } )
     #
     #
 	# #############################  funcion for creating/updaing urls collections#########################
@@ -275,10 +278,10 @@ class followyourleaders(object):
     #
 	# 	#update urls collection from tweets
 	# 	for a in tweet['entities']['urls']:
-	# 		#keyinde="urls."+a['url'].replace('.', '\u002e')+".tweets."+tweet['id_str']
+	# 		#keyidx="urls."+a['url'].replace('.', '\u002e')+".tweets."+tweet['id_str']
 	# 		# print(a['url'].split("t.co/"))
-	# 		keyinde = "urls."+a['url'].split("t.co/")[1] +".tweets."+tweet['id_str']
-	# 		collection_url.update( { 'bioguide': leader },{ '$set': {keyinde+'.text':tweet['text'],keyinde+'.created_at':post_date_time} } )
+	# 		keyidx = "urls."+a['url'].split("t.co/")[1] +".tweets."+tweet['id_str']
+	# 		collection_url.update( { 'bioguide': leader },{ '$set': {keyidx+'.text':tweet['text'],keyidx+'.created_at':post_date_time} } )
     #
     #
     #
