@@ -1,7 +1,3 @@
-mongoimport --db followyourleaders_prod --collection tweets--drop --file /data/N.json
-
-
-
 __author__ = "Pai-ju Chang, Libby Hemphill"
 __maintainer__ = "Pai-ju Chang"
 __email__ = "paiju@umich.edu"
