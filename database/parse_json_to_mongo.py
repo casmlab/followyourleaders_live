@@ -192,45 +192,45 @@ class followyourleaders(object):
 	# 	print('>>> create_hashtags_collection(self, tweets) ends!')
 
 
-		#############################  function for creating/updaing urls collections#########################
-		def create_url_collection(self,tweets):
+	#############################  function for creating/updaing urls collections#########################
+	def create_url_collection(self,tweets):
 
-			print('>>> create_url_collection(self, tweets) starts!')
-			collection_url.drop()
+		print('>>> create_url_collection(self, tweets) starts!')
+		collection_url.drop()
 
-			for tweet in tweets:
+		for tweet in tweets:
 
-				leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
+			leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
 
-				# check is or isnt this user a the leader
-				if leader != None:
+			# check is or isnt this user a the leader
+			if leader != None:
 
-					# define date/time formats
-					post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
-					post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
+				# define date/time formats
+				post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
+				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
-					# read leader's information from urls collection
-					leader_url = collection_url.find_one({"bioguide" : leader})
-		
+				# read leader's information from urls collection
+				leader_url = collection_url.find_one({"bioguide" : leader})
+	
 
-					# if we dont have the leader's information in urls collection, insert one for him/her
-					if leader_url == None:
+				# if we dont have the leader's information in urls collection, insert one for him/her
+				if leader_url == None:
 
-						print('start inserting '+ leader +' into urls collection')
-						dic = {}
-						dic['bioguide'] = leader
-						dic.setdefault('urls', {})
-						collection_url.insert(dic)
+					print('start inserting '+ leader +' into urls collection')
+					dic = {}
+					dic['bioguide'] = leader
+					dic.setdefault('urls', {})
+					collection_url.insert(dic)
 
 
-					#update urls collection from tweets
-					for a in tweet['entities']['urls']:
-						#keyinde="urls."+a['url'].replace('.', '\u002e')+".tweets."+tweet['id_str']
-						# print(a['url'].split("t.co/"))
-						key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
-						collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
+				#update urls collection from tweets
+				for a in tweet['entities']['urls']:
+					#keyinde="urls."+a['url'].replace('.', '\u002e')+".tweets."+tweet['id_str']
+					# print(a['url'].split("t.co/"))
+					key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
+					collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
 
-			print('>>> create_url_collection(self, tweets) ends!')
+		print('>>> create_url_collection(self, tweets) ends!')
 
 
 	# #############for updating "recent_tweets", "followers", "friends", "description" in leader collection (by timeline, tweets, leaders collections)#############################
