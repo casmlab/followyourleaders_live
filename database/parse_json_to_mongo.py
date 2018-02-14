@@ -216,9 +216,9 @@ class followyourleaders(object):
 				# if we dont have the leader's information in urls collection, insert one for him/her
 				if leader_url == None:
 
-					print('start inserting '+ leader +' into urls collection')
+					print('start inserting ' + leader['bioguide'] + ' into urls collection')
 					dic = {}
-					dic['bioguide'] = leader
+					dic['bioguide'] = leader['bioguide']
 					dic.setdefault('urls', {})
 					collection_url.insert(dic)
 
@@ -229,6 +229,7 @@ class followyourleaders(object):
 					# print(a['url'].split("t.co/"))
 					key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
 					collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
+					
 
 		print('>>> create_url_collection(self, tweets) ends!')
 
