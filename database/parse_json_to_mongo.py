@@ -193,7 +193,7 @@ class followyourleaders(object):
 
 
 		#############################  function for creating/updaing urls collections#########################
-		def create_url_collection (self,tweets):
+		def create_url_collection(self,tweets):
 
 			print('>>> create_url_collection(self, tweets) starts!')
 			collection_url.drop()
