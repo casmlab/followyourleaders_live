@@ -292,8 +292,8 @@ class followyourleaders(object):
 
 		# self.create_yaml_collection()
 		# self.create_leaders_collection()
-		# self.create_timeline_collection(collection_tweet.find())
-		self.create_hashtag_collection(collection_tweet.find())
+		self.create_timeline_collection(collection_tweet.find())
+		# self.create_hashtag_collection(collection_tweet.find())
 		# self.create_url_collection(collection_tweet.find())
 
 
