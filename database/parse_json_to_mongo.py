@@ -108,57 +108,10 @@ class followyourleaders(object):
 
 	############################# for creating timelines (source: tweets collection) #########################
 
-	# def create_timeline_collection(self, tweets):
+	def create_timeline_collection(self, tweets):
 
-	# 	print('>>> create_timeline_collection(self, tweets) starts!')
-	# 	collection_timeline.drop()
-
-	# 	for tweet in tweets:
-
-	# 		leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
-
-	# 		# check is or isnt this user a the leader
-	# 		if leader != None:
-
-	# 			# define date/time formats
-	# 			post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
-	# 			post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
-
-	# 			# create/update timelines collection
-	# 			leader_timeline = collection_timeline.find_one({"bioguide" : leader['bioguide']})
-
-	# 			# define update location
-	# 			keyidx = "dates."+post_date+"."+tweet['id_str']
-
-	# 			# define inserting/updating item format
-	# 			url = 'https://twitter.com/'+tweet['user']['screen_name']+'/status/'+tweet['id_str']
-	# 			item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
-	# 			'url':url}
-
-	# 			# if we dont have the leader's information in timeline collection, insert one for him/her
-	# 			if  leader_timeline == None:
-
-	# 				print('start inserting '+leader['bioguide'] +' into timelines collection')
-	# 				dic={}
-	# 				dic['twitter_name']=tweet['user']['screen_name']
-	# 				dic['twitter_id']=tweet['user']['id_str']
-	# 				dic['bioguide']=leader['bioguide']
-	# 				dic.setdefault('dates', {})
-	# 				collection_timeline.insert(dic)
-
-
-	# 			# update timeline collection from tweets
-	# 			collection_timeline.update( { 'bioguide': leader['bioguide']},{ '$set': { keyidx: item_push } } )
-
-
-	# 	print('>>> create_timeline_collection(self, tweets) ends!')
-
-	#############################  function for creating hashtags collections  #########################
-
-	def create_hashtag_collection(self, tweets):
-
-		print('>>> create_hashtags_collection(self, tweets) starts!')
-		collection_hashtags.drop()
+		print('>>> create_timeline_collection(self, tweets) starts!')
+		collection_timeline.drop()
 
 		for tweet in tweets:
 
@@ -171,25 +124,72 @@ class followyourleaders(object):
 				post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
-				leader_hashtags = collection_hashtags.find_one({"bioguide" : leader['bioguide']})
+				# create/update timelines collection
+				leader_timeline = collection_timeline.find_one({"bioguide" : leader['bioguide']})
+
+				# define update location
+				keyidx = "dates."+post_date+"."+tweet['id_str']
+
+				# define inserting/updating item format
+				url = 'https://twitter.com/'+tweet['user']['screen_name']+'/status/'+tweet['id_str']
+				item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
+				'url':url}
+
+				# if we dont have the leader's information in timeline collection, insert one for him/her
+				if  leader_timeline == None:
+
+					print('start inserting '+leader['bioguide'] +' into timelines collection')
+					dic={}
+					dic['twitter_name']=tweet['user']['screen_name']
+					dic['twitter_id']=tweet['user']['id_str']
+					dic['bioguide']=leader['bioguide']
+					dic.setdefault('dates', {})
+					collection_timeline.insert(dic)
+
+
+				# update timeline collection from tweets
+				collection_timeline.update( { 'bioguide': leader['bioguide']},{ '$set': { keyidx: item_push } } )
+
+
+		print('>>> create_timeline_collection(self, tweets) ends!')
+
+	#############################  function for creating hashtags collections  #########################
+
+	# def create_hashtag_collection(self, tweets):
+
+	# 	print('>>> create_hashtags_collection(self, tweets) starts!')
+	# 	collection_hashtags.drop()
+
+	# 	for tweet in tweets:
+
+	# 		leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
+
+	# 		# check is or isnt this user a the leader
+	# 		if leader != None:
+
+	# 			# define date/time formats
+	# 			post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
+	# 			post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
+
+	# 			leader_hashtags = collection_hashtags.find_one({"bioguide" : leader['bioguide']})
 				
-				# check if the leader is already in hashtags collection, if not, insert information for them to collection
-				if leader_hashtags == None:
+	# 			# check if the leader is already in hashtags collection, if not, insert information for them to collection
+	# 			if leader_hashtags == None:
 
-					print('start inserting ' + leader['bioguide'] + ' into hashtags collection')
-					dic = {}
-					dic['bioguide'] = leader['bioguide']
-					dic.setdefault('hashtags', {})
-					collection_hashtags.insert(dic)
-
-
-				# update hashtags collection from tweets
-				for a in tweet['entities']['hashtags']:
-					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
-					collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx+'.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
+	# 				print('start inserting ' + leader['bioguide'] + ' into hashtags collection')
+	# 				dic = {}
+	# 				dic['bioguide'] = leader['bioguide']
+	# 				dic.setdefault('hashtags', {})
+	# 				collection_hashtags.insert(dic)
 
 
-		print('>>> create_hashtags_collection(self, tweets) ends!')
+	# 			# update hashtags collection from tweets
+	# 			for a in tweet['entities']['hashtags']:
+	# 				key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
+	# 				collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx+'.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
+
+
+	# 	print('>>> create_hashtags_collection(self, tweets) ends!')
 
 
 		#############################  function for creating/updaing urls collections#########################
