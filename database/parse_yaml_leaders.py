@@ -3,7 +3,7 @@ __maintainer__ = "Pai-ju Chang"
 __email__ = "paiju@umich.edu"
 __status__ = "Development"
 
-# Something here about what the code does
+# Code Description: This code creates new 
 
 
 from pymongo import MongoClient
@@ -123,6 +123,7 @@ if __name__ == '__main__':
 	db = connection['followyourleaders_prod']
 
 	# connect collection
+	collection_yaml = collection['yaml']		#yaml collection
 	collection_tweet = db['tweets--drop']		# tweets collection
 	collection_leader = db['leaders']		# leader collection
 	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
