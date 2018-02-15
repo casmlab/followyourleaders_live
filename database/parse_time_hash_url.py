@@ -175,12 +175,16 @@ class followyourleaders(object):
 
 			# check whether we have his/her Twitter data
 			time_item = collection_timeline.find_one({"bioguide" : leader['bioguide']})
+			print(time_item)
+			print("-------")
 
 
 			# if we have this leader's data
 			if time_item != None:
 
 				a = time_item['dates'].keys()
+				print(type(a))
+				print(a)
 
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
 				a.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
