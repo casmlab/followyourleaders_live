@@ -3,8 +3,8 @@ __maintainer__ = "Pai-ju Chang"
 __email__ = "paiju@umich.edu"
 __status__ = "Development"
 
-# Code Description: This code creates a new 'yaml' collection and a new 'leaders' collection in 'followyourleaders_prod' database. Important to note is that each time these collections are created, the old ones (if they exist) are dropped.
-
+# CODE DESCRIPTION: This code creates a new 'yaml' collection and a new 'leaders' collection in 'followyourleaders_prod' database. 
+# Important to note, each time these collections are created, the old ones (if they exist) are dropped.
 
 
 from pymongo import MongoClient
@@ -20,15 +20,20 @@ import itertools
 import requests
 
 
+
+
+
 # define class
 class followyourleaders(object):
 
 
 	###################################################################    YAML CREATION    ###################################################################
 	
+
 	# function definition: creates 'yaml' collection in 'followyourleaders_prod' database
 	# source data: 	https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml;
 	#				https://theunitedstates.io/congress-legislators/legislators-social-media.yaml
+	
 	def create_yaml_collection(self):
 		
 		# reset yaml collection
@@ -59,12 +64,17 @@ class followyourleaders(object):
 		print('>>> create_yaml_collection() ends!')
 
 
+
+
+
 	###################################################################    LEADERS CREATION    ################################################################
+
 
 	# function definition: creates 'leaders' collection in 'followyourleaders_prod' database
 	# source data: 	'yaml' collection in 'followyourleaders_prod' database
 	#				https://twitter.com/ + yaml['social']['twitter'] + '/profile_image?size=original'
 	# QUESTIONS: why is 'yaml' collection dropped? Is this to save space in db?
+
 	def create_leaders_collection (self) :
 		
 		print('>>> create_leaders_collection() starts!')
@@ -113,15 +123,26 @@ class followyourleaders(object):
 
 
 
+
+
+
 	#################################################################    INITIALIZING DB    ###################################################################
 	
-	def initial_database(self,show_number):
+
+	# function definition: initializes database by calling each function defined in the followyourleaders() class
+	# source data: 	NA
+
+	def initialize_database(self):
 
 		self.create_yaml_collection()
 		self.create_leaders_collection()
 
 
 
+
+
+
+#################################################################    RUN CODE HERE   ##########################################################################
 
 
 if __name__ == '__main__':
@@ -134,24 +155,18 @@ if __name__ == '__main__':
 
 	# connect collection
 	collection_yaml = db['yaml']		#yaml collection
-	collection_tweet = db['tweets--drop']		# tweets collection
 	collection_leader = db['leaders']		# leader collection
-	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
-	collection_hashtags = db['hashtags'] # for updating tweets
-	collection_url = db['urls'] # for urls
-
-	# number of tweets show in recent tweets section
-	show_number=10
 
 
 
-
-	######################################### run here##########################################
-
+	# initialize class instance
 	fyldb = followyourleaders()
-	# ###################### When starting a new data base ########################################
-	# fyldb.initial_database(show_number)
+	# run functions in class
+	fyldb.initialize_database()
 
 
 
 	connection.close()
+
+
+

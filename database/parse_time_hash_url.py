@@ -3,7 +3,11 @@ __maintainer__ = "Pai-ju Chang"
 __email__ = "paiju@umich.edu"
 __status__ = "Development"
 
-# Something here about what the code does
+# CODE DESCRIPTION: This code creates a new 'timeline' collection, a new 'hashtags' collection, and a new 'urls' collection in 'followyourleaders_prod' database. 
+# Important to note, each time these collections are created, the old ones (if they exist) are dropped. This code also updates existing 'leaders' collection in
+# 'followyourleaders_prod' database with corresponding data from newly created 'timeline' collection.
+# QUESTIONS: Do we need to be able to update this information at all? Or is it find just to drop entire collection and replace each time? Do we create a new db
+# each time?
 
 
 from pymongo import MongoClient
@@ -18,13 +22,19 @@ import itertools
 import requests
 
 
+
+
+
 # define class
 class followyourleaders(object):
-	def __init__(self):
-		self.a = 1
 
 
-	############################ for creating timelines (source: tweets collection) #########################
+	###################################################################    TIMELINE CREATION    ###############################################################
+
+	
+	# function definition: creates 'timeline' collection in 'followyourleaders_prod' database
+	# source data: 	'leader' collection in 'followyourleaders_prod' database;
+	#				'tweets--drop' collection in 'followyourleaders_prod' database;
 
 	def create_timeline_collection(self, tweets):
 
@@ -75,7 +85,15 @@ class followyourleaders(object):
 		print('>>> create_timeline_collection(self, tweets) ends!')
 
 
-	############################  function for creating hashtags collections  #########################
+
+
+
+	###################################################################    HASHTAG CREATION    ################################################################
+
+	
+	# function definition: creates 'hashtag' collection in 'followyourleaders_prod' database
+	# source data: 	'leader' collection in 'followyourleaders_prod' database;
+	#				'tweets--drop' collection in 'followyourleaders_prod' database;
 
 	def create_hashtag_collection(self, tweets):
 
@@ -117,7 +135,16 @@ class followyourleaders(object):
 		print('>>> create_hashtags_collection(self, tweets) ends!')
 
 
-	#############################  function for creating/updaing urls collections#########################
+
+
+
+	###################################################################    URLS CREATION    ###################################################################
+	
+
+	# function definition: creates 'urls' collection in 'followyourleaders_prod' database
+	# source data: 	'leader' collection in 'followyourleaders_prod' database;
+	#				'tweets--drop' collection in 'followyourleaders_prod' database;
+
 	def create_url_collection(self,tweets):
 
 		print('>>> create_url_collection(self, tweets) starts!')
@@ -161,7 +188,17 @@ class followyourleaders(object):
 
 
 
-	#############for updating "recent_tweets", "followers", "friends", "description" in leader collection (by timeline, tweets, leaders collections)#############################
+
+
+	###################################################################    UPDATE  LEADERS    #################################################################
+	
+
+	# function definition: updates 'leaders' collection in 'followyourleaders_prod' database with each leader's associated 'timeline' and 'tweets--drop' collection information
+	# source data: 	'leader' collection in 'followyourleaders_prod' database;
+	#				'timeline' collection in 'followyourleaders_prod' database;
+	#				'tweets--drop' collection in 'followyourleaders_prod' database
+	# QUESTIONS: What is 'num_tweets_shown' why is it necessary? Is this to limit the amount of data that is return from timeline?
+
 	def update_leaders(self,num_tweets_shown):
 		print('>>> update_leaders(num_tweets_shown) starts!')
 
@@ -217,18 +254,27 @@ class followyourleaders(object):
 
 
 
-	############################# for creating initial database #############################
+	#################################################################    INITIALIZING DB    ###################################################################
 
-	def initial_database(self,num_tweets_shown):
+	
+	# function definition: initializes database by calling each function defined in the followyourleaders() class
+	# source data: 	'num_tweets_shown' parameter input in 'if __name__ == '__main__'' function
+	#				'timeline' collection in 'followyourleaders_prod' database;
+	#				'tweets--drop' collection in 'followyourleaders_prod' database
 
-		# self.create_timeline_collection(collection_tweet.find())
-		# self.create_hashtag_collection(collection_tweet.find())
-		# self.create_url_collection(collection_tweet.find())
+	def initialize_database(self,num_tweets_shown):
+
+		self.create_timeline_collection(collection_tweet.find())
+		self.create_hashtag_collection(collection_tweet.find())
+		self.create_url_collection(collection_tweet.find())
 		self.update_leaders(num_tweets_shown)
 
 
 
 
+
+
+#################################################################    RUN CODE HERE   ##########################################################################
 
 
 if __name__ == '__main__':
@@ -250,18 +296,11 @@ if __name__ == '__main__':
 	num_tweets_shown=10
 
 
-	######################################### run here##########################################
-
+	# initialize class instance
 	fyldb = followyourleaders()
-	###################### When starting a new data base ########################################
-	fyldb.initial_database(num_tweets_shown)
+	# run functions in class
+	fyldb.initialize_database(show_number)
 
 
-
-
-
-
-	###################### when adding new data from collection tweet_new #########################
-	#etl.update_database(num_tweets_shown)
 
 	connection.close()
