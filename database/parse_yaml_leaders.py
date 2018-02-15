@@ -3,7 +3,8 @@ __maintainer__ = "Pai-ju Chang"
 __email__ = "paiju@umich.edu"
 __status__ = "Development"
 
-# Code Description: This code creates new 
+# Code Description: This code creates a new 'yaml' collection and a new 'leaders' collection in 'followyourleaders_prod' database. Important to note is that each time these collections are created, the old ones (if they exist) are dropped.
+
 
 
 from pymongo import MongoClient
@@ -21,13 +22,15 @@ import requests
 
 # define class
 class followyourleaders(object):
-	def __init__(self):
-		self.a = 1
 
 
-	############################ for creating yaml collection (will be dropped after the leader collection is built) #############################
-
+	###################################################################    YAML CREATION    ###################################################################
+	
+	# function definition: creates 'yaml' collection in 'followyourleaders_prod' database
+	# source data: 	https://raw.githubusercontent.com/unitedstates/congress-legislators/master/legislators-current.yaml;
+	#				https://theunitedstates.io/congress-legislators/legislators-social-media.yaml
 	def create_yaml_collection(self):
+		
 		# reset yaml collection
 		print('>>> create_yaml_collection() starts!')
 		collection_yaml.drop()
@@ -56,9 +59,14 @@ class followyourleaders(object):
 		print('>>> create_yaml_collection() ends!')
 
 
-	############################# for creating leader collection and dropping yaml collection (source: yaml collection)#############################
+	###################################################################    LEADERS CREATION    ################################################################
 
+	# function definition: creates 'leaders' collection in 'followyourleaders_prod' database
+	# source data: 	'yaml' collection in 'followyourleaders_prod' database
+	#				https://twitter.com/ + yaml['social']['twitter'] + '/profile_image?size=original'
+	# QUESTIONS: why is 'yaml' collection dropped? Is this to save space in db?
 	def create_leaders_collection (self) :
+		
 		print('>>> create_leaders_collection() starts!')
 
 		# read from yamls collection
@@ -66,6 +74,7 @@ class followyourleaders(object):
 		collection_leader.drop()
 
 
+		# inserting data associated with each leader in appropriate format (see datamodel.md) to 'leaders' collection
 		for yaml in yamls:
 			# if this leader has used social media
 			if 'social' in yaml:
@@ -86,6 +95,7 @@ class followyourleaders(object):
 						else:
 							twitter_id = 'NA'
 
+						# request data from datasource
 						photo_url = requests.get('https://twitter.com/' + yaml['social']['twitter'] + '/profile_image?size=original').url
 
 						# form data structure by datamodel.md
@@ -103,7 +113,7 @@ class followyourleaders(object):
 
 
 
-	############################# for creating initial database #############################
+	#################################################################    INITIALIZING DB    ###################################################################
 	
 	def initial_database(self,show_number):
 
@@ -139,8 +149,8 @@ if __name__ == '__main__':
 	######################################### run here##########################################
 
 	fyldb = followyourleaders()
-	###################### When starting a new data base ########################################
-	fyldb.initial_database(show_number)
+	# ###################### When starting a new data base ########################################
+	# fyldb.initial_database(show_number)
 
 
 
