@@ -123,7 +123,7 @@ if __name__ == '__main__':
 	db = connection['followyourleaders_prod']
 
 	# connect collection
-	collection_yaml = collection['yaml']		#yaml collection
+	collection_yaml = db['yaml']		#yaml collection
 	collection_tweet = db['tweets--drop']		# tweets collection
 	collection_leader = db['leaders']		# leader collection
 	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
