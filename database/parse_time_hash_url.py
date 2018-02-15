@@ -183,14 +183,17 @@ class followyourleaders(object):
 			if time_item != None:
 
 				a = time_item['dates'].keys()
-				print(type(a))
-				print(a)
+				
+				lst_keys = [k for k in time_item['dates'].keys()]
+				print(type(lst_keys))
+				print(lst_keys)
+
 
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
-				a.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
-				#print(a)
+				lst_keys.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
+				
 
-				for u in a:
+				for u in lst_keys:
 
 					sublist = time_item['dates'][u]
 					temp = [(key,value['created_at']) for key,value in sublist.items()]
