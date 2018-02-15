@@ -161,56 +161,56 @@ class followyourleaders(object):
 
 
 	#############for updating "recent_tweets", "followers", "friends", "description" in leader collection (by timeline, tweets, leaders collections)#############################
-		def update_leaders(self,num_tweets_shown):
-			print('>>> update_leaders(num_tweets_shown) starts!')
+	def update_leaders(self,num_tweets_shown):
+		print('>>> update_leaders(num_tweets_shown) starts!')
 
-			# load data from leader collection
-			leaders = collection_leader.find()
-
-
-			for leader in leaders:
-
-				date_index = []
-				text_index = []
-
-				# check whether we have his/her Twitter data
-				time_item = collection_timeline.find_one({"bioguide" : leader['bioguide']})
+		# load data from leader collection
+		leaders = collection_leader.find()
 
 
-				# if we have this leader's data
-				if time_item != None:
+		for leader in leaders:
 
-					a = time_item['dates'].keys()
+			date_index = []
+			text_index = []
 
-					# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
-					a.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
-					#print(a)
+			# check whether we have his/her Twitter data
+			time_item = collection_timeline.find_one({"bioguide" : leader['bioguide']})
 
-					for u in a:
 
-						sublist = time_item['dates'][u]
-						temp = [(key,value['created_at']) for key,value in sublist.items()]
+			# if we have this leader's data
+			if time_item != None:
 
-						temp.sort(key = lambda x: time.mktime(time.strptime(x[1],"%Y-%m-%d %H:%M:%S")),reverse=True)
+				a = time_item['dates'].keys()
 
-						# decide #twitter we need to insert
-						add_min = min(len(sublist),num_tweets_shown)
-						date_index = date_index+temp[0:add_min]
+				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
+				a.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
+				#print(a)
 
-						# update num_tweets_shown
-						num_tweets_shown = add_min
-						if num_tweets_shown <= 0:
-							break
+				for u in a:
 
-					last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
-					followers = last_tweet['user']['followers_count']
-					friends = last_tweet['user']['friends_count']
-					description = last_tweet['user']['description']
+					sublist = time_item['dates'][u]
+					temp = [(key,value['created_at']) for key,value in sublist.items()]
 
-					# update user collection
-					collection_leader.update( { '_id': leader['_id'] },{ '$set': { "recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description} } )
+					temp.sort(key = lambda x: time.mktime(time.strptime(x[1],"%Y-%m-%d %H:%M:%S")),reverse=True)
 
-			print('>>> update_leaders(num_tweets_shown) ends!')
+					# decide #twitter we need to insert
+					add_min = min(len(sublist),num_tweets_shown)
+					date_index = date_index+temp[0:add_min]
+
+					# update num_tweets_shown
+					num_tweets_shown = add_min
+					if num_tweets_shown <= 0:
+						break
+
+				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
+				followers = last_tweet['user']['followers_count']
+				friends = last_tweet['user']['friends_count']
+				description = last_tweet['user']['description']
+
+				# update user collection
+				collection_leader.update( { '_id': leader['_id'] },{ '$set': { "recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description} } )
+
+		print('>>> update_leaders(num_tweets_shown) ends!')
 
 
 
