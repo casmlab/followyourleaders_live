@@ -160,6 +160,7 @@ class followyourleaders(object):
 		print('>>> create_url_collection(self, tweets) ends!')
 
 
+
 	#############for updating "recent_tweets", "followers", "friends", "description" in leader collection (by timeline, tweets, leaders collections)#############################
 	def update_leaders(self,num_tweets_shown):
 		print('>>> update_leaders(num_tweets_shown) starts!')
@@ -175,8 +176,6 @@ class followyourleaders(object):
 
 			# check whether we have his/her Twitter data
 			time_item = collection_timeline.find_one({"bioguide" : leader['bioguide']})
-			print(time_item)
-			print("-------")
 
 
 			# if we have this leader's data
@@ -185,9 +184,6 @@ class followyourleaders(object):
 				a = time_item['dates'].keys()
 				
 				lst_keys = [k for k in time_item['dates'].keys()]
-				print(type(lst_keys))
-				print(lst_keys)
-
 
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
 				lst_keys.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
