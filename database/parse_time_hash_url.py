@@ -58,10 +58,10 @@ class followyourleaders(object):
 				leader_timeline = collection_timeline.find_one({"bioguide" : leader['bioguide']})
 
 				# define update location
-				keyidx = "dates."+post_date+"."+tweet['id_str']
+				keyidx = "dates." + post_date + "." + tweet['id_str']
 
 				# define inserting/updating item format
-				url = 'https://twitter.com/'+tweet['user']['screen_name']+'/status/'+tweet['id_str']
+				url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
 				item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
 				'url':url}
 
@@ -69,7 +69,7 @@ class followyourleaders(object):
 				# if we dont have the leader's information in timeline collection, insert one for him/her
 				if  leader_timeline == None:
 
-					print('start inserting '+leader['bioguide'] +' into timelines collection')
+					print('start inserting ' + leader['bioguide'] + ' into timelines collection')
 					dic={}
 					dic['twitter_name']=tweet['user']['screen_name']
 					dic['twitter_id']=tweet['user']['id_str']
@@ -129,7 +129,7 @@ class followyourleaders(object):
 				for a in tweet['entities']['hashtags']:
 
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
-					collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx+'.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
+					collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx + '.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
 
 
 		print('>>> create_hashtags_collection(self, tweets) ends!')
@@ -235,7 +235,7 @@ class followyourleaders(object):
 
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
-					date_index = date_index+temp[0:add_min]
+					date_index = date_index + temp[0:add_min]
 
 					# update num_tweets_shown
 					num_tweets_shown = add_min
@@ -299,7 +299,7 @@ if __name__ == '__main__':
 	# initialize class instance
 	fyldb = followyourleaders()
 	# run functions in class
-	fyldb.initialize_database(show_number)
+	fyldb.initialize_database(num_tweets_shown)
 
 
 
