@@ -206,7 +206,7 @@ class followyourleaders(object):
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
-    
+				
 				# update user collection
 				collection_leader.update( { '_id': leader['_id'] },{ '$set': { "recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description} } )
 
@@ -215,7 +215,7 @@ class followyourleaders(object):
 
 
 	############################# for creating initial database #############################
-	
+
 	def initial_database(self,num_tweets_shown):
 
 		# self.create_timeline_collection(collection_tweet.find())
