@@ -206,11 +206,11 @@ class followyourleaders(object):
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
-				
+
 				# update user collection
 				collection_leader.update( { '_id': leader['_id'] },{ '$set': { "recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description} } )
 
-		print('>>> update_leaders(num_tweets_shown) ends!')
+			print('>>> update_leaders(num_tweets_shown) ends!')
 
 
 
