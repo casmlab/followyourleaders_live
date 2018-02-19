@@ -27,6 +27,7 @@
     position: absolute;
     left: 50%;
     margin-top:10px;
+    transform: translate(-50%,0);
 }
 .scroller:hover {
     background: #262626;
@@ -36,6 +37,39 @@
 .fullscreen {
     position:relative;
 }
+
+.bioContainer {
+    text-align:center;
+    padding:30px;
+}
+
+.leaderbio {
+    width:80%;
+    margin-left:10%;
+    text-align:center;
+}
+
+.leaderbio img {
+    max-width: 450px
+}
+
+.leaderTable {
+ font-size:20px;
+ margin-top:30px;
+ width: 100%; 
+ text-align:left;
+}
+.leaderTable tr {
+     border-bottom:1pt solid black;
+}
+.leaderTable tr td:first-child {
+  width: 50%
+  font-weight:bold;
+}
+.leaderTable tr td:nth-child(2) {
+  width: 50%
+}
+
 </style>
 <body>
     <div class="wrap">
@@ -50,8 +84,9 @@
                         </div>
                     </div>
 
-                    <div><h2>Leader 1</h2></div>
-
+                    <div>
+                        <h2>Leader 1</h2>
+                    </div>
                     <div class='box2'>
                         <label for="party_categories"><b>Party: </b></label>
                         <select name="party_categories" id="party_categories" >
@@ -73,10 +108,9 @@
                         <input type='text' title='Tags' value=" " id='tags' class='tags'/>
                     </div>
                   
-
-
-                    <div class='sec_leader'><h2>Leader 2</h2></div>
-                    
+                    <div class='sec_leader'>
+                        <h2>Leader 2</h2>
+                    </div>
                     <div class='box2 sec_leader'>
                         <label for="party_categories"><b>Party: </b></label>
                         <select name="party_categories" id="party_categories_sec" style="width:155px;">
@@ -116,21 +150,168 @@
             </div>
 
             <div id='plot' class='section'>
+                <!-- bio -->
+                <div class="graph-wrapper fullscreen text-capitalize">
+                    <!-- if compare mode -->
+                    {% if ((basic2 is defined) and ("name" in basic2) )%}
+                    <div  class='row bioContainer' >
+                        {% if ((basic0['party']|string() == 'Republican') and (basic2['party']|string() == 'Democrat'))%}
+
+                            <div class='col-md-6' style='text-align:center'>
+                                    <div class='leaderbio'>
+                                        <img style='width:100%' src="{{basic2['photo_url']}}" alt="img0" class="img-thumbnail">
+                                        <h2 class='text-capitalize' >{{basic2['chamber']}}. {{basic2['name']}}</h2>
+                                        <a href="#">10 most recent tweets</a>
+                                        <table class='leaderTable'>
+                                            <tr>
+                                                <td>twitter account</td>
+                                                <td>  <a href="https://twitter.com/{{basic2['twitter_name']}}"">@{{basic2['twitter_name']}}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chamber</td>
+                                                <td>{{basic2['chamber']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Party</td>
+                                                <td>{{basic2['party']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>State</td>
+                                                <td>{{basic2['state']}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class='col-md-6' style='text-align:center'>
+                                    <div class='leaderbio'>
+                                        <img style='width:100%' src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
+                                        <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                        <a href="#">10 most recent tweets</a>
+                                        <table class='leaderTable'>
+                                            <tr>
+                                                <td>twitter account</td>
+                                                <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chamber</td>
+                                                <td>{{basic0['chamber']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Party</td>
+                                                <td>{{basic0['party']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>State</td>
+                                                <td>{{basic0['state']}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>       
+                            </div>
+
+                            {% else %}
+
+                                <div class='col-md-6' style='text-align:center'>
+                                    <div class='leaderbio'>
+                                        <img style='width:100%' src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
+                                        <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                        <a href="#">10 most recent tweets</a>
+                                        <table class='leaderTable'>
+                                            <tr>
+                                                <td>twitter account</td>
+                                                <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chamber</td>
+                                                <td>{{basic0['chamber']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Party</td>
+                                                <td>{{basic0['party']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>State</td>
+                                                <td>{{basic0['state']}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class='col-md-6' style='text-align:center'>
+                                    <div class='leaderbio'>
+                                        <img style='width:100%' src="{{basic2['photo_url']}}" alt="img0" class="img-thumbnail">
+                                        <h2 class='text-capitalize' >{{basic2['chamber']}}. {{basic2['name']}}</h2>
+                                        <a href="#">10 most recent tweets</a>
+                                        <table class='leaderTable'>
+                                            <tr>
+                                                <td>twitter account</td>
+                                                <td>  <a href="https://twitter.com/{{basic2['twitter_name']}}"">@{{basic2['twitter_name']}}</a></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Chamber</td>
+                                                <td>{{basic2['chamber']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Party</td>
+                                                <td>{{basic2['party']}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>State</td>
+                                                <td>{{basic2['state']}}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>       
+                            </div>
+                        {% endif %}
+                        <!-- Single mode -->
+                        {% else %}
+                        <div  class='row bioContainer'>
+                                <div  class='col-lg-6' style=' display:inline-block; vertical-align: middle'>
+                                    <img style='width:100%; max-width: 550px' src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
+                                </div>
+                                <div class='col-lg-6' style='display:inline-block;vertical-align: top;padding:30px'>
+                                    <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                    <table class='leaderTable'>
+                                        <tr>
+                                            <td>twitter account</td>
+                                            <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Chamber</td>
+                                            <td>{{basic0['chamber']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Party</td>
+                                            <td>{{basic0['party']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>State</td>
+                                            <td>{{basic0['state']}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                        {% endif %}
+                         <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
+                        
+                    </div>
+                    
+
+                 <!-- time series -->
                 <div class="graph-wrapper fullscreen">
                     <div id="graphic"></div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-
+                <!-- hash -->
                 <div class="graph-wrapper fullscreen">
                     <div id="hash_chart0"></div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-         
-
+                <!-- word clouds -->
                 <div class="graph-wrapper fullscreen" >
                     <div id="wcloud"></div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -313,12 +494,10 @@
         }
 
         if (leader1['party']=="Republican" & leader2['party']=="Democrat") {
-            //http://0.0.0.0:5000/leaders?leader0=K000362&leader2=W000805&compare=T
             user_color=[color_panal['Repu1'],color_panal['Demo1']];
         }
 
         if (leader1['party']=="Democrat" & leader2['party']=="Republican") {
-            //http://0.0.0.0:5000/leaders?leader0=K000362&leader2=W000805&compare=T
             user_color=[color_panal['Repu1'],color_panal['Demo1']];
             // switch
             [leader1,leader2] = [leader2,leader1];
