@@ -60,7 +60,7 @@ class followyourleaders(object):
 
 		# insert into database
 		for dct in lst_legislators:
-			if dct not in collection_yaml:
+			if dct not in collection_yaml.find():
 				collection_yaml.insert(dct)
 		print('>>> create_yaml_collection() ends!')
 
