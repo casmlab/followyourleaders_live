@@ -113,7 +113,7 @@ class followyourleaders(object):
 
 						# form data structure by datamodel.md
 
-						for leader in collection_leader:
+						for leader in collection_leader.find():
 						# insert into database
 							if twitter_id in leader:
 								leader = {'current':1,'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
