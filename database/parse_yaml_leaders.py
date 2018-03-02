@@ -123,6 +123,7 @@ class followyourleaders(object):
 								collection_leader.update(leader_dict)
 
 						for leader in collection_leader.find():
+							print(leader)
 							if leader['current'] != 1:
 								leader['current'] = 0
 								collection_leader.update(leader['current'])
