@@ -123,7 +123,7 @@ class followyourleaders(object):
 						for leader in collection_leader.find():
 							if leader['current'] != 1:
 								leader['current'] = 0
-								collection_leader.update(leader)
+								collection_leader.update(leader['current'])
 
 
 		print('>>> create_leaders_collection() ends!')
