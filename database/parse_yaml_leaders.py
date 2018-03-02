@@ -122,7 +122,7 @@ class followyourleaders(object):
 						for leader in collection_leader.find():
 							leader['current'] = 0
 							print(leader)
-							if twitter_id in leader:
+							if twitter_id == leader['twitter_id']:
 								collection_leader.update(leader_dict)
 							print(leader)
 
