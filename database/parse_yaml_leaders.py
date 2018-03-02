@@ -1,6 +1,6 @@
 __author__ = "Pai-ju Chang, Libby Hemphill"
-__maintainer__ = "Pai-ju Chang"
-__email__ = "paiju@umich.edu"
+__maintainer__ = "Angela Schöpke"
+__email__ = "aschopke@umich.edu"
 __status__ = "Development"
 
 # CODE DESCRIPTION: This code creates a new 'yaml' collection and a new 'leaders' collection in 'followyourleaders_prod' database. 
@@ -38,7 +38,7 @@ class followyourleaders(object):
 		
 		# reset yaml collection
 		print('>>> create_yaml_collection() starts!')
-		collection_yaml.drop()
+
 
 		# read yaml files
 		print('>>> reading yaml files')
@@ -60,7 +60,8 @@ class followyourleaders(object):
 
 		# insert into database
 		for dct in lst_legislators:
-			collection_yaml.insert(dct)
+			if dct not in collection_yaml:
+				collection_yaml.insert(dct)
 		print('>>> create_yaml_collection() ends!')
 
 
@@ -81,10 +82,10 @@ class followyourleaders(object):
 
 		# read from yamls collection
 		yamls = collection_yaml.find()
-		collection_leader.drop()
 
 
 		# inserting data associated with each leader in appropriate format (see datamodel.md) to 'leaders' collection
+		
 		for yaml in yamls:
 			# if this leader has used social media
 			if 'social' in yaml:
@@ -93,32 +94,37 @@ class followyourleaders(object):
 					# if this leader is in yamls.
 					if 'bio' in yaml:
 
-						if 'religion' in yaml['bio']:
-							religion = yaml['bio']['religion']
-						else:
-							religion = 'Unknown'
-						state = yaml['terms'][0]['state']
-						chamber =  yaml['terms'][0]['type']
-						party = yaml['terms'][0]['party']
 						if 'twitter_id' in yaml['social']:
 							twitter_id = str(yaml['social']['twitter_id'])
 						else:
 							twitter_id = 'NA'
+						
+						state = yaml['terms'][0]['state']
+						chamber =  yaml['terms'][0]['type']
+						party = yaml['terms'][0]['party']
+						
+						if 'religion' in yaml['bio']:
+							religion = yaml['bio']['religion']
+						else:
+							religion = 'Unknown'
 
 						# request data from datasource
 						photo_url = requests.get('https://twitter.com/' + yaml['social']['twitter'] + '/profile_image?size=original').url
 
 						# form data structure by datamodel.md
-						leader_dict = {'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
-						,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
-						 'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
 
+						for leader in collection_leader:
 						# insert into database
-						collection_leader.insert(leader_dict)
+							if twitter_id in leader:
+								leader = {'current':1,'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
+								,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
+								'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
+								collection_leader.update_one(leader)
+							else:
+								leader['current'] = 0
+								collection_leader.update_one(leader)
 
 
-		# drop  yaml collection
-		# collection_yaml.drop()
 		print('>>> create_leaders_collection() ends!')
 
 
