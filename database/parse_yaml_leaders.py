@@ -114,19 +114,23 @@ class followyourleaders(object):
 						# form data structure by datamodel.md
 
 						# insert into database
+
 						leader_dict = {'current':1,'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
 						,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
 						'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
 						
 						for leader in collection_leader.find():
+							leader['current'] = 0
+							print(leader)
 							if twitter_id in leader:
 								collection_leader.update(leader_dict)
-
-						for leader in collection_leader.find():
 							print(leader)
-							if leader['current'] != 1:
-								leader['current'] = 0
-								collection_leader.update(leader['current'])
+
+						# for leader in collection_leader.find():
+						# 	print(leader)
+						# 	if leader['current'] != 1:
+						# 		leader['current'] = 0
+						# 		collection_leader.update(leader['current'])
 
 
 		print('>>> create_leaders_collection() ends!')
