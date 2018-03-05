@@ -1,7 +1,9 @@
 function drawWordCloud(type, data1, data2, name1, name2) {
 
-    var word_count = {},
-        word_count2 = {};
+    // change slide  position
+$('#slide3').css('top', margin.top)
+$('#slide3').css('height', height)
+
 
     var word_entries = [],
         word_entries2 = [];
@@ -9,18 +11,19 @@ function drawWordCloud(type, data1, data2, name1, name2) {
     // if user1 have hash data
     if (data1.length > 0) {
         for (i = 0; i < data1.length; i++) {
-            word_count[data1[i].label] = data1[i].value
+            //word_count[data1[i].label] = data1[i].value
+            item={'key':data1[i].label,'value':data1[i].value,'data':data1[i].data}
+            word_entries.push(item)
         }
-        word_entries = d3.entries(word_count);
+
     }
 
     // if user 2 have hash data
     if (data2.length > 0) {
         for (i = 0; i < data2.length; i++) {
-            word_count2[data2[i].label] = data2[i].value
+            item={'key':data2[i].label,'value':data2[i].value,'data':data2[i].data}
+            word_entries2.push(item)
         }
-
-        word_entries2 = d3.entries(word_count2);
     }
 
     // find the maximun
@@ -32,7 +35,7 @@ function drawWordCloud(type, data1, data2, name1, name2) {
         .append("svg")
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
-        .style({ 'border': '1px dotted #ccc' });
+        // .style({ 'border': '1px dotted #ccc' });
 
     var s = svg.append("g")
         .append("g")
@@ -97,6 +100,7 @@ function drawWordCloud(type, data1, data2, name1, name2) {
         .rotate(function() { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
         .on("end", function(d) { return draw(d, s, wc1_postion, xScale) })
+        //.on("click", function(d) { console.log(d)})
         .start();
 
     // draw second one
@@ -108,6 +112,7 @@ function drawWordCloud(type, data1, data2, name1, name2) {
         .rotate(function() { return ~~(Math.random() * 2) * 90; })
         .font("Impact")
         .on("end", function(d) { return draw2(d, s, wc2_postion, xScale) })
+        //.on("click", function(d) { console.log(d)})
         .start();
     if (type == 'compare') {
         if (data2.length <= 0) {
@@ -149,24 +154,13 @@ function drawWordCloud(type, data1, data2, name1, name2) {
     // add lengend
 
     var legendlist = name1.concat(name2)
-
-    var dataL = 0;
-    var offset = 120;
-
     var legend_g = svg.selectAll('.legends4')
         .data(legendlist)
         .enter().append('g')
 
         .attr("class", "legends4")
         .attr("transform", function(d, i) {
-            if (i === 0) {
-                dataL = d.length + offset
-                return "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")"
-            } else {
-                var newdataL = dataL
-                dataL += d.length + offset
-                return "translate(" + (width - 100 * legendlist.length + newdataL) + "," + (margin.top / 2) + ")"
-            }
+            return i == 0 ? "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")" :  "translate(" + (100 * legendlist.length) + "," + (margin.top / 2) + ")"
         });
 
     legend_g.append('rect')
@@ -205,8 +199,31 @@ function drawWordCloud(type, data1, data2, name1, name2) {
             .style("font-family", "Impact")
             .style("fill", function(d, i) { return fill1[i % fill1.length]; })
             .attr("text-anchor", "middle")
+            .attr("class", "wc_text")
             .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
-            .text(function(d) { return d.key; });
+            .text(function(d) { return d.key; })
+            .on("click", function(d) { 
+
+                 d3.select('#slide3').selectAll('.description').remove()
+
+                 for (key in d.data) {
+                    //d.data.key.text
+                    d3.select('#slide3').append("p")
+                     .attr("class", "description")
+                     .html(function() {
+                        return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + d.data[key]['text']+"<br><a hred='#'> View Live</a>"
+                                    });
+                 }
+
+                  if (d3.selectAll(".wc_active")[0].length == 0) {
+                    slideShow()
+                  } else {
+                        firstF().then(secondF())
+                        };
+                 d3.selectAll(".wc_active").classed('wc_active', false);
+                 d3.select(this).classed('wc_active', true)
+
+            });
     }
 
 
@@ -224,8 +241,54 @@ function drawWordCloud(type, data1, data2, name1, name2) {
             .style("font-family", "Impact")
             .style("fill", function(d, i) { return fill2[i % fill2.length]; })
             .attr("text-anchor", "middle")
+            .attr("class", "wc_text")
             .attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")"; })
-            .text(function(d) { return d.key; });
+            .text(function(d) { return d.key; })
+            .on("click", function(d) { 
+
+                 d3.select('#slide3').selectAll('.description').remove()
+
+                 for (key in d.data) {
+                    //d.data.key.text
+                    d3.select('#slide3').append("p")
+                     .attr("class", "description")
+                     .html(function() {
+                        return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + d.data[key]['text']+"<br><a hred='#'> View Live</a>"
+                                    });
+                 }
+
+                  if (d3.selectAll(".wc_active")[0].length == 0) {
+                    slideShow()
+                  } else {
+                        firstF().then(secondF())
+                        };
+                 d3.selectAll(".wc_active").classed('wc_active', false);
+                 d3.select(this).classed('wc_active', true)
+
+            });
     }
+
+      /// slide function //
+    function slideShow() {
+        $('#slide3').css('right', '5%')
+        $('#slide3').css('opacity', '1')
+    };
+
+    function slideHide() {
+        d3.selectAll(".bar_active").classed('bar_active', false);
+        $('#slide3').css('right', '-50%')
+        $('#slide3').css('opacity', '0')
+        // $('#slide1').css('opacity', "0")
+        // $('.slide').css('box-shadow', "-31px 8px 180px 2px rgba(14, 16, 33, 0.5)")
+    };
+
+    function firstF() {
+        var deferred = new $.Deferred();
+        slideHide()
+        return deferred.promise();
+    };
+
+    function secondF() { setTimeout(function() { slideShow(); }, 800); } ;
+
     d3.layout.cloud().stop();
 }

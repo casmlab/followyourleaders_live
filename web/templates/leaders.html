@@ -11,126 +11,357 @@
 
 .scroller {
     display:block;
-    width: 50px;
-    height:50px;
-    line-height:50px;
-    border: 2px solid #f5f5f5;
+    width: 60px;
+    height:60px;
+    line-height:60px;
+   /* border: 2px solid #f5f5f5;*/
     border-radius: 50%;
     color:black;
     text-align:center;
     text-decoration:none;
     background: white;
     box-shadow: 0 0 3px gray;
-    font-size:10px;
+    font-size:15px;
     font-weight:bold;
     float:left;
     position: absolute;
     left: 50%;
     margin-top:10px;
+    transform: translate(-50%,-50%);
+    bottom: 0
 }
 .scroller:hover {
-    background: #262626;
+    background: gray;
     color:white;
+    text-decoration:none;
 }
 
 .fullscreen {
     position:relative;
+    overflow:hidden;
 }
+
+.bioContainer {
+    text-align:center;
+    margin: 0px 30px;
+}
+
+.leaderbio img {
+    width:100%;
+    max-width: 450px;
+    height: auto;
+}
+
+.leaderTable {
+ font-size:20px;
+ margin-top:30px;
+ width: 100%; 
+ text-align:left;
+}
+.leaderTable tr {
+     border-bottom:1pt solid black;
+}
+.leaderTable tr td:first-child {
+  width: 50%
+  font-weight:bold;
+}
+.leaderTable tr td:nth-child(2) {
+  width: 50%
+}
+
+.filter_table {
+    margin:20px;
+    font-size:18px;
+}
+
+.filter_table select {
+    min-width:100px;
+    width:100%;
+}
+
+.filter_table td {
+    padding:5px 1px;
+}
+
+.graph-wrapper {
+    margin:0px;
+}
+
+.fullscreen {
+    border-bottom: 1px solid #ccc;
+}
+
+.wrap {
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.slide_header_table {
+    width:100%;
+    border-bottom: 1px solid #aaa;
+    margin-bottom:20px;
+}
+
 </style>
 <body>
     <div class="wrap">
         <div id="allplot">
+
+        <div id='filter_btm_div'>
+            <input type="button" id="filter_btm" value="Filter">
+        </div>
+
+
             <div id="search" class='searchCompare' action="" name="search">
-               
-                <div style="margin-left:10px">
-                    <div class='box2'>
-                        <div id="toggle_chart">
-                            <b>Chart Type:</b>
-                            <input type="checkbox" data-toggle="toggle" data-size="small" data-on="Compare" data-off="View" class="cd-filter-trigger" id='compare_choice'>
-                        </div>
-                    </div>
 
-                    <div><h2>Leader 1</h2></div>
+                <div style="margin:10px">
+                    <table style="width:100%">
+                        <tr>
+                        <td><h2>Show Details</h2></td>
+                        <td align="right"><input type="button" id="back_btm" value="back"></td>
+                        </tr>
+                    </table>
 
-                    <div class='box2'>
-                        <label for="party_categories"><b>Party: </b></label>
-                        <select name="party_categories" id="party_categories" >
-                        </select>
-                    </div>
-                    <div class='box2'>
-                        <label for="chamber_categories"><b>Chamber: </b></label>
-                        <select name="chamber_categories" id="chamber_categories">
-                        </select>
-                    </div>
-                    <div class='box2'>
-                        <b>Name: </b>
-                        <select name="leader_select" id="leader_select" class="leader-tittle">
-                            <option value='default' >Select Leader ...</option>
-                        </select>
-                    </div>
-                    <div class='box2'>
-                        <b>Search:</b>
-                        <input type='text' title='Tags' value=" " id='tags' class='tags'/>
-                    </div>
-                  
+                    <table class='filter_table'>
+                        <tr>
+                            <td><label for="party_categories"><b>Party: </b></label></td>
+                            <td><select name="party_categories" id="party_categories"  align="right" </select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="chamber_categories"><b>Chamber: </b></label></td>
+                            <td><select name="chamber_categories" id="chamber_categories"  align="right"></select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="leader_select"><b>Name: </b></label></td>
+                            <td><select name="leader_select" id="leader_select" class="leader-tittle"  align="right">
+                                <option value='default'>Select Leader ...</option>
+                            </select></td>
+                        </tr>
 
 
-                    <div class='sec_leader'><h2>Leader 2</h2></div>
+                    </table>
                     
-                    <div class='box2 sec_leader'>
-                        <label for="party_categories"><b>Party: </b></label>
-                        <select name="party_categories" id="party_categories_sec" style="width:155px;">
-                        </select>
-                    </div>
-                    <div class='box2 sec_leader'>
-                        <label for="chamber_categories"><b>Chamber: </b></label>
-                        <select name="chamber_categories" id="chamber_categories_sec" style="width:155px;">
-                        </select>
-                    </div>
-                    <div class='box2 sec_leader'>
-                        <b>Name: </b>
-                        <select name="leader_select" id="leader_select_sec" class="leader-tittle" style="width:155px;">
-                            <option value='default'>Select Leader ...</option>
-                        </select>
-                    </div>
-                    <div class='box2 sec_leader'>
-                        <b>Search:</b>
-                        <input type='text' title='Tags' value=" " id='tags_sec' class='tags' style="width:155px;" />
-                    </div>
-
-                    <div class='box2'>
-                        <b>Date start:</b>
-                        <input type="text" id="datestart">
-                    </div>
-
-                    <div class='box2'>
-                        <b>Date end:</b>
-                        <input type="text" id="dateend">
-                    </div>
+                    <table class='filter_table'>
+                        <tr id="toggle_chart">
+                                <td><b>Compare with another leader?</b></td>
+                                <td><input type="checkbox" data-toggle="toggle" data-size="small" data-on="Yes" data-off="No" class="cd-filter-trigger" id='compare_choice'></td>
+                        </tr>
+                    </table>
 
 
-                    <div class='box2'>
+                    <table class='filter_table sec_leader'>
+                        <tr>
+                            <td> <label for="party_categories_sec"><b>Party: </b></label></td>
+                            <td><select name="party_categories_sec" id="party_categories_sec"></select></td>
+                        </tr>
+                        <tr>
+                            <td> <label for="chamber_categories_sec"><b>Chamber: </b></label></td>
+                            <td> <select name="chamber_categories" id="chamber_categories_sec"></select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="leader_select_sec"><b>Name: </b></label></td>
+                            <td><select name="leader_select_sec" id="leader_select_sec" class="leader-tittle"  align="right">
+                                <option value='default'>Select Leader ...</option>
+                            </select></td>
+                        </tr>
+                    </table>
+
+
+
+                    <div class='filter_table'>
                         <input type="button" id="submit" value="submit">
                     </div>
                 </div>
             </div>
-
             <div id='plot' class='section'>
+                <!-- bio -->
+                <div class="graph-wrapper fullscreen text-capitalize">
+                    <!-- if compare mode -->
+                    {% if ((basic2 is defined) and ("name" in basic2) )%}
+                    <div  class='row bioContainer' >
+                        {% if ((basic2['party']|string() == 'Republican') and (basic0['party']|string() == 'Democrat'))%}
+                        <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
+                            <div class='leaderbio'>
+                                <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
+                                <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                <a href="#">10 most recent tweets</a>
+                                <table class='leaderTable'>
+                                    <tr>
+                                        <td>twitter account</td>
+                                        <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamber</td>
+                                        <td>{{basic0['chamber']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Party</td>
+                                        <td>{{basic0['party']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State</td>
+                                        <td>{{basic0['state']}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
+                            <div class='leaderbio'>
+                                <img src="{{basic2['photo_url']}}" alt="img0" class="img-thumbnail">
+                                <h2 class='text-capitalize' >{{basic2['chamber']}}. {{basic2['name']}}</h2>
+                                <a href="#">10 most recent tweets</a>
+                                <table class='leaderTable'>
+                                    <tr>
+                                        <td>twitter account</td>
+                                        <td>  <a href="https://twitter.com/{{basic2['twitter_name']}}"">@{{basic2['twitter_name']}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamber</td>
+                                        <td>{{basic2['chamber']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Party</td>
+                                        <td>{{basic2['party']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State</td>
+                                        <td>{{basic2['state']}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>     
+                       
+                        {% else %}
+
+                        <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
+                            <div class='leaderbio'>
+                                <img src="{{basic2['photo_url']}}" alt="img0" class="img-thumbnail">
+                                <h2 class='text-capitalize' >{{basic2['chamber']}}. {{basic2['name']}}</h2>
+                                <a href="#">10 most recent tweets</a>
+                                <table class='leaderTable'>
+                                    <tr>
+                                        <td>twitter account</td>
+                                        <td>  <a href="https://twitter.com/{{basic2['twitter_name']}}"">@{{basic2['twitter_name']}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamber</td>
+                                        <td>{{basic2['chamber']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Party</td>
+                                        <td>{{basic2['party']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State</td>
+                                        <td>{{basic2['state']}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
+                            <div class='leaderbio'>
+                                <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
+                                <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                <a href="#">10 most recent tweets</a>
+                                <table class='leaderTable'>
+                                    <tr>
+                                        <td>twitter account</td>
+                                        <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamber</td>
+                                        <td>{{basic0['chamber']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Party</td>
+                                        <td>{{basic0['party']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State</td>
+                                        <td>{{basic0['state']}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>  
+                        {% endif %}     
+                    </div>
+                    
+                    <!-- Single mode -->
+                    {% else %}
+                    <div class='row bioContainer'>
+                        <div class='leaderbio'>
+                            <div  class='col-lg-6' style=' vertical-align: middle;margin-bottom: 20px;'>
+                                <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
+                            </div>
+                            <div class='col-lg-6' style='vertical-align: top;padding:30px'>
+                                <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                <table class='leaderTable'>
+                                    <tr>
+                                        <td>twitter account</td>
+                                        <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamber</td>
+                                        <td>{{basic0['chamber']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Party</td>
+                                        <td>{{basic0['party']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State</td>
+                                        <td>{{basic0['state']}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% endif %}
+                    <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>        
+                </div>
+                
+                 <!-- time series -->
                 <div class="graph-wrapper fullscreen">
+                    <center><h1> Title 1</h1></center>
                     <div id="graphic"></div>
+                    <div id='slide1' class='slide'>
+                        <table class='slide_header_table' id='slide_header_table_1'>
+                            <tr>
+                                <td align="left"><input type="button" id="close_btn_1" class='close_btn' value="X"></td>
+                                <td align="center" id='slide_title_1'><h2> Tweets Detail </h2></td>
+                            </tr>
+                        </table>
+                    </div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-
+                <!-- hash -->
                 <div class="graph-wrapper fullscreen">
+                    <center><h1> Title 2</h1></center>
                     <div id="hash_chart0"></div>
+                    <div id='slide2' class='slide'>
+                        <table class='slide_header_table' id='slide_header_table_2'>
+                            <tr>
+                                <td align="left"><input type="button" id="close_btn_2" class='close_btn' value="X"></td>
+                                <td align="center" id='slide_title_2'><h2> Tweets Detail </h2></td>
+                            </tr>
+                        </table>
+                    </div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-         
-
+                <!-- word clouds -->
                 <div class="graph-wrapper fullscreen" >
+                    <center><h1> Title 3</h1></center>
                     <div id="wcloud"></div>
+                    <div id='slide3' class='slide'>
+                        <table class='slide_header_table' id='slide_header_table_3'>
+                            <tr>
+                                <td align="left"><input type="button" id="close_btn_3" class='close_btn' value="X"></td>
+                                <td align="center" id='slide_title_3'><h2> Tweets Detail </h2></td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -155,10 +386,10 @@
     </footer>
 
     <!-- load drawing  function js files -->
-    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=1aa;;a22;;8"></script>
-    <script type="text/javascript" src="/static/drawBar.js?ver=ssssssdssssdsss8"></script>
+    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=ssssssssssddds"></script>
+    <script type="text/javascript" src="/static/drawBar.js?ver=sssssssssss"></script>
     <script type="text/javascript" src="/static/colorbrewer.min.js?ver=sdssss8"></script>
-    <script type="text/javascript" src="/static/drawWordCloud.js?ver=;01sssss2s2017"></script>
+    <script type="text/javascript" src="/static/drawWordCloud.js?ver=ssssssss1s7"></script>
     <script type="text/javascript" src="/static/dataFormate.js?ver=012s2ddsss017"></script>
 
     <!-- making drop down file -->
@@ -168,20 +399,25 @@
     
     ////////////////////////////////// Load data//////////////////////////////////
     //https://stackoverflow.com/questions/37447343/d3-js-starting-animations-when-a-section-is-in-view
-    $( "#datestart" ).datepicker();
-    $( "#dateend" ).datepicker();
+    //$( "#datestart" ).datepicker();
+    //$( "#dateend" ).datepicker();
 
-    // window.innerWidth 
-    //https://stackoverflow.com/questions/2474009/browser-size-width-and-height
-    // header height=50, footer height =119
+    
+    // define height for each page
+    $(".fullscreen").each(function(){
+        if ($(this).height()<window.innerHeight-170) {
+            $(this).css("height",window.innerHeight-170)
+        } else {
+            $(this).css("height", $(this).height()+120)
+        }
+    });
 
-    $('.fullscreen').css('height',window.innerHeight-100)
 
     // temp parameter
     let searchParams = new URLSearchParams(window.location.search)
     var compare=searchParams.get('compare')=='T'?true:false;
 
-    // color panal:
+    // define color panal:
     color_panal={
         'Demo1': {
             'main':'#039ADA',
@@ -205,6 +441,8 @@
         }
     };
 
+    /// function to capitalize the string
+    function capitalizeFirstLetter(string) {return string.charAt(0).toUpperCase() + string.slice(1);}
     
     // data for making dd
     all_filter={{all_name_id|tojson}}
@@ -283,11 +521,20 @@
         
     } );
 
+    $('#filter_btm').click(function() { $('#search').css('transform','translateX(0)')})
+    $('#back_btm').click(function() { $('#search').css('transform','translateX(-100%)')})
+    // close btns listener
+    $('.close_btn').click(function() {
+        $(this).closest('.slide').css('opacity', '0');
+        $(this).closest('.slide').css('right', '-50%')
+    })
+
+
     ///////////////////////////////////////////////////// define plot setting /////////////////////////////////////////////
     
     // define plot size
-    var margin = { top: 70, right: 50, bottom: 70, left: 100 },
-        width = $('#graphic').width() - margin.left - margin.right-30;
+    var margin = { top: 70, right: 70, bottom: 50, left: 100 },
+        width = $('#graphic').width() - margin.left - margin.right;
     var height = $(window).height()-margin.top - margin.bottom-300;
 
     ///////////////////////////////////////////////// define right left user //////////////////////////////////////////////
@@ -313,12 +560,10 @@
         }
 
         if (leader1['party']=="Republican" & leader2['party']=="Democrat") {
-            //http://0.0.0.0:5000/leaders?leader0=K000362&leader2=W000805&compare=T
             user_color=[color_panal['Repu1'],color_panal['Demo1']];
         }
 
         if (leader1['party']=="Democrat" & leader2['party']=="Republican") {
-            //http://0.0.0.0:5000/leaders?leader0=K000362&leader2=W000805&compare=T
             user_color=[color_panal['Repu1'],color_panal['Demo1']];
             // switch
             [leader1,leader2] = [leader2,leader1];
@@ -332,15 +577,15 @@
 
    //////////////////////////////////////////////// draw area chart ///////////////////////////////////////////////////////
     var numberOfItem = 15;
-    compare==true? drawLineplot('compare',data_line0,data_line2,[leader1['name']],[leader2['name']]):drawLineplot('single',data_line0,[],[leader1['name']],[]);
+    compare==true? drawLineplot('compare',data_line0,data_line2,[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[capitalizeFirstLetter(leader2['chamber'])+'. '+leader2['name']]):drawLineplot('single',data_line0,[],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[]);
    //////////////////////////////////////////////// draw bar chart ///////////////////////////////////////////////////////
     var numberOfItem = 15;
-    compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),[leader1['name']],[leader2['name']]):drawbar('single',databar.splice(0,numberOfItem),[],[leader1['name']],[]);
+    compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[capitalizeFirstLetter(leader2['chamber'])+'. '+leader2['name']]):drawbar('single',databar.splice(0,numberOfItem),[],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[]);
 
     //////////////////////////////////////////////// draw wc chart ///////////////////////////////////////////////////////
     var numberOfWord=100;
 
-    compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),[leader1['name']],[leader2['name']]):drawWordCloud('single',datawc.splice(0,numberOfWord),[],[leader1['name']],[])
+    compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[capitalizeFirstLetter(leader2['chamber'])+'. '+leader2['name']]):drawWordCloud('single',datawc.splice(0,numberOfWord),[],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[])
 
     /////////////////////// thing to do /////////////////////////////////////////////////////////////////////////////////
     // 1. slide page show recent tweet in area chart
@@ -369,11 +614,9 @@
 
     $('.scroller').click(function () {
 
-        var fuller = $(this).closest('.graph-wrapper').next('.graph-wrapper');
-        //console.log($(this).closest('.graph-wrapper').next('.graph-wrapper'))
-
+        var fuller = $(this).parent().next('.graph-wrapper');
         $("html, body").animate({
-            scrollTop: $("html, body").scrollTop() + fuller.offset().top-50
+            scrollTop: fuller.offset().top-50
         }, 700);
 
     });

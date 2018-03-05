@@ -14,6 +14,11 @@
             bar_height = 20;
 
 
+        // change slide  position
+        $('#slide2').css('top', margin.top)
+        $('#slide2').css('height', height)
+
+
         var widthBAR = type == 'compare' ? ((width) / 2 - labelArea) - 100 : (width) - labelArea - 100;
 
         var rightOffset = type == 'compare' ? widthBAR + 2 * labelArea + 100 : labelArea
@@ -31,9 +36,9 @@
         if (data2.length <= 0) {
             if (data.length > 0) {
 
-                maxYbar = d3.max(data, function(d) { 
-                    console.log(d)
-                    return d.value });
+                maxYbar = d3.max(data, function(d) {
+                    return d.value
+                });
             }
 
         } else {
@@ -47,16 +52,14 @@
             }
         }
 
-        console.log(maxYbar)
-
         var svg = d3.select("#hash_chart0")
             .append('svg')
             .attr('class', 'chart')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
-            .style({
-                'border': '1px dotted #ccc'
-            });
+            // .style({
+            //     'border': '1px dotted #ccc'
+            // });
 
 
         // shift plot (margin)
@@ -111,7 +114,7 @@
             .attr("dy", ".20em")
             .attr("text-anchor", "end")
             .attr('class', 'name')
-            .text(function(d) { return d.label; });
+            .text(function(d) { return d.label.replace('www.', ''); });
 
 
         chart.selectAll("rect.right")
@@ -121,6 +124,28 @@
             .attr("y", yPosByIndex)
             .attr("class", "right")
             .attr("width", 0) //
+            .on("click", function(d) { 
+
+                 d3.select('#slide2').selectAll('.description').remove()
+
+                 for (key in d.data) {
+                    //d.data.key.text
+                    d3.select('#slide2').append("p")
+                     .attr("class", "description")
+                     .html(function() {
+                        return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + d.data[key]['text']+"<br><a hred='#'> View Live</a>"
+                                    });
+                 }
+
+                  if (d3.selectAll(".bar_active")[0].length == 0) {
+                    slideShow()
+                  } else {
+                        firstF().then(secondF())
+                        };
+                 d3.selectAll(".bar_active").classed('bar_active', false);
+                 d3.select(this).classed('bar_active', true)
+
+            })
             .transition()
             .duration(1500)
             .attr("width", function(d) {
@@ -128,7 +153,8 @@
                 return xScale(+d['value']);
             })
             .attr("height", y.rangeBand())
-            .attr("fill", user_color[0]['main']);
+            .attr("fill", user_color[0]['main'])
+            
 
         chart.selectAll("text.rightscore")
             .data(data)
@@ -168,6 +194,28 @@
                     .attr("y", yPosByIndex2)
                     .attr("class", "left")
                     .attr("width", 0) //
+                    .on("click", function(d) { 
+
+                         d3.select('#slide2').selectAll('.description').remove()
+
+                         for (key in d.data) {
+                            //d.data.key.text
+                            d3.select('#slide2').append("p")
+                             .attr("class", "description")
+                             .html(function() {
+                                return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + d.data[key]['text']+"<br><a hred='#'> View Live</a>"
+                                            });
+                         }
+
+                          if (d3.selectAll(".bar_active")[0].length == 0) {
+                            slideShow()
+                          } else {
+                                firstF().then(secondF())
+                                };
+                         d3.selectAll(".bar_active").classed('bar_active', false);
+                         d3.select(this).classed('bar_active', true)
+
+                    })
                     .transition()
                     .duration(1500)
                     .attr("x", function(d) {
@@ -179,7 +227,8 @@
                         return xScale(d['value']);
                     })
                     .attr("height", y2.rangeBand())
-                    .attr("fill", user_color[1]['main']);
+                    .attr("fill", user_color[1]['main'])
+                    
 
 
                 chart.selectAll("text.leftscore")
@@ -208,45 +257,45 @@
                     .attr("dy", ".20em")
                     .attr("text-anchor", "start")
                     .attr('class', 'name')
-                    .text(function(d) { return d.label; });
+                    .text(function(d) { return d.label.replace('www.', ''); });
             } else {
 
 
-            var textCenter = svg.append("text")
-                .attr('class', 'no_show')
-                .attr("x", '25%')
-                .attr("y", '35%')
-                .attr("text-anchor", "middle")
+                var textCenter = svg.append("text")
+                    .attr('class', 'no_show')
+                    .attr("x", '25%')
+                    .attr("y", '35%')
+                    .attr("text-anchor", "middle")
 
                 textCenter.selectAll("tspan")
-                .data(['There is no data', 'for this congress','member.'])
-                .enter()
-                .append("tspan")
-                .attr("x",textCenter.attr("x"))
-                .attr("dy","1em")
-                .text(function(d){
-                    return d;
-                });
+                    .data(['There is no data', 'for this congress', 'member.'])
+                    .enter()
+                    .append("tspan")
+                    .attr("x", textCenter.attr("x"))
+                    .attr("dy", "1em")
+                    .text(function(d) {
+                        return d;
+                    });
 
             }
 
             if (data.length <= 0) {
 
-            var textCenter = svg.append("text")
-                .attr('class', 'no_show')
-                .attr("x", '75%')
-                .attr("y", '35%')
-                .attr("text-anchor", "middle")
+                var textCenter = svg.append("text")
+                    .attr('class', 'no_show')
+                    .attr("x", '75%')
+                    .attr("y", '35%')
+                    .attr("text-anchor", "middle")
 
                 textCenter.selectAll("tspan")
-                .data(['There is no data', 'for this congress','member.'])
-                .enter()
-                .append("tspan")
-                .attr("x",textCenter.attr("x"))
-                .attr("dy","1em")
-                .text(function(d){
-                    return d;
-                });
+                    .data(['There is no data', 'for this congress', 'member.'])
+                    .enter()
+                    .append("tspan")
+                    .attr("x", textCenter.attr("x"))
+                    .attr("dy", "1em")
+                    .text(function(d) {
+                        return d;
+                    });
             }
         }
         // chart.append("text").attr("x",width/3).attr("y", 10).attr("class","title").text("Infant Mortality");
@@ -254,49 +303,59 @@
         // chart.append("text").attr("x",width+labelArea/3).attr("y", 10).attr("class","title").text("label");
         // add lengend
 
-        var legendlist = name1.concat(name2)
 
-        var dataL = 0;
-        var offset = 120;
+        /// add lengend
+        var legendlist = name1.concat(name2)
 
         var legend_g = svg.selectAll('.legends4')
             .data(legendlist)
             .enter().append('g')
-
             .attr("class", "legends4")
             .attr("transform", function(d, i) {
-                if (i === 0) {
-                    dataL = d.length + offset
-                    return "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")"
-                } else {
-                    var newdataL = dataL
-                    dataL += d.length + offset
-                    return "translate(" + (width - 100 * legendlist.length + newdataL) + "," + (margin.top / 2) + ")"
-                }
+                return i == 0 ? "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")" :  "translate(" + (100 * legendlist.length) + "," + (margin.top / 2) + ")"
             });
 
         legend_g.append('rect')
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", 10)
-            .attr("height", 10)
-            .style("fill", function(d, i) {
-                return i == 0 ? user_color[0]['main'] : user_color[1]['main']
-            });
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("fill", function(d, i) {
+            return i == 0 ? user_color[0]['main'] : user_color[1]['main']
+        });
 
         legend_g.append('text')
-            .attr("x", 20)
-            .attr("y", 10)
-            //.attr("dy", ".35em")
-            .text(function(d, i) {
-                return d
-            })
-            .attr("class", "textselected")
-            .style("text-anchor", "start")
-            .style("font-size", 15)
+        .attr("x", 20)
+        .attr("y", 10)
+        //.attr("dy", ".35em")
+        .text(function(d, i) {
+            return d
+        })
+        .attr("class", "textselected")
+        .style("text-anchor", "start")
+        .style("font-size", 15)
+
+        /// slide function //
+        function slideShow() {
+            $('#slide2').css('right', '5%')
+            $('#slide2').css('opacity', '1')
+        };
+
+        function slideHide() {
+            d3.selectAll(".bar_active").classed('bar_active', false);
+            $('#slide2').css('right', '-50%')
+            $('#slide2').css('opacity', '0')
+            // $('#slide1').css('opacity', "0")
+            // $('.slide').css('box-shadow', "-31px 8px 180px 2px rgba(14, 16, 33, 0.5)")
+        };
+
+        function firstF() {
+            var deferred = new $.Deferred();
+            slideHide()
+            return deferred.promise();
+        };
+
+        function secondF() { setTimeout(function() { slideShow(); }, 800); } ;
 
 
     }
-
-
-
