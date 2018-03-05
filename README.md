@@ -4,5 +4,5 @@ The Follow Your Leaders website enables users to see what their elected official
 
 ## Authors
 
-- Pai-ju Cheng (paiju@umich.edu)
+- Paiju Cheng (paiju@umich.edu)
 - Libby Hemphill (libbyh@umich.edu)
