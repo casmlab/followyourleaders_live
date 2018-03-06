@@ -40,13 +40,13 @@ class followyourleaders(object):
 
 		print('>>> update_timeline_collection(self, tweets) starts!')
 
-		timeline = collection_timeline.find()
 
 		for tweet in tweets:
-			if tweet in collection_timeline.find():
+			
+			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
+			if tweet['id_str'] in collection_timeline.find({'bioguide': leader['bioguide']}):
 				print('Already logged.')
 				break
-				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 
 
 				# check if the user that made the Tweet is a leader in collection_leaders or not
@@ -64,6 +64,7 @@ class followyourleaders(object):
 
 					# define inserting/updating item format
 					url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
+
 					item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
 					'url':url}
 
