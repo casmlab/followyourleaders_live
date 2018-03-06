@@ -44,6 +44,8 @@ class followyourleaders(object):
 		for tweet in tweets:
 			
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
+			print(tweet['id_str'])
+			collection_timeline.find({'bioguide': leader['bioguide']})
 			if tweet['id_str'] in collection_timeline.find({'bioguide': leader['bioguide']}):
 				print('Already logged.')
 				break
