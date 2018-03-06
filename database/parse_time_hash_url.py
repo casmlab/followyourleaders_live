@@ -110,7 +110,6 @@ class followyourleaders(object):
 				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
 				leader_hashtags = collection_hashtags.find_one({"bioguide" : leader['bioguide']})
-				print(leader_hashtags)
 				
 				# check if the leader is already in hashtags collection, if not, insert their information
 				if leader_hashtags == None:
@@ -125,19 +124,23 @@ class followyourleaders(object):
 				# update hashtags collection from tweets
 				for a in tweet['entities']['hashtags']:
 
+
+					# keyidx = "dates." + post_date + "." + tweet['id_str']
+
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
 					text_idx = key_idx + '.text'
 					date_idx = key_idx + '.created_at'
 					text_push = tweet['text']
 					post_date_push = post_date_time
+					
 					try:
 						val = leader_hashtags['hashtags'][a['text']]['tweets'][tweet['id_str']]
 						print('Already logged these hashtags.')
 					except:
 						print('Adding new hashtags.')
 						# define inserting/updating item format
-						collection_hashtags.update({'bioguide':leader},{'$set':{text_idx:text_push,date_idx:post_date_push}} )
-						print(leader_hashtags)
+						collection_hashtags.update({'bioguide':leader},{'$set':{key_idx: "hi"}} )
+						# print(leader_hashtags)
 						print(leader_hashtags['hashtags'])
 
 
