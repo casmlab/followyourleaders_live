@@ -132,9 +132,9 @@ class followyourleaders(object):
 					
 					try:
 						val = leader_hashtags['hashtags'][a['text']]['tweets'][tweet['id_str']]
-						print('Already logged these hashtags.')
+						print('Already logged this Tweet.')
 					except:
-						print('Adding new hashtags.')
+						print('Adding new Tweets.')
 						# define inserting/updating item format
 						collection_hashtags.update({'bioguide':leader['bioguide']},{'$set':{text_idx:text_push,date_idx:date_push}} )
 
@@ -184,10 +184,10 @@ class followyourleaders(object):
 
 					key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
 					try:
-						val = leader_url['urls']['text'][tweet['text']]
-						print('Already logged these URLs.')
+						val = leader_url['urls'][a['url'].split("t.co/")[1][tweets][tweet['id_str']]]
+						print('Already logged this Tweet.')
 					except:
-						print('Adding new URLs.')
+						print('Adding new Tweets.')
 						# define inserting/updating item format
 						collection_url.update( { 'bioguide': leader['bioguide'] },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
 
