@@ -6,8 +6,6 @@ __status__ = "Development"
 # CODE DESCRIPTION: This code creates a new 'timeline' collection, a new 'hashtags' collection, and a new 'urls' collection in 'followyourleaders_prod' database. 
 # Important to note, each time these collections are created, the old ones (if they exist) are dropped. This code also updates existing 'leaders' collection in
 # 'followyourleaders_prod' database with corresponding data from newly created 'timeline' collection.
-# QUESTIONS: Do we need to be able to update this information at all? Or is it find just to drop entire collection and replace each time? Do we create a new db
-# each time?
 
 
 from pymongo import MongoClient
@@ -40,13 +38,11 @@ class followyourleaders(object):
 
 		print('>>> update_timeline_collection(self, tweets) starts!')
 
-
 		for tweet in tweets:
 			
-			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
-			
+			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
 
-				# check if the user that made the Tweet is a leader in collection_leaders or not
+			# check whether the user that made the Tweet is a leader in collection_leaders or not
 			if leader != None:
 
 				# define date/time formats
@@ -63,15 +59,13 @@ class followyourleaders(object):
 					val = leader_timeline['dates'][post_date][tweet['id_str']]
 					print('Already logged this Tweet.')
 				except:
-					# define inserting/updating item format
 					print('Adding new Tweet.')
+					# define inserting/updating item format
 					url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
-
 					item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
 					'url':url}
 
-
-					# if we dont have the leader's information in timeline collection, insert one for him/her
+					# if we dont have the leader's information in timeline collection, insert the leader's information
 					if  leader_timeline == None:
 
 						print('start inserting ' + leader['bioguide'] + ' into timelines collection')
@@ -83,7 +77,7 @@ class followyourleaders(object):
 						collection_timeline.insert(dic)
 
 
-					# update timeline collection from tweets
+					# update specified leader's timeline collection from tweets
 					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {keyidx: item_push}})
 
 
@@ -104,12 +98,10 @@ class followyourleaders(object):
 
 		print('>>> update_hashtags_collection(self, tweets) starts!')
 
-
 		for tweet in tweets:
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 
-
-			# check is or isnt this user a the leader
+			# check whether the user that made the Tweet is a leader in collection_leaders or not
 			if leader != None:
 
 				# define date/time formats
@@ -117,10 +109,8 @@ class followyourleaders(object):
 				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
 				leader_hashtags = collection_hashtags.find_one({"bioguide" : leader['bioguide']})
-
-
 				
-				# check if the leader is already in hashtags collection, if not, insert information for them to collection
+				# check if the leader is already in hashtags collection, if not, insert their information
 				if leader_hashtags == None:
 
 					print('start inserting ' + leader['bioguide'] + ' into hashtags collection')
@@ -134,12 +124,13 @@ class followyourleaders(object):
 				for a in tweet['entities']['hashtags']:
 
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
-					print(leader_hashtags['hashtags']['text'][tweet['text']])
+					print(leader_hashtags['hashtags'][a['text']])
 					try:
 						val = leader_hashtags['hashtags']['text'][tweet['text']]
 						print('Already logged these hashtags.')
 					except:
 						print('Adding new hashtags.')
+						# define inserting/updating item format
 						collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx + '.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
 
 
@@ -160,43 +151,40 @@ class followyourleaders(object):
 
 		print('>>> update_url_collection(self, tweets) starts!')
 
-
 		for tweet in tweets:
-			if tweet not in collection_timeline.find():
-				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
+			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
+
+			# check whether the user that made the Tweet is a leader in collection_leaders or not
+			if leader != None:
+
+				# define date/time formats
+				post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
+				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
+
+				# read leader's information from urls collection
+				leader_url = collection_url.find_one({"bioguide" : leader})
+
+				# if we dont have the leader's information in urls collection, if not, insert their information
+				if leader_url == None:
+
+					print('start inserting ' + leader['bioguide'] + ' into urls collection')
+					dic = {}
+					dic['bioguide'] = leader['bioguide']
+					dic.setdefault('urls', {})
+					collection_url.insert(dic)
 
 
-				# check is or isnt this user a the leader
-				if leader != None:
+				#update urls collection from tweets
+				for a in tweet['entities']['urls']:
 
-					# define date/time formats
-					post_date = time.strftime('%Y-%m-%d', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
-					post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
-
-					# read leader's information from urls collection
-					leader_url = collection_url.find_one({"bioguide" : leader})
-
-
-					# if we dont have the leader's information in urls collection, insert one for him/her
-					if leader_url == None:
-
-						print('start inserting ' + leader['bioguide'] + ' into urls collection')
-						dic = {}
-						dic['bioguide'] = leader['bioguide']
-						dic.setdefault('urls', {})
-						collection_url.insert(dic)
-
-
-					#update urls collection from tweets
-					for a in tweet['entities']['urls']:
-
-						key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
-						try:
-							val = leader_url['urls']['text'][tweet['text']]
-							print('Already logged these URLs.')
-						except:
-							print('Adding new URLs.')
-							collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
+					key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
+					try:
+						val = leader_url['urls']['text'][tweet['text']]
+						print('Already logged these URLs.')
+					except:
+						print('Adding new URLs.')
+						# define inserting/updating item format
+						collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
 
 
 		print('>>> update_url_collection(self, tweets) ends!')
@@ -279,7 +267,7 @@ class followyourleaders(object):
 
 	def initialize_database(self,num_tweets_shown):
 
-		self.update_timeline_collection(collection_tweet.find())
+		# self.update_timeline_collection(collection_tweet.find())
 		self.update_hashtag_collection(collection_tweet.find())
 		self.update_url_collection(collection_tweet.find())
 		self.update_leaders(num_tweets_shown)
