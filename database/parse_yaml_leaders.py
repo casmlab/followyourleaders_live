@@ -123,7 +123,7 @@ class followyourleaders(object):
 							leader['current'] = 0
 							print(leader)
 							if twitter_id == leader['twitter_id']:
-								collection_leader.update(leader_dict)
+								leader.update(leader_dict)
 							print(leader)
 
 						# for leader in collection_leader.find():
@@ -148,7 +148,7 @@ class followyourleaders(object):
 
 	def initialize_database(self):
 
-		self.create_yaml_collection()
+		# self.create_yaml_collection()
 		self.create_leaders_collection()
 
 
