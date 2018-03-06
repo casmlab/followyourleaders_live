@@ -44,12 +44,7 @@ class followyourleaders(object):
 		for tweet in tweets:
 			
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
-			print(tweet['id_str'])
-			print(collection_timeline.find({'bioguide': leader['bioguide']}))
-			if tweet['id_str'] in collection_timeline.find({'bioguide': leader['bioguide']}):
-				print('Already logged.')
-				break
-
+			
 
 				# check if the user that made the Tweet is a leader in collection_leaders or not
 				if leader != None:
@@ -64,27 +59,30 @@ class followyourleaders(object):
 					# define update location
 					keyidx = "dates." + post_date + "." + tweet['id_str']
 
-					# define inserting/updating item format
-					url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
+					if keyidx in leader_timeline:
+						print('Already logged.')
+					else:
+						# define inserting/updating item format
+						url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
 
-					item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
-					'url':url}
-
-
-					# if we dont have the leader's information in timeline collection, insert one for him/her
-					if  leader_timeline == None:
-
-						print('start inserting ' + leader['bioguide'] + ' into timelines collection')
-						dic = {}
-						dic['twitter_name'] = tweet['user']['screen_name']
-						dic['twitter_id'] = tweet['user']['id_str']
-						dic['bioguide'] = leader['bioguide']
-						dic.setdefault('dates', {})
-						collection_timeline.insert(dic)
+						item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
+						'url':url}
 
 
-					# update timeline collection from tweets
-					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {keyidx: item_push}})
+						# if we dont have the leader's information in timeline collection, insert one for him/her
+						if  leader_timeline == None:
+
+							print('start inserting ' + leader['bioguide'] + ' into timelines collection')
+							dic = {}
+							dic['twitter_name'] = tweet['user']['screen_name']
+							dic['twitter_id'] = tweet['user']['id_str']
+							dic['bioguide'] = leader['bioguide']
+							dic.setdefault('dates', {})
+							collection_timeline.insert(dic)
+
+
+						# update timeline collection from tweets
+						collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {keyidx: item_push}})
 
 
 		print('>>> update_timeline_collection(self, tweets) ends!')
