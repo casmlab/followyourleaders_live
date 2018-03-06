@@ -40,9 +40,12 @@ class followyourleaders(object):
 
 		print('>>> update_timeline_collection(self, tweets) starts!')
 
+		timeline = collection_timeline.find()
+
 		for tweet in tweets:
-			if tweet not in collection_timeline.find():
+			if tweet in collection_timeline.find():
 				print('Already logged.')
+				break
 				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 
 
