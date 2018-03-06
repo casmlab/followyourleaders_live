@@ -60,7 +60,7 @@ class followyourleaders(object):
 				keyidx = "dates." + post_date + "." + tweet['id_str']
 
 				# try:
-				val = leader_timeline[post_date][tweet['id_str']]
+				val = leader_timeline['dates'][post_date][tweet['id_str']]
 				print(val)
 				# except:
 				# 	# define inserting/updating item format
