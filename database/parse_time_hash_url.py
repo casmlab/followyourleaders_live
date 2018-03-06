@@ -192,7 +192,7 @@ class followyourleaders(object):
 
 						key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
 						try:
-						 	val = leader_url['urls']['text'][tweet['text']]
+							val = leader_url['urls']['text'][tweet['text']]
 							print('Already logged these URLs.')
 						except:
 							print('Adding new URLs.')
