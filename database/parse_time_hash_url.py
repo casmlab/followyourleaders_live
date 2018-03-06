@@ -124,10 +124,8 @@ class followyourleaders(object):
 				for a in tweet['entities']['hashtags']:
 
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
-					print(leader_hashtags['hashtags'])
-					print(a['text'])
 					try:
-						val = leader_hashtags['hashtags']['text'][tweet['text']]
+						val = leader_hashtags['hashtags'][a['text']]
 						print('Already logged these hashtags.')
 					except:
 						print('Adding new hashtags.')
