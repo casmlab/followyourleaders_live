@@ -125,8 +125,7 @@ class followyourleaders(object):
 							
 							if twitter_id == leader['twitter_id']:
 								collection_leaders.updateOne({'twitter_id': twitter_id},
-									{$set:leader_dict},
-									$currentDate: {lastModified:true})
+									{"$set":leader_dict})
 							
 
 		print('>>> update_leaders_collection() ends!')
