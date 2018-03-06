@@ -131,7 +131,7 @@ class followyourleaders(object):
 					text_idx = key_idx + '.text'
 					date_idx = key_idx + '.created_at'
 					text_push = tweet['text']
-					post_date_push = post_date_time
+					date_push = post_date_time
 					
 					try:
 						val = leader_hashtags['hashtags'][a['text']]['tweets'][tweet['id_str']]
