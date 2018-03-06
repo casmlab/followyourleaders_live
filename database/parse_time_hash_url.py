@@ -124,14 +124,22 @@ class followyourleaders(object):
 				for a in tweet['entities']['hashtags']:
 
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
+					text_idx = key_idx + '.text'
+					date_idx = key_idx + '.created_at'
+					text_push = tweet['text']
+					post_date_push = post_date_time
 					try:
 						val = leader_hashtags['hashtags'][a['text']]['tweets'][tweet['id_str']]
 						print('Already logged these hashtags.')
 					except:
 						print('Adding new hashtags.')
 						# define inserting/updating item format
-						print(key_idx)
-						collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx + '.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
+						print(text_idx)
+						print(date_idx)
+						print(text_push)
+						print(post_date_push)
+
+						collection_hashtags.update({ 'bioguide': leader }, { '$set': {text_idx:text_push,date_idx:post_date_push} } )
 						print(leader_hashtags['hashtags'])
 
 
