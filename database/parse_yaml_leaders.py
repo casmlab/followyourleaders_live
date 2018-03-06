@@ -111,30 +111,21 @@ class followyourleaders(object):
 						# request data from datasource
 						photo_url = requests.get('https://twitter.com/' + yaml['social']['twitter'] + '/profile_image?size=original').url
 
-						# form data structure by datamodel.md
 
-						# insert into database
-
+						# form data structure by datamodel.md, note inclusion of "current" key in order to indicate whether the Member is still in office.
+						# a "1" indicates that the Member is still in office, and a "0" indicates that they are no longer in office.
 						leader_dict = {'current':1,'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
 						,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
 						'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
 						
+
+						# insert into database
 						for leader in collection_leader.find():
 							leader['current'] = 0
 							
 							if twitter_id == leader['twitter_id']:
-								print(leader)
-								print('------------------')
 								leader.update(leader_dict)
-								print(leader)
 							
-
-						# for leader in collection_leader.find():
-						# 	print(leader)
-						# 	if leader['current'] != 1:
-						# 		leader['current'] = 0
-						# 		collection_leader.update(leader['current'])
-
 
 		print('>>> create_leaders_collection() ends!')
 
