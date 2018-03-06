@@ -135,8 +135,8 @@ class followyourleaders(object):
 					except:
 						print('Adding new hashtags.')
 						# define inserting/updating item format
-
-						collection_hashtags.update({'bioguide': leader}, {'$set': {text_idx:text_push,date_idx:post_date_push}} )
+						collection_hashtags.update({'bioguide':leader},{'$set':{text_idx:text_push,date_idx:post_date_push}} )
+						print(leader_hashtags)
 						print(leader_hashtags['hashtags'])
 
 
