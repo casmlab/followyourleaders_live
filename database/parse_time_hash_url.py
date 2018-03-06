@@ -59,9 +59,10 @@ class followyourleaders(object):
 				# define update location
 				keyidx = "dates." + post_date + "." + tweet['id_str']
 
-				if keyidx in leader_timeline:
+				try:
+					val = leader_timeline[keyidx]
 					print('Already logged.')
-				else:
+				except:
 					# define inserting/updating item format
 					print('Adding new Tweet.')
 					url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
