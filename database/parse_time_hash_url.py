@@ -36,16 +36,16 @@ class followyourleaders(object):
 	# source data: 	'leader' collection in 'followyourleaders_prod' database;
 	#				'tweets--drop' collection in 'followyourleaders_prod' database;
 
-	def create_timeline_collection(self, tweets):
+	def update_timeline_collection(self, tweets):
 
-		print('>>> create_timeline_collection(self, tweets) starts!')
+		print('>>> update_timeline_collection(self, tweets) starts!')
 
 		for tweet in tweets:
 			if tweet not in collection_timeline.find():
-				leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
+				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 
 
-				# check is or isnt this user a the leader
+				# check if the user that made the Tweet is a leader in collection_leaders or not
 				if leader != None:
 
 					# define date/time formats
@@ -80,7 +80,7 @@ class followyourleaders(object):
 					collection_timeline.update({ 'bioguide': leader['bioguide']},{ '$set': { keyidx: item_push } } )
 
 
-		print('>>> create_timeline_collection(self, tweets) ends!')
+		print('>>> update_timeline_collection(self, tweets) ends!')
 
 
 
@@ -93,14 +93,14 @@ class followyourleaders(object):
 	# source data: 	'leader' collection in 'followyourleaders_prod' database;
 	#				'tweets--drop' collection in 'followyourleaders_prod' database;
 
-	def create_hashtag_collection(self, tweets):
+	def update_hashtag_collection(self, tweets):
 
-		print('>>> create_hashtags_collection(self, tweets) starts!')
+		print('>>> update_hashtags_collection(self, tweets) starts!')
 
 
 		for tweet in tweets:
 			if tweet not in collection_timeline.find():
-				leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
+				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 
 
 				# check is or isnt this user a the leader
@@ -130,7 +130,7 @@ class followyourleaders(object):
 						collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx + '.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
 
 
-		print('>>> create_hashtags_collection(self, tweets) ends!')
+		print('>>> update_hashtags_collection(self, tweets) ends!')
 
 
 
@@ -143,14 +143,14 @@ class followyourleaders(object):
 	# source data: 	'leader' collection in 'followyourleaders_prod' database;
 	#				'tweets--drop' collection in 'followyourleaders_prod' database;
 
-	def create_url_collection(self,tweets):
+	def update_url_collection(self,tweets):
 
-		print('>>> create_url_collection(self, tweets) starts!')
+		print('>>> update_url_collection(self, tweets) starts!')
 
 
 		for tweet in tweets:
 			if tweet not in collection_timeline.find():
-				leader = collection_leader.find_one({"twitter_id" : tweet['user']['id_str']})
+				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 
 
 				# check is or isnt this user a the leader
@@ -181,7 +181,7 @@ class followyourleaders(object):
 						collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
 
 
-		print('>>> create_url_collection(self, tweets) ends!')
+		print('>>> update_url_collection(self, tweets) ends!')
 
 
 
@@ -200,7 +200,7 @@ class followyourleaders(object):
 		print('>>> update_leaders(num_tweets_shown) starts!')
 
 		# load data from leader collection
-		leaders = collection_leader.find()
+		leaders = collection_leaders.find()
 
 
 		for leader in leaders:
@@ -245,7 +245,7 @@ class followyourleaders(object):
 				description = last_tweet['user']['description']
 
 				# update user collection
-				collection_leader.update( { '_id': leader['_id'] },{ '$set': { "recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description} } )
+				collection_leaders.update( { '_id': leader['_id'] },{ '$set': { "recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description} } )
 
 		print('>>> update_leaders(num_tweets_shown) ends!')
 
@@ -261,9 +261,9 @@ class followyourleaders(object):
 
 	def initialize_database(self,num_tweets_shown):
 
-		self.create_timeline_collection(collection_tweet.find())
-		self.create_hashtag_collection(collection_tweet.find())
-		self.create_url_collection(collection_tweet.find())
+		self.update_timeline_collection(collection_tweet.find())
+		self.update_hashtag_collection(collection_tweet.find())
+		self.update_url_collection(collection_tweet.find())
 		self.update_leaders(num_tweets_shown)
 
 
@@ -284,7 +284,7 @@ if __name__ == '__main__':
 
 	# connect collection
 	collection_tweet = db['tweets--drop']		# tweets collection
-	collection_leader = db['leaders']		# leader collection
+	collection_leaders = db['leaders']		# leader collection
 	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
 	collection_hashtags = db['hashtags'] # for updating tweets
 	collection_url = db['urls'] # for urls
