@@ -110,6 +110,7 @@ class followyourleaders(object):
 				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
 				leader_hashtags = collection_hashtags.find_one({"bioguide" : leader['bioguide']})
+				print(leader_hashtags)
 				
 				# check if the leader is already in hashtags collection, if not, insert their information
 				if leader_hashtags == None:
@@ -129,6 +130,8 @@ class followyourleaders(object):
 					date_idx = key_idx + '.created_at'
 					text_push = tweet['text']
 					date_push = post_date_time
+
+					print(leader_hashtags['hashtags'][a['text']]['tweets'][tweet['id_str']])
 					
 					try:
 						val = leader_hashtags['hashtags'][a['text']]['tweets'][tweet['id_str']]
