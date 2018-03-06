@@ -97,6 +97,7 @@ class followyourleaders(object):
 	def update_hashtag_collection(self, tweets):
 
 		print('>>> update_hashtags_collection(self, tweets) starts!')
+		collection_hashtags.drop()
 
 		for tweet in tweets:
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
