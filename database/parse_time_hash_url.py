@@ -117,15 +117,12 @@ class followyourleaders(object):
 					print('start inserting ' + leader['bioguide'] + ' into hashtags collection')
 					dic = {}
 					dic['bioguide'] = leader['bioguide']
-					dic['hashtags'] = {}
+					dic.setdefault('hashtags', {})
 					collection_hashtags.insert(dic)
 
 
 				# update hashtags collection from tweets
 				for a in tweet['entities']['hashtags']:
-
-
-					# keyidx = "dates." + post_date + "." + tweet['id_str']
 
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
 					text_idx = key_idx + '.text'
@@ -140,7 +137,6 @@ class followyourleaders(object):
 						print('Adding new hashtags.')
 						# define inserting/updating item format
 						collection_hashtags.update({'bioguide':leader['bioguide']},{'$set':{text_idx:text_push,date_idx:date_push}} )
-						print(leader_hashtags['hashtags'])
 
 
 		print('>>> update_hashtags_collection(self, tweets) ends!')
@@ -193,7 +189,7 @@ class followyourleaders(object):
 					except:
 						print('Adding new URLs.')
 						# define inserting/updating item format
-						collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
+						collection_url.update( { 'bioguide': leader['bioguide'] },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
 
 
 		print('>>> update_url_collection(self, tweets) ends!')
