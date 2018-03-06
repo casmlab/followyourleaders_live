@@ -42,6 +42,7 @@ class followyourleaders(object):
 
 		for tweet in tweets:
 			if tweet not in collection_timeline.find():
+				print('Already logged.')
 				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 
 
@@ -68,16 +69,16 @@ class followyourleaders(object):
 					if  leader_timeline == None:
 
 						print('start inserting ' + leader['bioguide'] + ' into timelines collection')
-						dic={}
-						dic['twitter_name']=tweet['user']['screen_name']
-						dic['twitter_id']=tweet['user']['id_str']
-						dic['bioguide']=leader['bioguide']
+						dic = {}
+						dic['twitter_name'] = tweet['user']['screen_name']
+						dic['twitter_id'] = tweet['user']['id_str']
+						dic['bioguide'] = leader['bioguide']
 						dic.setdefault('dates', {})
 						collection_timeline.insert(dic)
 
 
 					# update timeline collection from tweets
-					collection_timeline.update({ 'bioguide': leader['bioguide']},{ '$set': { keyidx: item_push } } )
+					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {keyidx: item_push}})
 
 
 		print('>>> update_timeline_collection(self, tweets) ends!')
