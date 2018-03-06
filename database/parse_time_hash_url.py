@@ -119,10 +119,7 @@ class followyourleaders(object):
 				leader_hashtags = collection_hashtags.find_one({"bioguide" : leader['bioguide']})
 
 
-				# try:
-				# 	val = leader_hashtags['dates'][post_date][tweet['id_str']]
-				# 	print('Already logged this Tweet.')
-				# except:
+				
 				# check if the leader is already in hashtags collection, if not, insert information for them to collection
 				if leader_hashtags == None:
 
@@ -137,7 +134,13 @@ class followyourleaders(object):
 				for a in tweet['entities']['hashtags']:
 
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
-					collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx + '.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
+					print(leader_hashtags['hashtags']['text'][tweet['text']])
+					try:
+					 	val = leader_hashtags['hashtags']['text'][tweet['text']]
+						print('Already logged these hashtags.')
+					except:
+						print('Adding new hashtags.')
+						collection_hashtags.update({ 'bioguide': leader }, { '$set': {key_idx + '.text':tweet['text'],key_idx + '.created_at':post_date_time} } )
 
 
 		print('>>> update_hashtags_collection(self, tweets) ends!')
@@ -188,7 +191,12 @@ class followyourleaders(object):
 					for a in tweet['entities']['urls']:
 
 						key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
-						collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
+						try:
+						 	val = leader_url['urls']['text'][tweet['text']]
+							print('Already logged these URLs.')
+						except:
+							print('Adding new URLs.')
+							collection_url.update( { 'bioguide': leader },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
 
 
 		print('>>> update_url_collection(self, tweets) ends!')
