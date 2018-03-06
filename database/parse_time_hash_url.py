@@ -136,8 +136,7 @@ class followyourleaders(object):
 					except:
 						print('Adding new Tweets.')
 						# define inserting/updating item format
-						collection_hashtags.update({'bioguide':leader['bioguide']},{'$set':{text_idx:text_push,date_idx:date_push}} )
-						print(leader_hashtags['hashtags'])
+						collection_hashtags.update({'bioguide':leader['bioguide']},{'$set':{text_idx:text_push,date_idx:date_push}})
 
 
 		print('>>> update_hashtags_collection(self, tweets) ends!')
