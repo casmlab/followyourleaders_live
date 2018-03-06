@@ -76,9 +76,9 @@ class followyourleaders(object):
 	#				https://twitter.com/ + yaml['social']['twitter'] + '/profile_image?size=original'
 	# QUESTIONS: why is 'yaml' collection dropped? Is this to save space in db?
 
-	def create_leaders_collection (self) :
+	def update_leaders_collection(self) :
 		
-		print('>>> create_leaders_collection() starts!')
+		print('>>> update_leaders_collection() starts!')
 
 		# read from yamls collection
 		yamls = collection_yaml.find()
@@ -120,14 +120,16 @@ class followyourleaders(object):
 						
 
 						# insert into database
-						for leader in collection_leader.find():
+						for leader in collection_leaders.find():
 							leader['current'] = 0
 							
 							if twitter_id == leader['twitter_id']:
-								leader.update(leader_dict)
+								collection_leaders.updateOne({'twitter_id': twitter_id},
+									{$set:leader_dict},
+									$currentDate: {lastModified:true})
 							
 
-		print('>>> create_leaders_collection() ends!')
+		print('>>> update_leaders_collection() ends!')
 
 
 
@@ -143,7 +145,7 @@ class followyourleaders(object):
 	def initialize_database(self):
 
 		# self.create_yaml_collection()
-		self.create_leaders_collection()
+		self.update_leaders_collection()
 
 
 
@@ -163,7 +165,7 @@ if __name__ == '__main__':
 
 	# connect collection
 	collection_yaml = db['yaml']		#yaml collection
-	collection_leader = db['leaders']		# leader collection
+	collection_leaders = db['leaders']		# leader collection
 
 
 
