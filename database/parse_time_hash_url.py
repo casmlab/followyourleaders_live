@@ -63,6 +63,7 @@ class followyourleaders(object):
 					print('Already logged.')
 				else:
 					# define inserting/updating item format
+					print('Adding new Tweet.')
 					url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
 
 					item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
