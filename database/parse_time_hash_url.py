@@ -136,7 +136,7 @@ class followyourleaders(object):
 					key_idx = "hashtags." + a['text'] + ".tweets." + tweet['id_str']
 					print(leader_hashtags['hashtags']['text'][tweet['text']])
 					try:
-					 	val = leader_hashtags['hashtags']['text'][tweet['text']]
+						val = leader_hashtags['hashtags']['text'][tweet['text']]
 						print('Already logged these hashtags.')
 					except:
 						print('Adding new hashtags.')
