@@ -261,6 +261,7 @@ class followyourleaders(object):
 				description = last_tweet['user']['description']
 
 				# update user collection
+				print("Updating with recent Tweet info.")
 				collection_leaders.update( { '_id': leader['_id'] },{ '$set': { "recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description} } )
 
 		print('>>> update_leaders(num_tweets_shown) ends!')
