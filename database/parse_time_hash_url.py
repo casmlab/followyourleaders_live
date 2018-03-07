@@ -189,7 +189,7 @@ class followyourleaders(object):
 					date_push = post_date_time
 
 					try:
-						val = leader_url['urls'][a['url'].split("t.co/")[1]['tweets'][tweet['id_str']]]
+						val = leader_url['urls'][a['url'].split("t.co/")[1]]['tweets'][tweet['id_str']]
 						print('Already logged this Tweet.')
 					except:
 						print('Adding new Tweets.')
