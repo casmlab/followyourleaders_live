@@ -74,7 +74,6 @@ class followyourleaders(object):
 	# function definition: creates 'leaders' collection in 'followyourleaders_prod' database
 	# source data: 	'yaml' collection in 'followyourleaders_prod' database
 	#				https://twitter.com/ + yaml['social']['twitter'] + '/profile_image?size=original'
-	# QUESTIONS: why is 'yaml' collection dropped? Is this to save space in db?
 
 	def update_leaders_collection(self) :
 		
@@ -85,7 +84,6 @@ class followyourleaders(object):
 
 
 		# inserting data associated with each leader in appropriate format (see datamodel.md) to 'leaders' collection
-		
 		for yaml in yamls:
 			# if this leader has used social media
 			if 'social' in yaml:
@@ -112,8 +110,9 @@ class followyourleaders(object):
 						photo_url = requests.get('https://twitter.com/' + yaml['social']['twitter'] + '/profile_image?size=original').url
 
 
-						# form data structure by datamodel.md, note inclusion of "current" key in order to indicate whether the Member is still in office.
-						# a "1" indicates that the Member is still in office, and a "0" indicates that they are no longer in office.
+						# format data according to datamodel.md's required structure, note inclusion of "current" key in order to indicate 
+						# whether the Member is still in office. A "1" indicates that the Member is still in office, and a "0" indicates that 
+						# they are no longer in office.
 						leader_dict = {'current':1,'twitter_name':yaml['social']['twitter'],'bioguide':yaml['id']['bioguide'],'twitter_id':twitter_id
 						,'name':yaml['name']['official_full'],'gender':yaml['bio']['gender'],'birthday':yaml['bio']['birthday'],
 						'religion':religion,'state':state,'chamber':chamber,'party':party,'wikidata':yaml['id']['wikidata'],"photo_url":photo_url}
@@ -143,7 +142,7 @@ class followyourleaders(object):
 
 	def initialize_database(self):
 
-		# self.create_yaml_collection()
+		self.create_yaml_collection()
 		self.update_leaders_collection()
 
 
@@ -163,8 +162,8 @@ if __name__ == '__main__':
 	db = connection['followyourleaders_prod']
 
 	# connect collection
-	collection_yaml = db['yaml']		#yaml collection
-	collection_leaders = db['leaders']		# leader collection
+	collection_yaml = db['yaml']		# yaml collection
+	collection_leaders = db['leaders']	# leader collection
 
 
 
