@@ -53,7 +53,7 @@ class followyourleaders(object):
 				leader_timeline = collection_timeline.find_one({"bioguide" : leader['bioguide']})
 
 				# define update location
-				keyidx = "dates." + post_date + "." + tweet['id_str']
+				key_idx = "dates." + post_date + "." + tweet['id_str']
 
 				try:
 					val = leader_timeline['dates'][post_date][tweet['id_str']]
@@ -78,7 +78,7 @@ class followyourleaders(object):
 
 
 					# update specified leader's timeline collection from tweets
-					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {keyidx: item_push}})
+					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {key_idx: item_push}})
 
 
 		print('>>> update_timeline_collection(self, tweets) ends!')
@@ -262,7 +262,7 @@ class followyourleaders(object):
 
 				# update user collection
 				print("Updating with recent Tweet info.")
-				collection_leaders.update( { '_id': leader['_id'] },{ '$set': { "recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description} } )
+				collection_leaders.update({'_id': leader['_id']},{'$set': {"recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description}})
 
 		print('>>> update_leaders(num_tweets_shown) ends!')
 
@@ -278,9 +278,9 @@ class followyourleaders(object):
 
 	def initialize_database(self,num_tweets_shown):
 
-		# self.update_timeline_collection(collection_tweet.find())
-		# self.update_hashtag_collection(collection_tweet.find())
-		# self.update_url_collection(collection_tweet.find())
+		self.update_timeline_collection(collection_tweet.find())
+		self.update_hashtag_collection(collection_tweet.find())
+		self.update_url_collection(collection_tweet.find())
 		self.update_leaders(num_tweets_shown)
 
 
