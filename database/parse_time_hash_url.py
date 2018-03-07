@@ -183,13 +183,18 @@ class followyourleaders(object):
 				for a in tweet['entities']['urls']:
 
 					key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
+					text_idx = key_idx + '.text'
+					text_push = tweet['text']
+					date_idx = key_idx + '.created_at'
+					date_push = post_date_time
+
 					try:
-						val = leader_url['urls'][a['url'].split("t.co/")[1][tweets][tweet['id_str']]]
+						val = leader_url['urls'][a['url'].split("t.co/")[1]['tweets'][tweet['id_str']]]
 						print('Already logged this Tweet.')
 					except:
 						print('Adding new Tweets.')
 						# define inserting/updating item format
-						collection_url.update( { 'bioguide': leader['bioguide'] },{ '$set': {key_idx + '.text':tweet['text'], key_idx + '.created_at':post_date_time} } )
+						collection_url.update({'bioguide': leader['bioguide']},{'$set': {text_idx:text_push,date_idx:date_push}})
 
 
 		print('>>> update_url_collection(self, tweets) ends!')
