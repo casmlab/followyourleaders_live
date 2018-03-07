@@ -158,7 +158,7 @@ class followyourleaders(object):
 		collection_url.drop()
 
 		for tweet in tweets:
-			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
+			leader = collection_leaders.find_one({"twitter_id": tweet['user']['id_str']})
 
 			# check whether the user that made the Tweet is a leader in collection_leaders or not
 			if leader != None:
@@ -168,7 +168,7 @@ class followyourleaders(object):
 				post_date_time = time.strftime('%Y-%m-%d %H:%M:%S',time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y'))
 
 				# read leader's information from urls collection
-				leader_url = collection_url.find_one({"bioguide" : leader})
+				leader_url = collection_url.find_one({"bioguide": leader['bioguide']})
 
 				# if we dont have the leader's information in urls collection, if not, insert their information
 				if leader_url == None:
