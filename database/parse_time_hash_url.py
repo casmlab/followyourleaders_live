@@ -155,7 +155,6 @@ class followyourleaders(object):
 	def update_url_collection(self,tweets):
 
 		print('>>> update_url_collection(self, tweets) starts!')
-		collection_url.drop()
 
 		for tweet in tweets:
 			leader = collection_leaders.find_one({"twitter_id": tweet['user']['id_str']})
