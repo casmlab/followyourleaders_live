@@ -279,7 +279,7 @@ class followyourleaders(object):
 
 		# self.update_timeline_collection(collection_tweet.find())
 		# self.update_hashtag_collection(collection_tweet.find())
-		self.update_url_collection(collection_tweet.find())
+		# self.update_url_collection(collection_tweet.find())
 		self.update_leaders(num_tweets_shown)
 
 
