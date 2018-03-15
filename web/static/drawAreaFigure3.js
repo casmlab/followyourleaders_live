@@ -62,16 +62,18 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
     var svg = d3.select('#graphic').append("svg").attr({
         'width': width + margin.left + margin.right,
         'height': height + margin.top + margin.bottom,
-    }).style({
-        'border': '1px dotted #ccc'
     });
+
+    // change slide  position
+    $('#slide1').css('top',margin.top)
+    $('#slide1').css('height',height)
 
     var tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
         .html(function(d) {
-            return "<br><strong>Date:</strong> <span style='color:red'>" + d3.time.format("%x")(d.date) + "</span>" +
-                "<br>" + "<strong>Number of Tweets:</strong> <span style='color:red'>" + d.number_post + "</span>";
+            return "<br><strong>Date:</strong> <span><b>" + d3.time.format("%b-%Y") (d.date) + "</b></span>" +
+                "<br>" + "<strong>Number of Tweets:</strong> <span>" + d.number_post + "</span>";
         })
 
     svg.call(tip);
@@ -220,61 +222,9 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
                     .each('end', function(d) { drawCircles(data2, user_color[1]['main'] ,'2') });
             }
 
-            //start plotting
-            // if (data1 != []) {
-
-            //     linepath = s.append('path')
-            //         .attr({
-            //             'd': line(data1),
-            //             'stroke': '#6bb7c7',
-            //             'fill': 'none',
-            //             // 'transform': 'translate(35,20)'
-            //         })
-            //         .style('stroke-width', 'px')
-            // }
-
-            // if (data2 != []) {
-            //     linepath2 = s.append('path')
-            //         .attr({
-            //             'd': line(data2),
-            //             'stroke': '#6bb7c7',
-            //             'fill': 'none',
-            //         })
-            //         .style('stroke-width', 'px');
-            // }
-
-
-            // animation of Line
-            // var totalLength = linepath.node().getTotalLength();
-            // linepath
-            //     .attr("stroke-dasharray", totalLength + " " + totalLength)
-            //     .attr("stroke-dashoffset", totalLength)
-            //     .transition()
-            //     .duration(1500)
-            //     .delay(1500 / 2)
-            //     .ease("linear")
-            //     .attr("stroke-dashoffset", 0)
-            //     .each('end', function(d) { drawCircles(data1, 'steelblue') });
-
-
-            // if (data2 != null) {
-            //     var totalLength2 = linepath.node().getTotalLength();
-            //     linepath2
-            //         .attr("stroke-dasharray", totalLength2 + " " + totalLength2)
-            //         .attr("stroke-dashoffset", totalLength2)
-            //         .transition()
-            //         .duration(1500)
-            //         .delay(1500 / 2)
-            //         .ease("linear")
-            //         .attr("stroke-dashoffset", 0)
-            //         .each('end', function(d) { drawCircles(data2, 'red') });
-
-            // }
-
-
             // define axis
             var axisX = d3.svg.axis().scale(scaleX)
-                .orient("bottom").ticks(10).tickFormat(d3.time.format('%Y-%m-%d'));
+                .orient("bottom").ticks(10).tickFormat(d3.time.format("%b-%Y"));
 
             var axisY = d3.svg.axis().scale(scaleY)
                 .orient("left").ticks(5);
@@ -327,7 +277,7 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
             .attr("transform", function(d) {
                 return "translate(" + this.getBBox().height * -2 + "," + this.getBBox().height + ")rotate(-45)";
             }).style({
-                'font-size': '11px'
+                'font-size': '15px'
             });
 
             s.append('g')
@@ -341,7 +291,7 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
                 'fill': '#000',
                 'stroke': 'none',
             }).style({
-                'font-size': '10px'
+                'font-size': '20px'
             });
 
             // adding dot
@@ -359,19 +309,18 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
                     .style("opacity", 0)
                     .on("click", function(d) {
                         //clean the description
-                        d3.selectAll('.description').remove()
-                        count = 0
+                        d3.select('#slide1').selectAll('.description').remove()
 
                         for (i = 0; i < d.values.length; i++) {
                             //console.log(d.values[i].dataSingle)
                             for (key in d.values[i].dataSingle) {
 
 
-                                d3.select('#slide').append("p")
+                                d3.select('#slide1').append("p")
                                     .attr("class", "description")
                                     .html(function() {
-
-                                        return "Twitter text: " + d.values[i].dataSingle[key].tweet_text
+                                        console.log(d.values[i].dataSingle[key])
+                                        return "<strong>"+d.values[i].dataSingle[key].created_at +":</strong><br>" + d.values[i].dataSingle[key].tweet_text+"<br><a hred='#'> View Live</a>"
                                     });
 
 
@@ -386,10 +335,6 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
                                 d3.select(this).classed('circle_active', true)
 
                             }
-
-                            count = count + 1
-
-                            if (count >= 5) { break }
 
                         }
                     })
@@ -407,23 +352,12 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
             /// add lengend
             var legendlist = name1.concat(name2)
 
-            var dataL = 0;
-            var offset = 120;
-
             var legend_g = svg.selectAll('.legends4')
                 .data(legendlist)
                 .enter().append('g')
-
                 .attr("class", "legends4")
                 .attr("transform", function(d, i) {
-                    if (i === 0) {
-                        dataL = d.length + offset
-                        return "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")"
-                    } else {
-                        var newdataL = dataL
-                        dataL += d.length + offset
-                        return "translate(" + (width - 100 * legendlist.length + newdataL) + "," + (margin.top / 2) + ")"
-                    }
+                    return i == 0 ? "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")" :  "translate(" + (100 * legendlist.length) + "," + (margin.top / 2) + ")"
                 });
 
             legend_g.append('rect')
@@ -461,14 +395,15 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
 
     /// slide function //
     function slideShow() {
-        $('#slide').css('right', '5%')
-        $('.slide').css('box-shadow', "-31px 8px 180px 2px rgba(14, 16, 33, 0.5)")
+        $('#slide1').css('right', '5%')
+        $('#slide1').css('opacity', '1')
     };
 
     function slideHide() {
         d3.selectAll(".circle_active").classed('circle_active', false);
-        $('#slide').css('right', '-35%')
-        // $('#slide').css('opacity', "0")
+        $('#slide1').css('opacity', '0')
+        $('#slide1').css('right', '-100%')
+        // $('#slide1').css('opacity', "0")
         // $('.slide').css('box-shadow', "-31px 8px 180px 2px rgba(14, 16, 33, 0.5)")
     };
 
@@ -478,7 +413,7 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
         return deferred.promise();
     };
 
-    function secondF() { setTimeout(function() { slideShow(); }, 800); }
+    function secondF() { setTimeout(function() { slideShow(); }, 300); }
 
     function tween(b, callback) {
         return function(a) {

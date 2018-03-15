@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -12,12 +11,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='temp/template.css') }}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
-
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!-- load js library -->
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -27,13 +24,12 @@
     <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
     <script src="/static/cloud.js"></script>
-
     <style type="text/css">
     body {
-        width:100%;
+        width: 100%;
     }
+
     .linedot {
         /*fill: #6bb7c7;*/
         stroke: #fff;
@@ -50,23 +46,24 @@
         text-align: left;
     }
 
-    #slide {
+    .slide {
         position: absolute;
-        padding: 10px;
-
+        padding: 30px;
         width: 30%;
         height: 70%;
-        background-color: gray;
-        opacity: 1;
-        border-radius: 5px;
-        right: -35%;
-        top: 20%;
-        color: white;
+        background-color: white;
+        opacity: 0;
+        border-radius: 10px;
+        right: -100%;
+        /*     color: white;*/
         z-index: 2;
-        transition: all 0.8s cubic-bezier(0.71, -0.1, 0.09, 1.07)
+        transition: all 0.2s cubic-bezier(0.71, -0.1, 0.09, 1.07);
+        overflow: scroll;
+        min-width: 500px;
+        -webkit-box-shadow: 10px 10px 34px 1px rgba(0, 0, 0, 0.75);
+        -moz-box-shadow: 10px 10px 34px 1px rgba(0, 0, 0, 0.75);
+        box-shadow: 10px 10px 34px 1px rgba(0, 0, 0, 0.75);
     }
-
-
 
     .popup_button_container {
         display: inline-block;
@@ -100,27 +97,35 @@
         fill: yellow;
     }
 
+    .wc_text {
+        cursor: pointer;
+    }
+
+    .wc_active {
+        fill: green!important;
+        background-color: red
+    }
+
+
     .areaChart {
         fill: url(#area-gradient);
-        opacity:0.8;
+        opacity: 0.8;
     }
 
 
     .areaChart2 {
         fill: url(#area-gradient2);
-        opacity:0.8;
+        opacity: 0.8;
     }
 
     .d3-tip {
         line-height: 1;
         font-weight: bold;
         padding: 12px;
-        background: rgba(0, 0, 0, 0.8);
-        color: #fff;
+       /* background: rgba(0, 0, 0, 0.8);*/
+       /* color: #fff;*/
         border-radius: 2px;
     }
-
-
     /* Creates a small triangle extender for the tooltip */
 
     .d3-tip:after {
@@ -129,52 +134,59 @@
         font-size: 10px;
         width: 100%;
         line-height: 1;
-        color: rgba(0, 0, 0, 0.8);
+        /*color: rgba(0, 0, 0, 0.8);*/
         content: "\25BC";
         position: absolute;
         text-align: center;
     }
-
-
-
-
-
     /* Style northward tooltips differently */
+
     .d3-tip.n:after {
         margin: -1px 0 0 0;
         top: 100%;
         left: 0;
     }
 
-    .wrap {
-        /*min-height: calc(100% - 220px);
-        height: auto !important;
-        height: 100%;
-        margin: 0 auto -150px;
-        width:100%;*/
-    /*    overflow:scroll*/;
+    .sec_leader {
+        display: none;
     }
 
 
-    .sec_leader {
+    
+    #search {
+        /*position: absolute;*/
+        position: fixed;
+        top: 50px;
+        left: 0;
+        height: 100%;
+        border: 2px solid #ddd;
+        z-index: 3;
+        /*transform: translateX(-100%);*/
+        background-color: #ffffff;
+        transition: transform 0.3s, box-shadow 0.3s;
+        width: 20%;
+    }
+
+    #filter_btm_div {
+        position: fixed;
+        top: 50px;
+        border-radius: 20%;
+        margin:20px;
+        z-index:2;
+
+    }
+
+    #back_btm {
         display:none;
     }
 
 
-    #search {
-      position:fixed;
-      top:100px;
-      width:20%;
-    }
-
     #plot {
-        margin-top:100px;
-        margin-left: 20%; /* Same as the width of the sidenav */
-        margin-right:10px;
-
+        margin-top: 50px;
+        margin-left: 20%;
+        /* Same as the width of the sidenav */
+        padding-top: 20px
     }
-
-
 
     .footer {
         width: 100%;
@@ -194,12 +206,10 @@
         position: fixed !important;
         top: 0;
         width: 100%;
+        z-index: 100;
     }
-
-
-
-
     /* for bar */
+
     .chart {
         margin: 10px;
         padding-top: 10px;
@@ -231,46 +241,56 @@
         fill: #2216ff;
     }
 
+    @media screen and (max-width: 1200px) {
+
+        #search {
+            
+            transform: translateX(-100%);
+            width: 50%;
+        }
+
+        #plot {
+            margin-left: 40px;
+            margin-right: 40px;
+        }
+        #back_btm {
+        display:block;
+        }
+    }
     </style>
-
 </head>
-
-
-    <nav  class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="#">Follow Your Leaders</a>
-            </div>
-                <ul class="nav navbar-nav">
-                    <li><a href="/">Home</a></li>
-                    <!-- <li><a href="/legislators">Legislators</a></li> -->
-                    <li><a href="/leaders">Leaders</a></li>
-                    <li><a href="/group">Group</a></li>
-                    <li><a href="/faq">FAQ</a></li>
-                </ul>
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Follow Your Leaders</a>
         </div>
-    </nav>
-
-
-    {% block content %}{% endblock %}
-
-    <footer class="footer">
-        <div class="container">
-            <div class="col-lg-3 col-md-6">
-                <h4>Follow</h4>
-                <ul>
-                    <li><a href="http://www.github.com/casmlab">GitHub</a></li>
-                    <li><a href="http://www.twitter.com/casmlab">Twitter</a></li>
-                </ul>
-                <p>Built with Bootstrap.</p>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <h4>Contact</h4>
-                <ul>
-                    <li><a href="mailto:info@casmlab.org">info@casmlab.org</a></li>
-                </ul>
-            </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <!-- <li><a href="/legislators">Legislators</a></li> -->
+            <li><a href="/leaders">Leaders</a></li>
+            <li><a href="/group">Group</a></li>
+            <li><a href="/faq">FAQ</a></li>
+        </ul>
+    </div>
+</nav>
+{% block content %}{% endblock %}
+<footer class="footer">
+    <div class="container">
+        <div class="col-lg-3 col-md-6">
+            <h4>Follow</h4>
+            <ul>
+                <li><a href="http://www.github.com/casmlab">GitHub</a></li>
+                <li><a href="http://www.twitter.com/casmlab">Twitter</a></li>
+            </ul>
+            <p>Built with Bootstrap.</p>
         </div>
-    </footer>
+        <div class="col-lg-3 col-md-6">
+            <h4>Contact</h4>
+            <ul>
+                <li><a href="mailto:info@casmlab.org">info@casmlab.org</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
 
 </html>
