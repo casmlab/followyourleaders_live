@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <style>
-.no_show {
-    font-size:50px;
-    fill: grey !important;
-    margin:10% ;
-}
 
 .scroller {
     display:block;
@@ -106,14 +100,11 @@
 <body>
     <div class="wrap">
         <div id="allplot">
-
         <div id='filter_btm_div'>
             <input type="button" id="filter_btm" value="Filter">
         </div>
-
-
+            <!-- filter -->
             <div id="search" class='searchCompare' action="" name="search">
-
                 <div style="margin:10px">
                     <table style="width:100%">
                         <tr>
@@ -121,7 +112,6 @@
                         <td align="right"><input type="button" id="back_btm" value="back"></td>
                         </tr>
                     </table>
-
                     <table class='filter_table'>
                         <tr>
                             <td><label for="party_categories"><b>Party: </b></label></td>
@@ -137,18 +127,13 @@
                                 <option value='default'>Select Leader ...</option>
                             </select></td>
                         </tr>
-
-
                     </table>
-                    
                     <table class='filter_table'>
                         <tr id="toggle_chart">
                                 <td><b>Compare with another leader?</b></td>
                                 <td><input type="checkbox" data-toggle="toggle" data-size="small" data-on="Yes" data-off="No" class="cd-filter-trigger" id='compare_choice'></td>
                         </tr>
                     </table>
-
-
                     <table class='filter_table sec_leader'>
                         <tr>
                             <td> <label for="party_categories_sec"><b>Party: </b></label></td>
@@ -165,21 +150,18 @@
                             </select></td>
                         </tr>
                     </table>
-
-
-
                     <div class='filter_table'>
                         <input type="button" id="submit" value="submit">
                     </div>
                 </div>
             </div>
+            <!-- plot -->
             <div id='plot' class='section'>
                 <!-- bio -->
                 <div class="graph-wrapper fullscreen text-capitalize">
                     <!-- if compare mode -->
                     {% if ((basic2 is defined) and ("name" in basic2) )%}
                     <div  class='row bioContainer' >
-                        {% if ((basic2['party']|string() == 'Republican') and (basic0['party']|string() == 'Democrat'))%}
                         <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
                             <div class='leaderbio'>
                                 <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
@@ -192,7 +174,7 @@
                                     </tr>
                                     <tr>
                                         <td>Chamber</td>
-                                        <td>{{basic0['chamber']}}</td>
+                                        <td>{{basic0['chamber_name']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Party</td>
@@ -217,7 +199,7 @@
                                     </tr>
                                     <tr>
                                         <td>Chamber</td>
-                                        <td>{{basic2['chamber']}}</td>
+                                        <td>{{basic2['chamber_name']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Party</td>
@@ -229,63 +211,8 @@
                                     </tr>
                                 </table>
                             </div>
-                        </div>     
-                       
-                        {% else %}
-
-                        <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
-                            <div class='leaderbio'>
-                                <img src="{{basic2['photo_url']}}" alt="img0" class="img-thumbnail">
-                                <h2 class='text-capitalize' >{{basic2['chamber']}}. {{basic2['name']}}</h2>
-                                <a href="#">10 most recent tweets</a>
-                                <table class='leaderTable'>
-                                    <tr>
-                                        <td>twitter account</td>
-                                        <td>  <a href="https://twitter.com/{{basic2['twitter_name']}}"">@{{basic2['twitter_name']}}</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Chamber</td>
-                                        <td>{{basic2['chamber']}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Party</td>
-                                        <td>{{basic2['party']}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>State</td>
-                                        <td>{{basic2['state']}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                        <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
-                            <div class='leaderbio'>
-                                <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
-                                <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
-                                <a href="#">10 most recent tweets</a>
-                                <table class='leaderTable'>
-                                    <tr>
-                                        <td>twitter account</td>
-                                        <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Chamber</td>
-                                        <td>{{basic0['chamber']}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Party</td>
-                                        <td>{{basic0['party']}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>State</td>
-                                        <td>{{basic0['state']}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>  
-                        {% endif %}     
-                    </div>
-                    
+                        </div>        
+                    </div>      
                     <!-- Single mode -->
                     {% else %}
                     <div class='row bioContainer'>
@@ -302,7 +229,7 @@
                                     </tr>
                                     <tr>
                                         <td>Chamber</td>
-                                        <td>{{basic0['chamber']}}</td>
+                                        <td>{{basic0['chamber_name']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Party</td>
@@ -316,12 +243,11 @@
                             </div>
                         </div>
                     </div>
-
                     {% endif %}
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>        
                 </div>
                 
-                 <!-- time series -->
+                 <!-- time series plot -->
                 <div class="graph-wrapper fullscreen">
                     <center><h1> Title 1</h1></center>
                     <div id="graphic"></div>
@@ -335,7 +261,7 @@
                     </div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-                <!-- hash -->
+                <!-- hashtags plot -->
                 <div class="graph-wrapper fullscreen">
                     <center><h1> Title 2</h1></center>
                     <div id="hash_chart0"></div>
@@ -349,7 +275,7 @@
                     </div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-                <!-- word clouds -->
+                <!-- word cloud plot -->
                 <div class="graph-wrapper fullscreen" >
                     <center><h1> Title 3</h1></center>
                     <div id="wcloud"></div>
@@ -365,7 +291,7 @@
             </div>
         </div>
     </div>
-
+    <!-- footer -->
    <footer class="footer">
         <div class="container">
             <div class="col-lg-3 col-md-6">
@@ -386,14 +312,13 @@
     </footer>
 
     <!-- load drawing  function js files -->
-    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=ssssssssssddds"></script>
-    <script type="text/javascript" src="/static/drawBar.js?ver=sssssssssss"></script>
+    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=0315s"></script>
+    <script type="text/javascript" src="/static/drawBar.js?ver=ssdssssssssss"></script>
     <script type="text/javascript" src="/static/colorbrewer.min.js?ver=sdssss8"></script>
     <script type="text/javascript" src="/static/drawWordCloud.js?ver=ssssssss1s7"></script>
     <script type="text/javascript" src="/static/dataFormate.js?ver=012s2ddsss017"></script>
-
     <!-- making drop down file -->
-    <script type="text/javascript" src="/static/makeDD.js?ver=012s2017"></script>    
+    <script type="text/javascript" src="/static/makeDD.js?ver=07"></script>    
     <!-- load execute function -->
     <script>
     
@@ -415,7 +340,7 @@
 
     // temp parameter
     let searchParams = new URLSearchParams(window.location.search)
-    var compare=searchParams.get('compare')=='T'?true:false;
+    var compare=(searchParams.get('leader0') && searchParams.get('leader1')) ? true:false;
 
     // define color panal:
     color_panal={
@@ -455,8 +380,8 @@
     // data for url
     url={{url_0|tojson}}
     //
-    leader1={{basic0|tojson}}
-    var leader2;
+    leader0={{basic0|tojson}}
+    var leader1;
 
 
 
@@ -476,7 +401,7 @@
         lineData2={{timeseries_2|tojson}};
         barraw2={{hash_2|tojson}};
         url2={{url_2|tojson}};
-        leader2={{basic2|tojson}};
+        leader1={{basic2|tojson}};
         data_line2=format_linedata(lineData2);
         //databar2=format_bardata(barraw2);
         databar2=format_url(url2);
@@ -497,9 +422,9 @@
             $('.sec_leader').css('display','none')
         }
     });
-    // submit listener
-    $('#submit').click(function() { 
 
+
+    $('#submit').click(function() { 
         // single mode
         if ($("#compare_choice")[0].checked==false) {
             
@@ -507,7 +432,8 @@
                 alert('you must choose one leader')
             }
             else{
-                document.location = '/leaders?leader0='+$('#leader_select').val()+'&compare=F';
+                document.location = '/leaders?leader0='+$('#leader_select').val();
+                //document.location = '/leaders/'+$('#leader_select').val();
             }
 
         } else {
@@ -515,7 +441,8 @@
                 alert('you must choose two leaders to compare')
             }
             else{
-                document.location = '/leaders?leader0='+$('#leader_select').val()+'&leader2='+$('#leader_select_sec').val()+'&compare=T';
+                document.location = '/leaders?leader0='+$('#leader_select').val()+'&leader1='+$('#leader_select_sec').val();
+                //document.location = '/leaders/'+$('#leader_select').val()+'/'+$('#leader_select_sec').val();
             }
         }
         
@@ -544,67 +471,44 @@
 
     // single mode
     if (compare==false) {
-        if (leader1['party']=="Republican") {
-
-            //http://0.0.0.0:5000/leaders?leader0=K000362&leader2=G000560&compare=T
+        if (leader0['party']=="Republican") {
             user_color=[color_panal['Repu1'],color_panal['Repu1']];
         }
-        if (leader1['party']=="Democrat") {
+        if (leader0['party']=="Democrat") {
             user_color=[color_panal['Demo1'],color_panal['Demo1']];
         }
     }
     else {
         // compare mode
-        if (leader1['party']==leader2['party']) {
-            user_color= leader1['party']=="Republican"? [color_panal['Repu1'],color_panal['Repu2']]:[color_panal['Demo1'],color_panal['Demo2']]
+        if (leader0['party']==leader1['party']) {
+            user_color= leader0['party']=="Republican"? [color_panal['Repu1'],color_panal['Repu2']]:[color_panal['Demo1'],color_panal['Demo2']]
         }
 
-        if (leader1['party']=="Republican" & leader2['party']=="Democrat") {
+        if (leader0['party']=="Republican" & leader1['party']=="Democrat") {
             user_color=[color_panal['Repu1'],color_panal['Demo1']];
         }
 
-        if (leader1['party']=="Democrat" & leader2['party']=="Republican") {
+        if (leader0['party']=="Democrat" & leader1['party']=="Republican") {
             user_color=[color_panal['Repu1'],color_panal['Demo1']];
-            // switch
-            [leader1,leader2] = [leader2,leader1];
-            [data_line0,data_line2] = [data_line2,data_line0];
-            [databar,databar2] = [databar2,databar];
-            [datawc,datawc2] = [datawc2,datawc];
-
         }
     }
 
 
-   //////////////////////////////////////////////// draw area chart ///////////////////////////////////////////////////////
-    var numberOfItem = 15;
-    compare==true? drawLineplot('compare',data_line0,data_line2,[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[capitalizeFirstLetter(leader2['chamber'])+'. '+leader2['name']]):drawLineplot('single',data_line0,[],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[]);
-   //////////////////////////////////////////////// draw bar chart ///////////////////////////////////////////////////////
-    var numberOfItem = 15;
-    compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[capitalizeFirstLetter(leader2['chamber'])+'. '+leader2['name']]):drawbar('single',databar.splice(0,numberOfItem),[],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[]);
 
-    //////////////////////////////////////////////// draw wc chart ///////////////////////////////////////////////////////
-    var numberOfWord=100;
-
-    compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[capitalizeFirstLetter(leader2['chamber'])+'. '+leader2['name']]):drawWordCloud('single',datawc.splice(0,numberOfWord),[],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']],[])
-
-    /////////////////////// thing to do /////////////////////////////////////////////////////////////////////////////////
-    // 1. slide page show recent tweet in area chart
-    // close button listener
     $('.popup_button').click(function() {slideHide()});
 
-
     //// set default /////
-    $("#party_categories").val(leader1['party']);
-    $("#chamber_categories").val(leader1['chamber']);
+    $("#party_categories").val(leader0['party']);
+    $("#chamber_categories").val(leader0['chamber']);
     fun_makedd(all_filter,'#party_categories','#chamber_categories','party_cat','chamber_car','#leader_select')
-    $("#leader_select").val(leader1['bioguide'])
+    $("#leader_select").val(leader0['bioguide'])
 
-    if (compare==true & leader2 != undefined) {
+    if (compare==true & leader1 != undefined) {
 
-            $("#party_categories_sec").val(leader2['party']);
-            $("#chamber_categories_sec").val(leader2['chamber']);
+            $("#party_categories_sec").val(leader1['party']);
+            $("#chamber_categories_sec").val(leader1['chamber']);
             fun_makedd(all_filter,'#party_categories_sec','#chamber_categories_sec','party_cat','chamber_car','#leader_select_sec')
-            $("#leader_select_sec").val(leader2['bioguide'])
+            $("#leader_select_sec").val(leader1['bioguide'])
             $('.sec_leader').css('display','block');
             document.getElementById('compare_choice').checked = true;
     }
@@ -624,6 +528,62 @@
     $( document ).ready(function() {
             $("html, body").scrollTop(0)
     });
+
+
+
+
+    ///////////////////////Function for scrolling and drawing /////////////////////////////////////////////////
+
+    var Hash_Handler = function(){
+        if ($('#hash_chart0').isOnScreen()) {
+            console.log("in hash_chart!");
+            var numberOfItem = 15;
+            compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawbar('single',databar.splice(0,numberOfItem),[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[]);
+            $(window).off("scroll", Hash_Handler);
+        } 
+    }
+
+    var wc_Handler = function(){
+        if ($('#wcloud').isOnScreen()) {
+            console.log("in wc!");
+            var numberOfWord=100;
+            compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawWordCloud('single',datawc.splice(0,numberOfWord),[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[])
+            $(window).off("scroll", wc_Handler);
+        } 
+    }
+
+    var line_Handler = function(){
+        if ($('#graphic').isOnScreen()) {
+            var numberOfItem = 15;
+            compare==true? drawLineplot('compare',data_line0,data_line2,[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawLineplot('single',data_line0,[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[]);
+            $(window).off("scroll", line_Handler);
+        } 
+    }
+
+
+    $.fn.isOnScreen = function(){
+        var win = $(window);
+        var viewport = {
+            top : win.scrollTop(),
+            left : win.scrollLeft()
+        };
+        viewport.right = viewport.left + win.width();
+        viewport.bottom = viewport.top + win.height()-100; // footer height
+        var bounds = this.offset();
+        bounds.right = bounds.left + this.outerWidth();
+        bounds.bottom = bounds.top + this.outerHeight();
+        return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+    };
+
+    // exercutive
+
+    $(document).ready(function(){
+        $(window).scroll(line_Handler);
+        $(window).scroll(Hash_Handler);
+        $(window).scroll(wc_Handler);
+    });
+
+
 
     </script>
 

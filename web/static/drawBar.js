@@ -1,17 +1,13 @@
     function drawbar(type, data, data2 = [], name1, name2 = []) {
 
-        // temp data; change left data to data2
-        // data = data.sort(function() { return 0.5 - Math.random() }).slice(0, numberOfItem + 1)
-        // var data2 = compare ? data.slice().sort(function() { return 0.5 - Math.random() }).slice(0, numberOfItem + 1) : null
 
-        /// normalize values
-        //console.log(type,data,data2)
-
+        //defind plot size
         var labelArea = 100;
-
-
         var chart,
             bar_height = 20;
+        var widthBAR = type == 'compare' ? ((width) / 2 - labelArea) - 100 : (width) - labelArea - 100;
+        var rightOffset = type == 'compare' ? widthBAR + 2 * labelArea + 100 : labelArea
+        var rightText = type == 'compare' ? -20 + widthBAR + 2 * labelArea + 100 : -20 + labelArea
 
 
         // change slide  position
@@ -19,10 +15,7 @@
         $('#slide2').css('height', height)
 
 
-        var widthBAR = type == 'compare' ? ((width) / 2 - labelArea) - 100 : (width) - labelArea - 100;
-
-        var rightOffset = type == 'compare' ? widthBAR + 2 * labelArea + 100 : labelArea
-        var rightText = type == 'compare' ? -20 + widthBAR + 2 * labelArea + 100 : -20 + labelArea
+        
 
         var xScale = d3.scale.linear()
             .range([0, widthBAR]);
@@ -35,7 +28,6 @@
         var maxYbar;
         if (data2.length <= 0) {
             if (data.length > 0) {
-
                 maxYbar = d3.max(data, function(d) {
                     return d.value
                 });
@@ -44,23 +36,18 @@
         } else {
 
             if (data.length > 0) {
-
                 maxYbar = d3.max([d3.max(data, function(d) { return d.value }), d3.max(data2, function(d) { return d.value })]);
             } else {
-
                 maxYbar = d3.max(data2, function(d) { return d.value });
             }
         }
 
+        // define svg
         var svg = d3.select("#hash_chart0")
             .append('svg')
             .attr('class', 'chart')
             .attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
-            // .style({
-            //     'border': '1px dotted #ccc'
-            // });
-
 
         // shift plot (margin)
         var chart = svg.append("g")
@@ -68,11 +55,9 @@
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
 
-        // only show when data is none!!
-        // if there is no data in the single mode // return 
 
+        // no data in single mode
         if (data.length <= 0 & type == 'single') {
-
             var textCenter = svg.append("text")
                 .attr('class', 'no_show')
                 .attr("x", '50%')
@@ -82,8 +67,7 @@
             return
         }
 
-        // if there is no data in the compare mode // return 
-
+        // no data in compare mode
         if (data.length <= 0 & data2.length <= 0 & type == 'compare') {
             var textCenter = svg.append("text")
                 .attr('class', 'no_show')
@@ -95,12 +79,9 @@
 
         }
 
-        //xScale.domain(d3.extent(data, function(d) {return d['value'];}));
+        
         xScale.domain([0, maxYbar]);
-
-
         y.domain(data.map(function(d) { return d.label; }));
-
         var yPosByIndex = function(d) { return y(d.label); };
 
 
@@ -298,10 +279,7 @@
                     });
             }
         }
-        // chart.append("text").attr("x",width/3).attr("y", 10).attr("class","title").text("Infant Mortality");
-        // chart.append("text").attr("x",width/3+rightOffset).attr("y", 10).attr("class","title").text("GDP");
-        // chart.append("text").attr("x",width+labelArea/3).attr("y", 10).attr("class","title").text("label");
-        // add lengend
+ 
 
 
         /// add lengend

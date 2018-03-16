@@ -62,7 +62,9 @@
             });
 
             $.each(chamber_temp, function(i, d) {
-                options_categories_chamber += '<option value="' + d + '">' + d + '<\/option>';
+
+                chamber_name= (d=='sen') ? "Senate" :"House";
+                options_categories_chamber += '<option value="' + d + '">' + chamber_name + '<\/option>';
             });
 
             $(chamber_dd).html(options_categories_chamber);
