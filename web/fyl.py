@@ -88,26 +88,8 @@ def catch_all(path):
 	return redirect(url_for("index"))
 
 if __name__ == "__main__":
-
-
 	
-	# Parse arguments
-	parser = argparse.ArgumentParser()
-	parser.add_argument("-m", help="mode")
-	args = parser.parse_args()
-
-	# Identify the mode
-	if not args.m:
-		args.m = 'norm'
-	mode = args.m
-
-	if mode == 'dev':
-		# update config class in development mode
-		app.config.from_object('config.DevelopmentConfig')
-	else:
-		app.config.from_object('config.ProductionConfig')
-	
-	app.run(threaded=True)
+	app.run(host='0.0.0.0',threaded=True)
 
 
 

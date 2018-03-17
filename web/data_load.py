@@ -1,3 +1,4 @@
+import argparse
 from flask import Flask
 from flask import render_template
 from flask_pymongo import PyMongo
@@ -14,6 +15,24 @@ import config
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
+
+
+######## initiate different mode #################	
+# Parse arguments
+parser = argparse.ArgumentParser()
+parser.add_argument("-m", help="mode")
+args = parser.parse_args()
+# Identify the mode
+if not args.m:
+	args.m = 'norm'
+mode = args.m
+
+if mode == 'dev':
+	# update config class in development mode
+	app.config.from_object('config.DevelopmentConfig')
+else:
+	app.config.from_object('config.ProductionConfig')
+
 mongo = PyMongo(app)
 
 # # function for returning data for the dropdown
