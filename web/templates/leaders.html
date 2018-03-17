@@ -153,6 +153,7 @@
             </div>
             <!-- plot -->
             <div id='plot' class='section'>
+            <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
                 <!-- bio -->
                 <div class="graph-wrapper fullscreen text-capitalize">
                     <!-- if compare mode -->
@@ -162,7 +163,7 @@
                             <div class='leaderbio'>
                                 <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
                                 <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
-                                <a href="#">10 most recent tweets</a>
+                                <a id='recent_tweet_1' class='recent_tweet' href="#">10 most recent tweets</a>
                                 <table class='leaderTable'>
                                     <tr>
                                         <td>twitter account</td>
@@ -187,7 +188,7 @@
                             <div class='leaderbio'>
                                 <img src="{{basic2['photo_url']}}" alt="img0" class="img-thumbnail">
                                 <h2 class='text-capitalize' >{{basic2['chamber']}}. {{basic2['name']}}</h2>
-                                <a href="#">10 most recent tweets</a>
+                                <a id='recent_tweet_2' class='recent_tweet' href="#">10 most recent tweets</a>
                                 <table class='leaderTable'>
                                     <tr>
                                         <td>twitter account</td>
@@ -218,6 +219,7 @@
                             </div>
                             <div class='col-lg-6' style='vertical-align: top;padding:30px'>
                                 <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                <a id='recent_tweet_1' class='recent_tweet' href="#">10 most recent tweets</a>
                                 <table class='leaderTable'>
                                     <tr>
                                         <td>twitter account</td>
@@ -287,6 +289,29 @@
             </div>
         </div>
     </div>
+
+    
+      <!-- Modal -->
+      <div class="modal fade" id="recent_tweet_model" role="dialog">
+        <div class="modal-dialog">
+        
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">10 Recent tweets</h4>
+            </div>
+            <div id='recent_tweet_model_text' class="modal-body">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+
+
     <!-- footer -->
    <footer class="footer">
         <div class="container">
@@ -322,6 +347,7 @@
     //https://stackoverflow.com/questions/37447343/d3-js-starting-animations-when-a-section-is-in-view
     //$( "#datestart" ).datepicker();
     //$( "#dateend" ).datepicker();
+
 
     
     // define height for each page
@@ -515,6 +541,28 @@
     $( document ).ready(function() {
             $("html, body").scrollTop(0)
     });
+
+    // Bootstrap Model
+    $('#recent_tweet_1').click(function(){
+        $('#recent_tweet_model_text').empty();
+        if ('recent_tweet_ids' in leader0) {
+            for (k in leader0['recent_tweet_ids']) {
+                $('#recent_tweet_model_text').append("<p> Tweet ID: <a target='_blank' href="+'https://twitter.com/statuses/'+leader0['recent_tweet_ids'][k]+">"+leader0['recent_tweet_ids'][k]+"</a></p>");
+            }
+        } else { $('#recent_tweet_model_text').append( "<p>Sorry ! No data has founded</p>" );}
+        $('#recent_tweet_model').modal('show');
+    });
+
+    $('#recent_tweet_2').click(function(){
+        $('#recent_tweet_model_text').empty();
+        if ('recent_tweet_ids' in leader1) {
+            for (k in leader1['recent_tweet_ids']) {
+                $('#recent_tweet_model_text').append("<p> Tweet ID: <a target='_blank' href="+'https://twitter.com/statuses/'+leader1['recent_tweet_ids'][k]+">"+leader1['recent_tweet_ids'][k]+"</a></p>");
+            }
+        } else { $('#recent_tweet_model_text').append( "<p>Sorry ! No data has founded</p>" );}
+        $('#recent_tweet_model').modal('show');
+    });
+
 
     ///////////////////////Function for scrolling and drawing /////////////////////////////////////////////////
     var Hash_Handler = function(){
