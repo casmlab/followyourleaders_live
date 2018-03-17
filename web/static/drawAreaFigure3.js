@@ -58,10 +58,6 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
         .y0(height)
         .y1(function(d) { return scaleY(d.number_post); });
 
-
-    /*-- Define position for slides --*/
-    $('#slide1').css('top',margin.top)
-    $('#slide1').css('height',height)
     /*-- Define the div for the tooltip --*/
     var div = d3.select("body").append("div")
         .attr("class", "tooltip")
@@ -159,7 +155,7 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
         .each('end', function(d) { drawCircles(data1, user_color[0]['main'] ,'1') });
 
     /* if it is a compare mode */
-    if (data2 != null) {
+    if (data2.length>0) {
         var startData2 = data2.map(function(d) {
             return {
                 date: d.date,
@@ -276,8 +272,7 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
                         d3.select('#slide1').append("p")
                             .attr("class", "description")
                             .html(function() {
-                                console.log(d.values[i].dataSingle[key])
-                                return "<strong>"+d.values[i].dataSingle[key].created_at +":</strong><br>" + d.values[i].dataSingle[key].tweet_text+"<br><a hred='#'> View Live</a>"
+                                return "<strong>"+d.values[i].dataSingle[key].created_at +":</strong><br>" + d.values[i].dataSingle[key].tweet_text+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+key+"'> View Live</a>"
                             });
 
                         if (d3.selectAll(".circle_active")[0].length == 0) { slideShow();

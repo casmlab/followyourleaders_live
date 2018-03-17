@@ -312,11 +312,11 @@
     </footer>
 
     <!-- load drawing  function js files -->
-    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=0315s"></script>
-    <script type="text/javascript" src="/static/drawBar.js?ver=ssdssssssssss"></script>
-    <script type="text/javascript" src="/static/colorbrewer.min.js?ver=sdssss8"></script>
-    <script type="text/javascript" src="/static/drawWordCloud.js?ver=ssssssss1s7"></script>
-    <script type="text/javascript" src="/static/dataFormate.js?ver=012s2ddsss017"></script>
+    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=slsss"></script>
+    <script type="text/javascript" src="/static/drawBar.js?ver=sss"></script>
+    <script type="text/javascript" src="/static/colorbrewer.min.js?ver=ss"></script>
+    <script type="text/javascript" src="/static/drawWordCloud.js?ver=ssssssssss"></script>
+    <script type="text/javascript" src="/static/dataFormate.js?ver=01ss7"></script>
     <!-- making drop down file -->
     <script type="text/javascript" src="/static/makeDD.js?ver=07"></script>    
     <!-- load execute function -->
@@ -502,6 +502,10 @@
     $("#chamber_categories").val(leader0['chamber']);
     fun_makedd(all_filter,'#party_categories','#chamber_categories','party_cat','chamber_car','#leader_select')
     $("#leader_select").val(leader0['bioguide'])
+    // change slide  position
+    $('.slide').css('top', margin.top)
+    $('.slide').css('height', height)
+
 
     if (compare==true & leader1 != undefined) {
 

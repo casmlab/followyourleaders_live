@@ -10,13 +10,6 @@
         var rightText = type == 'compare' ? -20 + widthBAR + 2 * labelArea + 100 : -20 + labelArea
 
 
-        // change slide  position
-        $('#slide2').css('top', margin.top)
-        $('#slide2').css('height', height)
-
-
-        
-
         var xScale = d3.scale.linear()
             .range([0, widthBAR]);
         var y = d3.scale.ordinal()
@@ -114,8 +107,9 @@
                     d3.select('#slide2').append("p")
                      .attr("class", "description")
                      .html(function() {
-                        return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + d.data[key]['text']+"<br><a hred='#'> View Live</a>"
-                                    });
+                        return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + 
+                            d.data[key]['text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+key+"'> View Live</a>"
+                    });
                  }
 
                   if (d3.selectAll(".bar_active")[0].length == 0) {
@@ -184,8 +178,9 @@
                             d3.select('#slide2').append("p")
                              .attr("class", "description")
                              .html(function() {
-                                return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + d.data[key]['text']+"<br><a hred='#'> View Live</a>"
-                                            });
+                                return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + 
+                                    d.data[key]['text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+key+"'> View Live</a>"
+                            });
                          }
 
                           if (d3.selectAll(".bar_active")[0].length == 0) {
