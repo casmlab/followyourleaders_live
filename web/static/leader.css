@@ -1,0 +1,94 @@
+/*body.application{
+	background: #f2f2f2;
+	padding: 0px 0px 0px;
+}
+
+body.application div[class^="row"] {
+	padding-left: 0px;
+	padding-bottom: 20px;
+}
+
+body.application > .container-fluid {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+body.application > .container {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+body.application div[class^="col-"] {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+body.application div[class^="col-"] div[class^="col-"] {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.navbar-default .container-fluid {
+	width: 100%;
+	background-color: #3d4a57;
+	padding: 0px 0px 0px;
+	opacity: .9;
+}
+
+.navbar-inverse .navbar-nav > li > a,
+.navbar a.navbar-brand {
+	width: 100%;
+	color: white;
+	text-decoration: none;
+	font-size: 200%;
+	font-family: Lato;
+	font-weight: 500;
+	padding-left: 2%;
+}
+
+body.application p.head {
+	font-size: 300%;
+	color: black;
+	opacity: .8;
+	padding-left: 0px;
+	padding-bottom: 20px;
+	font-family: Lato;
+	font-weight: 500;
+}
+
+
+body.application p.user-name {
+    font-size: 100%;
+    color: black;
+    opacity: .8;
+    padding-left: 0px;
+    padding-bottom: 3px;
+    font-family: Lato;
+    font-weight: 500;
+}
+
+body.application p.user-summary {
+    font-size: 100%;
+    color: black; 
+    opacity: .8;
+    padding-left: 0px;
+    padding-bottom: 3px;
+    font-family: Lato;
+    font-weight: 500;
+}
+
+
+
+
+
+
+
+
+*/
+
+.leaderRow {
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 30px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5
+}

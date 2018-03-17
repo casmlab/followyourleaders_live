@@ -1,0 +1,592 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<style>
+
+.scroller {
+    display:block;
+    width: 60px;
+    height:60px;
+    line-height:60px;
+   /* border: 2px solid #f5f5f5;*/
+    border-radius: 50%;
+    color:black;
+    text-align:center;
+    text-decoration:none;
+    background: white;
+    box-shadow: 0 0 3px gray;
+    font-size:15px;
+    font-weight:bold;
+    float:left;
+    position: absolute;
+    left: 50%;
+    margin-top:10px;
+    transform: translate(-50%,-50%);
+    bottom: 0
+}
+.scroller:hover {
+    background: gray;
+    color:white;
+    text-decoration:none;
+}
+
+.fullscreen {
+    position:relative;
+    overflow:hidden;
+}
+
+.bioContainer {
+    text-align:center;
+    margin: 0px 30px;
+}
+
+.leaderbio img {
+    width:100%;
+    max-width: 450px;
+    height: auto;
+}
+
+.leaderTable {
+ font-size:20px;
+ margin-top:30px;
+ width: 100%; 
+ text-align:left;
+}
+.leaderTable tr {
+     border-bottom:1pt solid black;
+}
+.leaderTable tr td:first-child {
+  width: 50%
+  font-weight:bold;
+}
+.leaderTable tr td:nth-child(2) {
+  width: 50%
+}
+
+.filter_table {
+    margin:20px;
+    font-size:18px;
+}
+
+.filter_table select {
+    min-width:100px;
+    width:100%;
+}
+
+.filter_table td {
+    padding:5px 1px;
+}
+
+.graph-wrapper {
+    margin:0px;
+}
+
+.fullscreen {
+    border-bottom: 1px solid #ccc;
+}
+
+.wrap {
+    margin-top: 50px;
+    margin-bottom: 100px;
+}
+
+.slide_header_table {
+    width:100%;
+    border-bottom: 1px solid #aaa;
+    margin-bottom:20px;
+}
+
+</style>
+<body>
+    <div class="wrap">
+        <div id="allplot">
+        <div id='filter_btm_div'>
+            <input type="button" id="filter_btm" value="Filter">
+        </div>
+            <!-- filter -->
+            <div id="search" class='searchCompare' action="" name="search">
+                <div style="margin:10px">
+                    <table style="width:100%">
+                        <tr>
+                        <td><h2>Show Details</h2></td>
+                        <td align="right"><input type="button" id="back_btm" value="back"></td>
+                        </tr>
+                    </table>
+                    <table class='filter_table'>
+                        <tr>
+                            <td><label for="party_categories"><b>Party: </b></label></td>
+                            <td><select name="party_categories" id="party_categories"  align="right" </select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="chamber_categories"><b>Chamber: </b></label></td>
+                            <td><select name="chamber_categories" id="chamber_categories"  align="right"></select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="leader_select"><b>Name: </b></label></td>
+                            <td><select name="leader_select" id="leader_select" class="leader-tittle"  align="right">
+                                <option value='default'>Select Leader ...</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                    <table class='filter_table'>
+                        <tr id="toggle_chart">
+                                <td><b>Compare with another leader?</b></td>
+                                <td><input type="checkbox" data-toggle="toggle" data-size="small" data-on="Yes" data-off="No" class="cd-filter-trigger" id='compare_choice'></td>
+                        </tr>
+                    </table>
+                    <table class='filter_table sec_leader'>
+                        <tr>
+                            <td> <label for="party_categories_sec"><b>Party: </b></label></td>
+                            <td><select name="party_categories_sec" id="party_categories_sec"></select></td>
+                        </tr>
+                        <tr>
+                            <td> <label for="chamber_categories_sec"><b>Chamber: </b></label></td>
+                            <td> <select name="chamber_categories" id="chamber_categories_sec"></select></td>
+                        </tr>
+                        <tr>
+                            <td><label for="leader_select_sec"><b>Name: </b></label></td>
+                            <td><select name="leader_select_sec" id="leader_select_sec" class="leader-tittle"  align="right">
+                                <option value='default'>Select Leader ...</option>
+                            </select></td>
+                        </tr>
+                    </table>
+                    <div class='filter_table'>
+                        <input type="button" id="submit" value="submit">
+                    </div>
+                </div>
+            </div>
+            <!-- plot -->
+            <div id='plot' class='section'>
+                <!-- bio -->
+                <div class="graph-wrapper fullscreen text-capitalize">
+                    <!-- if compare mode -->
+                    {% if ((basic2 is defined) and ("name" in basic2) )%}
+                    <div  class='row bioContainer' >
+                        <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
+                            <div class='leaderbio'>
+                                <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
+                                <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                <a href="#">10 most recent tweets</a>
+                                <table class='leaderTable'>
+                                    <tr>
+                                        <td>twitter account</td>
+                                        <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamber</td>
+                                        <td>{{basic0['chamber_name']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Party</td>
+                                        <td>{{basic0['party']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State</td>
+                                        <td>{{basic0['state']}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
+                            <div class='leaderbio'>
+                                <img src="{{basic2['photo_url']}}" alt="img0" class="img-thumbnail">
+                                <h2 class='text-capitalize' >{{basic2['chamber']}}. {{basic2['name']}}</h2>
+                                <a href="#">10 most recent tweets</a>
+                                <table class='leaderTable'>
+                                    <tr>
+                                        <td>twitter account</td>
+                                        <td>  <a href="https://twitter.com/{{basic2['twitter_name']}}"">@{{basic2['twitter_name']}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamber</td>
+                                        <td>{{basic2['chamber_name']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Party</td>
+                                        <td>{{basic2['party']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State</td>
+                                        <td>{{basic2['state']}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>        
+                    </div>      
+                    <!-- Single mode -->
+                    {% else %}
+                    <div class='row bioContainer'>
+                        <div class='leaderbio'>
+                            <div  class='col-lg-6' style=' vertical-align: middle;margin-bottom: 20px;'>
+                                <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
+                            </div>
+                            <div class='col-lg-6' style='vertical-align: top;padding:30px'>
+                                <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
+                                <table class='leaderTable'>
+                                    <tr>
+                                        <td>twitter account</td>
+                                        <td>  <a href="https://twitter.com/{{basic0['twitter_name']}}"">@{{basic0['twitter_name']}}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Chamber</td>
+                                        <td>{{basic0['chamber_name']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Party</td>
+                                        <td>{{basic0['party']}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>State</td>
+                                        <td>{{basic0['state']}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>        
+                </div>
+                
+                 <!-- time series plot -->
+                <div class="graph-wrapper fullscreen">
+                    <center><h1> Title 1</h1></center>
+                    <div id="graphic"></div>
+                    <div id='slide1' class='slide'>
+                        <table class='slide_header_table' id='slide_header_table_1'>
+                            <tr>
+                                <td align="left"><input type="button" id="close_btn_1" class='close_btn' value="X"></td>
+                                <td align="center" id='slide_title_1'><h2> Tweets Detail </h2></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
+                </div>
+                <!-- hashtags plot -->
+                <div class="graph-wrapper fullscreen">
+                    <center><h1> Title 2</h1></center>
+                    <div id="hash_chart0"></div>
+                    <div id='slide2' class='slide'>
+                        <table class='slide_header_table' id='slide_header_table_2'>
+                            <tr>
+                                <td align="left"><input type="button" id="close_btn_2" class='close_btn' value="X"></td>
+                                <td align="center" id='slide_title_2'><h2> Tweets Detail </h2></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
+                </div>
+                <!-- word cloud plot -->
+                <div class="graph-wrapper fullscreen" >
+                    <center><h1> Title 3</h1></center>
+                    <div id="wcloud"></div>
+                    <div id='slide3' class='slide'>
+                        <table class='slide_header_table' id='slide_header_table_3'>
+                            <tr>
+                                <td align="left"><input type="button" id="close_btn_3" class='close_btn' value="X"></td>
+                                <td align="center" id='slide_title_3'><h2> Tweets Detail </h2></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+   <footer class="footer">
+        <div class="container">
+            <div class="col-lg-3 col-md-6">
+                <h4>Follow</h4>
+                <ul>
+                    <li><a href="http://www.github.com/casmlab">GitHub</a></li>
+                    <li><a href="http://www.twitter.com/casmlab">Twitter</a></li>
+                </ul>
+                <p>Built with Bootstrap.</p>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h4>Contact</h4>
+                <ul>
+                    <li><a href="mailto:info@casmlab.org">info@casmlab.org</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- load drawing  function js files -->
+    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=0315s"></script>
+    <script type="text/javascript" src="/static/drawBar.js?ver=ssdssssssssss"></script>
+    <script type="text/javascript" src="/static/colorbrewer.min.js?ver=sdssss8"></script>
+    <script type="text/javascript" src="/static/drawWordCloud.js?ver=ssssssss1s7"></script>
+    <script type="text/javascript" src="/static/dataFormate.js?ver=012s2ddsss017"></script>
+    <!-- making drop down file -->
+    <script type="text/javascript" src="/static/makeDD.js?ver=07"></script>    
+    <!-- load execute function -->
+    <script>
+    
+    ////////////////////////////////// Load data//////////////////////////////////
+    //https://stackoverflow.com/questions/37447343/d3-js-starting-animations-when-a-section-is-in-view
+    //$( "#datestart" ).datepicker();
+    //$( "#dateend" ).datepicker();
+
+    
+    // define height for each page
+    $(".fullscreen").each(function(){
+        if ($(this).height()<window.innerHeight-170) {
+            $(this).css("height",window.innerHeight-170)
+        } else {
+            $(this).css("height", $(this).height()+120)
+        }
+    });
+
+
+    // temp parameter
+    let searchParams = new URLSearchParams(window.location.search)
+    var compare=(searchParams.get('leader0') && searchParams.get('leader1')) ? true:false;
+
+    // define color panal:
+    color_panal={
+        'Demo1': {
+            'main':'#039ADA',
+            'light':'#e5f6fd',
+            'word_color':['#039ada','#42a7dc','#60b5df','#78c3e1','#8ed2e3','#a2e1e5','#b4f0e7']
+        },
+        'Demo2': {
+            'main':'#3340DA',
+            'light':'#e5f6fd',
+            'word_color':['#1c24da','#4946da','#6164db','#7181da','#7e9fd9','#86bdd8','#8cdad6']
+        },
+        'Repu1':{
+            'main':'#d8171e',
+            'light':'#f7d0d2',
+            'word_color':['#d8171e','#e5513c','#f0765b','#f8997c','#feba9d','#ffddc1','#fffde4']
+        },
+        'Repu2':{
+            'main':'#FF7873',
+            'light':'#ffd8b3',
+            'word_color':['#ff822e','#ff904d','#ff9c66','#ffa77d','#fdb396','#f9bfaf','#f3cbca']
+        }
+    };
+
+    /// function to capitalize the string
+    function capitalizeFirstLetter(string) {return string.charAt(0).toUpperCase() + string.slice(1);}
+    
+    // data for making dd
+    all_filter={{all_name_id|tojson}}
+    //data for making area plot
+    lineData={{timeseries_0|tojson}}
+
+    // data for bar chart
+    barraw={{hash_0|tojson}}
+
+    // data for url
+    url={{url_0|tojson}}
+    //
+    leader0={{basic0|tojson}}
+    var leader1;
+
+
+
+    /////////////////start:  data formatting /////////////////////////////////////////
+    // define time formate
+    parseDate = d3.time.format('%Y-%m-%d').parse;
+    
+    data_line0=format_linedata(lineData)
+    //databar=format_bardata(barraw)
+    databar=format_url(url)
+
+    // data for word cloud
+    datawc=format_wc_data(barraw)
+
+    // if it is a compare mode
+    if (compare==true) {
+        lineData2={{timeseries_2|tojson}};
+        barraw2={{hash_2|tojson}};
+        url2={{url_2|tojson}};
+        leader1={{basic2|tojson}};
+        data_line2=format_linedata(lineData2);
+        //databar2=format_bardata(barraw2);
+        databar2=format_url(url2);
+        datawc2=format_wc_data(barraw2);
+    }
+
+    ///////////////////////// making Dropdown in the filter //////////////////////////////////
+
+    generatedropdown(all_filter, '#chamber_categories','#party_categories','#leader_select')
+    generatedropdown(all_filter, '#chamber_categories_sec','#party_categories_sec','#leader_select_sec')
+
+    // add event listener
+    // toggle listener
+    $("#compare_choice").change(function() {
+        if(this.checked) {
+            $('.sec_leader').css('display','block')
+        }else {
+            $('.sec_leader').css('display','none')
+        }
+    });
+
+
+    $('#submit').click(function() { 
+        // single mode
+        if ($("#compare_choice")[0].checked==false) {
+            
+            if ($('#leader_select').val()=='default'){
+                alert('you must choose one leader')
+            }
+            else{
+                document.location = '/leaders?leader0='+$('#leader_select').val();
+                //document.location = '/leaders/'+$('#leader_select').val();
+            }
+
+        } else {
+            if ($('#leader_select').val()=='default' || $('#leader_select_sec').val()=='default' ){
+                alert('you must choose two leaders to compare')
+            }
+            else{
+                document.location = '/leaders?leader0='+$('#leader_select').val()+'&leader1='+$('#leader_select_sec').val();
+                //document.location = '/leaders/'+$('#leader_select').val()+'/'+$('#leader_select_sec').val();
+            }
+        }
+        
+    } );
+
+    $('#filter_btm').click(function() { $('#search').css('transform','translateX(0)')})
+    $('#back_btm').click(function() { $('#search').css('transform','translateX(-100%)')})
+    // close btns listener
+    $('.close_btn').click(function() {
+        $(this).closest('.slide').css('opacity', '0');
+        $(this).closest('.slide').css('right', '-50%')
+    })
+
+
+    ///////////////////////////////////////////////////// define plot setting /////////////////////////////////////////////
+    
+    // define plot size
+    var margin = { top: 70, right: 70, bottom: 50, left: 100 },
+        width = $('#graphic').width() - margin.left - margin.right;
+    var height = $(window).height()-margin.top - margin.bottom-300;
+
+    ///////////////////////////////////////////////// define right left user //////////////////////////////////////////////
+
+    // change it later
+    user_color=[color_panal['Demo1'],color_panal['Repu1']];
+
+    // single mode
+    if (compare==false) {
+        if (leader0['party']=="Republican") {
+            user_color=[color_panal['Repu1'],color_panal['Repu1']];
+        }
+        if (leader0['party']=="Democrat") {
+            user_color=[color_panal['Demo1'],color_panal['Demo1']];
+        }
+    }
+    else {
+        // compare mode
+        if (leader0['party']==leader1['party']) {
+            user_color= leader0['party']=="Republican"? [color_panal['Repu1'],color_panal['Repu2']]:[color_panal['Demo1'],color_panal['Demo2']]
+        }
+
+        if (leader0['party']=="Republican" & leader1['party']=="Democrat") {
+            user_color=[color_panal['Repu1'],color_panal['Demo1']];
+        }
+
+        if (leader0['party']=="Democrat" & leader1['party']=="Republican") {
+            user_color=[color_panal['Repu1'],color_panal['Demo1']];
+        }
+    }
+
+
+
+    $('.popup_button').click(function() {slideHide()});
+
+    //// set default /////
+    $("#party_categories").val(leader0['party']);
+    $("#chamber_categories").val(leader0['chamber']);
+    fun_makedd(all_filter,'#party_categories','#chamber_categories','party_cat','chamber_car','#leader_select')
+    $("#leader_select").val(leader0['bioguide'])
+
+    if (compare==true & leader1 != undefined) {
+
+            $("#party_categories_sec").val(leader1['party']);
+            $("#chamber_categories_sec").val(leader1['chamber']);
+            fun_makedd(all_filter,'#party_categories_sec','#chamber_categories_sec','party_cat','chamber_car','#leader_select_sec')
+            $("#leader_select_sec").val(leader1['bioguide'])
+            $('.sec_leader').css('display','block');
+            document.getElementById('compare_choice').checked = true;
+    }
+    
+
+
+
+    $('.scroller').click(function () {
+
+        var fuller = $(this).parent().next('.graph-wrapper');
+        $("html, body").animate({
+            scrollTop: fuller.offset().top-50
+        }, 700);
+
+    });
+
+    $( document ).ready(function() {
+            $("html, body").scrollTop(0)
+    });
+
+
+
+
+    ///////////////////////Function for scrolling and drawing /////////////////////////////////////////////////
+
+    var Hash_Handler = function(){
+        if ($('#hash_chart0').isOnScreen()) {
+            console.log("in hash_chart!");
+            var numberOfItem = 15;
+            compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawbar('single',databar.splice(0,numberOfItem),[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[]);
+            $(window).off("scroll", Hash_Handler);
+        } 
+    }
+
+    var wc_Handler = function(){
+        if ($('#wcloud').isOnScreen()) {
+            console.log("in wc!");
+            var numberOfWord=100;
+            compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawWordCloud('single',datawc.splice(0,numberOfWord),[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[])
+            $(window).off("scroll", wc_Handler);
+        } 
+    }
+
+    var line_Handler = function(){
+        if ($('#graphic').isOnScreen()) {
+            var numberOfItem = 15;
+            compare==true? drawLineplot('compare',data_line0,data_line2,[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawLineplot('single',data_line0,[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[]);
+            $(window).off("scroll", line_Handler);
+        } 
+    }
+
+
+    $.fn.isOnScreen = function(){
+        var win = $(window);
+        var viewport = {
+            top : win.scrollTop(),
+            left : win.scrollLeft()
+        };
+        viewport.right = viewport.left + win.width();
+        viewport.bottom = viewport.top + win.height()-100; // footer height
+        var bounds = this.offset();
+        bounds.right = bounds.left + this.outerWidth();
+        bounds.bottom = bounds.top + this.outerHeight();
+        return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+    };
+
+    // exercutive
+
+    $(document).ready(function(){
+        $(window).scroll(line_Handler);
+        $(window).scroll(Hash_Handler);
+        $(window).scroll(wc_Handler);
+    });
+
+
+
+    </script>
+
+</body>
+
+{% endblock %}
