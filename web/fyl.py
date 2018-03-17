@@ -107,7 +107,7 @@ if __name__ == "__main__":
 	else:
 		app.config.from_object('config.ProductionConfig')
 	
-	app.run(host='0.0.0.0')
+	app.run(threaded=True)
 
 
 

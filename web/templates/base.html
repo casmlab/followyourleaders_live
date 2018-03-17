@@ -25,7 +25,9 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="/static/cloud.js"></script>
     <style type="text/css">
+
     body {
+        font-size:16px;
         width: 100%;
     }
     .wrap {
@@ -192,6 +194,7 @@
     }
 
     .footer {
+        color:#777;
         width: 100%;
         height: 100px;
         position: fixed;
@@ -202,7 +205,7 @@
         text-align: center;
         z-index: 20;
         background-color: #f8f8f8;
-        border: 1px solid #e7e7e7
+        border: 1px solid #e7e7e7;
     }
 
     .navbar {
@@ -286,21 +289,36 @@
 {% block content %}{% endblock %}
 <footer class="footer">
     <div class="container">
-        <div class="col-lg-3 col-md-6">
-            <h4>Follow</h4>
-            <ul>
-                <li><a href="http://www.github.com/casmlab">GitHub</a></li>
-                <li><a href="http://www.twitter.com/casmlab">Twitter</a></li>
-            </ul>
-            <p>Built with Bootstrap.</p>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <h4>Contact</h4>
-            <ul>
-                <li><a href="mailto:info@casmlab.org">info@casmlab.org</a></li>
-            </ul>
+        <div class="row" style='text-align: left'>
+            <div class=" col-xs-4 col-md-4 col-lg-5 align-text-bottom" style=''>
+                Copyright &copy;  Regents of the University of Michigan <span id="copyright"><script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script></span>
+            </div>
+            <div id='footerAddress' class=" col-xs-5 col-md-5 col-lg-5 align-text-bottom">
+                <p>University of Michigan, School of Information
+                    <br>105 S State St, Ann Arbor, MI, 48109.
+            </div>
+            <div class=" col-xs-3  col-md-2 col-lg-2 text-white align-text-bottom" style='text-align:right;font-size:25px'>
+                <div>
+                    <span>Contact:</span>
+                    <ul class="list-inline">
+                        <li class="list-inline-item" >
+                            <a class="btn-social btn-outline" href="https://github.com/casmlab" aria-label="second social link">
+                                <i class="fa fa-fw fab fa-github"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="btn-social btn-outline" href="http://www.libbyh.com/" aria-label="Third social link">
+                                <i class="fa fa-fw fa-dribbble"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </footer>
+
+
+
 
 </html>
