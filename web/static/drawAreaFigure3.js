@@ -300,7 +300,7 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
             .enter().append('g')
             .attr("class", "legends4")
             .attr("transform", function(d, i) {
-                return i == 0 ? "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")" :  "translate(" + (100 * legendlist.length) + "," + (margin.top / 2) + ")"
+                return i == 0 ? "translate(" + (100 * legendlist.length) + "," + (margin.top / 2) + ")" :  "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")"
             });
 
         legend_g.append('rect')

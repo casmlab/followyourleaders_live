@@ -69,8 +69,8 @@ function drawWordCloud(type, data1, data2, name1, name2) {
         .range([15, 40]);
 
     // define location
-    var wc1_postion = type == 'compare' ? [width * 3 / 4, height / 2] : [width * 1 / 2, height / 2];
-    var wc2_postion = [width / 4, height / 2];
+    var wc1_postion = type == 'compare' ? [width / 4, height / 2] : [width * 1 / 2, height / 2];
+    var wc2_postion = [width * 3 / 4, height / 2];
 
     // define wc size
     var wc_size = type == 'compare' ? [(width) / 2, height] : [width, height];
@@ -100,40 +100,8 @@ function drawWordCloud(type, data1, data2, name1, name2) {
 
     /****** if one of the leaders's data ==None, sho missing data error ****/
     if (type == 'compare') {
-        if (data2.length <= 0) {
-            var textCenter = svg.append("text")
-                .attr('class', 'no_show')
-                .attr("x", '25%')
-                .attr("y", '35%')
-                .attr("text-anchor", "middle")
-
-                textCenter.selectAll("tspan")
-                .data(['There is no data', 'for this congress','member.'])
-                .enter()
-                .append("tspan")
-                .attr("x",textCenter.attr("x"))
-                .attr("dy","1em")
-                .text(function(d){
-                    return d;
-                });
-        }
-        if (data1.length <= 0) {
-            var textCenter = svg.append("text")
-                .attr('class', 'no_show')
-                .attr("x", '75%')
-                .attr("y", '35%')
-                .attr("text-anchor", "middle")
-
-                textCenter.selectAll("tspan")
-                .data(['There is no data', 'for this congress','member.'])
-                .enter()
-                .append("tspan")
-                .attr("x",textCenter.attr("x"))
-                .attr("dy","1em")
-                .text(function(d){
-                    return d;
-                });
-        }
+        if (data1.length <= 0) { missingOne(svg,'25%')} 
+        if (data2.length <= 0) { missingOne(svg,'75%')}
     }
 
 
@@ -144,7 +112,7 @@ function drawWordCloud(type, data1, data2, name1, name2) {
         .enter().append('g')
         .attr("class", "legends4")
         .attr("transform", function(d, i) {
-            return i == 0 ? "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")" :  "translate(" + (100 * legendlist.length) + "," + (margin.top / 2) + ")"
+            return i == 0 ? "translate(" + (100 * legendlist.length) + "," + (margin.top / 2) + ")" :  "translate(" + (width - 100 * legendlist.length) + "," + (margin.top / 2) + ")"
         });
 
     legend_g.append('rect')
@@ -166,6 +134,24 @@ function drawWordCloud(type, data1, data2, name1, name2) {
         .style("text-anchor", "start")
         .style("font-size", 15)
 
+    /****** function for creating text when missing one leader's data*****/
+    function missingOne(svg,x_position) {
+        var textCenter = svg.append("text")
+                .attr('class', 'no_show')
+                .attr("x", x_position)
+                .attr("y", '35%')
+                .attr("text-anchor", "middle")
+
+            textCenter.selectAll("tspan")
+                .data(['There is no data', 'for this congress', 'member.'])
+                .enter()
+                .append("tspan")
+                .attr("x", textCenter.attr("x"))
+                .attr("dy", "1em")
+                .text(function(d) {
+                    return d;
+                });
+    }
 
     /****** function for drawing word clouds ******/
     function draw(words, s, position, fill) {
@@ -190,7 +176,6 @@ function drawWordCloud(type, data1, data2, name1, name2) {
                 d3.select('#slide3').append("p")
                  .attr("class", "description")
                  .html(function() {
-                    console.log(key)
                     return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + 
                     d.data[key]['text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+key+"'> View Live</a>"
                 });

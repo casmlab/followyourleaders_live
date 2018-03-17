@@ -245,7 +245,7 @@
                 
                  <!-- time series plot -->
                 <div class="graph-wrapper fullscreen">
-                    <center><h1> Title 1</h1></center>
+                    <center><h1>Tweets over time</h1></center>
                     <div id="graphic"></div>
                     <div id='slide1' class='slide'>
                         <table class='slide_header_table' id='slide_header_table_1'>
@@ -259,7 +259,7 @@
                 </div>
                 <!-- hashtags plot -->
                 <div class="graph-wrapper fullscreen">
-                    <center><h1> Title 2</h1></center>
+                    <center><h1> URLs</h1></center>
                     <div id="hash_chart0"></div>
                     <div id='slide2' class='slide'>
                         <table class='slide_header_table' id='slide_header_table_2'>
@@ -273,7 +273,7 @@
                 </div>
                 <!-- word cloud plot -->
                 <div class="graph-wrapper fullscreen" >
-                    <center><h1> Title 3</h1></center>
+                    <center><h1>Hashtags</h1></center>
                     <div id="wcloud"></div>
                     <div id='slide3' class='slide'>
                         <table class='slide_header_table' id='slide_header_table_3'>
@@ -308,10 +308,10 @@
     </footer>
 
     <!-- load drawing  function js files -->
-    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=slsssssssssssds"></script>
-    <script type="text/javascript" src="/static/drawBar.js?ver=ssdsds"></script>
+    <script type="text/javascript" src="/static/drawAreaFigure3.js?q=slssssdssdssssssssds"></script>
+    <script type="text/javascript" src="/static/drawBar.js?ver=sasddlossdsddds"></script>
     <script type="text/javascript" src="/static/colorbrewer.min.js?ver=ss"></script>
-    <script type="text/javascript" src="/static/drawWordCloud.js?ver=ssssssssss"></script>
+    <script type="text/javascript" src="/static/drawWordCloud.js?ver=sa1ssssssssssss"></script>
     <script type="text/javascript" src="/static/dataFormate.js?ver=01ss7"></script>
     <!-- making drop down file -->
     <script type="text/javascript" src="/static/makeDD.js?ver=07"></script>    
@@ -480,16 +480,10 @@
             user_color= leader0['party']=="Republican"? [color_panal['Repu1'],color_panal['Repu2']]:[color_panal['Demo1'],color_panal['Demo2']]
         }
 
-        if (leader0['party']=="Republican" & leader1['party']=="Democrat") {
-            user_color=[color_panal['Repu1'],color_panal['Demo1']];
-        }
-
         if (leader0['party']=="Democrat" & leader1['party']=="Republican") {
-            user_color=[color_panal['Repu1'],color_panal['Demo1']];
+            user_color=[color_panal['Demo1'],color_panal['Repu1']];
         }
     }
-
-
 
     $('.popup_button').click(function() {slideHide()});
 
@@ -502,9 +496,7 @@
     $('.slide').css('top', margin.top)
     $('.slide').css('height', height)
 
-
     if (compare==true & leader1 != undefined) {
-
             $("#party_categories_sec").val(leader1['party']);
             $("#chamber_categories_sec").val(leader1['chamber']);
             fun_makedd(all_filter,'#party_categories_sec','#chamber_categories_sec','party_cat','chamber_car','#leader_select_sec')
@@ -512,28 +504,19 @@
             $('.sec_leader').css('display','block');
             document.getElementById('compare_choice').checked = true;
     }
-    
-
-
 
     $('.scroller').click(function () {
-
         var fuller = $(this).parent().next('.graph-wrapper');
         $("html, body").animate({
             scrollTop: fuller.offset().top-50
         }, 700);
-
     });
 
     $( document ).ready(function() {
             $("html, body").scrollTop(0)
     });
 
-
-
-
     ///////////////////////Function for scrolling and drawing /////////////////////////////////////////////////
-
     var Hash_Handler = function(){
         if ($('#hash_chart0').isOnScreen()) {
             console.log("in hash_chart!");
