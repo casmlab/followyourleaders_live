@@ -379,13 +379,25 @@
         'Repu1':{
             'main':'#d8171e',
             'light':'#f7d0d2',
-            'word_color':['#d8171e','#e5513c','#f0765b','#f8997c','#feba9d','#ffddc1','#fffde4']
+            'word_color':['#d8171e','#bd1427','#a2112e','#870e33','#6e0c38','#520a3c','#360940']
         },
         'Repu2':{
-            'main':'#FF7873',
-            'light':'#ffd8b3',
-            'word_color':['#ff822e','#ff904d','#ff9c66','#ffa77d','#fdb396','#f9bfaf','#f3cbca']
+            'main':'#e06b85',
+            'light':'#FEB692',
+            'word_color':['#e06b85','#e66c75','#ea6e6b','#ef6f5c','#f3714e','#f6723d','#fa742b']
+        },
+
+        'Inde1':{
+            'main':'#FFE985',
+            'light':'#FA742B',
+            'word_color':['#ffe985','#ffd776','#ffc567','#ffb258','#ff9e49','#fd8a3a','#fa742b']
+        },
+        'Inde2':{
+            'main':'#CAC531',
+            'light':'#45B649',
+            'word_color':['#cac531','#b7c336','#a4c13b','#91be3e','#7bbc42','#63b946','#45b649']
         }
+
     };
 
     /// function to capitalize the string
@@ -455,7 +467,6 @@
             }
             else{
                 document.location = '/leaders?leader0='+$('#leader_select').val();
-                //document.location = '/leaders/'+$('#leader_select').val();
             }
 
         } else {
@@ -464,7 +475,6 @@
             }
             else{
                 document.location = '/leaders?leader0='+$('#leader_select').val()+'&leader1='+$('#leader_select_sec').val();
-                //document.location = '/leaders/'+$('#leader_select').val()+'/'+$('#leader_select_sec').val();
             }
         }
         
@@ -495,19 +505,23 @@
     if (compare==false) {
         if (leader0['party']=="Republican") {
             user_color=[color_panal['Repu1'],color_panal['Repu1']];
-        }
-        if (leader0['party']=="Democrat") {
+        } else if (leader0['party']=="Democrat") {
             user_color=[color_panal['Demo1'],color_panal['Demo1']];
+        } else {
+             user_color=[color_panal['Inde1'],color_panal['Inde1']];
         }
     }
     else {
         // compare mode
         if (leader0['party']==leader1['party']) {
-            user_color= leader0['party']=="Republican"? [color_panal['Repu1'],color_panal['Repu2']]:[color_panal['Demo1'],color_panal['Demo2']]
-        }
+            if (leader0['party']=="Republican") { user_color=[color_panal['Repu1'],color_panal['Repu2']] }
+            else if (leader0['party']=="Democrat") { user_color=[color_panal['Demo1'],color_panal['Demo2']] }
+            else { user_color=[color_panal['Inde1'],color_panal['Inde2']] }
 
-        if (leader0['party']=="Democrat" & leader1['party']=="Republican") {
-            user_color=[color_panal['Demo1'],color_panal['Repu1']];
+        } else {
+           leader0_color = leader0['party']=="Republican" ? color_panal['Repu1'] : leader0['party']=="Democrat" ? color_panal['Demo1'] : color_panal['Inde1']
+           leader1_color = leader1['party']=="Republican" ? color_panal['Repu1'] : leader1['party']=="Democrat" ? color_panal['Demo1'] : color_panal['Inde1']
+           user_color=[leader0_color,leader1_color];
         }
     }
 
@@ -607,7 +621,6 @@
     };
 
     // exercutive
-
     $(document).ready(function(){
         $(window).scroll(line_Handler);
         $(window).scroll(Hash_Handler);
