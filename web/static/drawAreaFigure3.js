@@ -94,8 +94,6 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
         return
     }
 
-;
-
     //define gradient color
     svg.append("linearGradient")
         .attr("id", "area-gradient")
@@ -129,7 +127,6 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
             return d.color;
         });
 
-
     // animation of area
     var startData = data1.map(function(d) {
         return {
@@ -138,21 +135,23 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
         };
     });
 
-    s.append("path")
-        .data([startData])
-        .attr("class", "areaChart")
-        .attr("d", area)
-        .on('mouseover', function(d) { d3.select(this).style("opacity", "1"); 
-            d3.select('.areaChart2').style("opacity", "0");
-            d3.selectAll('.linedot2').style("opacity", "0");
-        })
-        .on('mouseout', function(d) { d3.select(this).style("opacity", "0.8"); 
-            d3.select('.areaChart2').style("opacity", "0.8");
-            d3.selectAll('.linedot2').style("opacity", "1");
-        })
-        .transition().duration(1500)
-        .attrTween('d', tween(data1, area))
-        .each('end', function(d) { drawCircles(data1, user_color[0]['main'] ,'1') });
+    if (data1.length>0) {
+        s.append("path")
+            .data([startData])
+            .attr("class", "areaChart")
+            .attr("d", area)
+            .on('mouseover', function(d) { d3.select(this).style("opacity", "1"); 
+                d3.select('.areaChart2').style("opacity", "0");
+                d3.selectAll('.linedot2').style("opacity", "0");
+            })
+            .on('mouseout', function(d) { d3.select(this).style("opacity", "0.8"); 
+                d3.select('.areaChart2').style("opacity", "0.8");
+                d3.selectAll('.linedot2').style("opacity", "1");
+            })
+            .transition().duration(1500)
+            .attrTween('d', tween(data1, area))
+            .each('end', function(d) { drawCircles(data1, user_color[0]['main'] ,'1') });
+    };
 
     /* if it is a compare mode */
     if (data2.length>0) {
@@ -220,7 +219,6 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
     });
 
     // add axis
-
     s.append('g')
     .call(axisX)
     .attr({
@@ -330,12 +328,7 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
         .attr("transform", "translate(" + (margin.left - 50) + "," + (height / 2 + margin.top) + ")rotate(-90)") // text is drawn off the screen top left, move down and out and rotate
         .text("Number of Tweets")
         .style("font-size", 20);
-
-
-
         }
-
-
 
     /// slide function //
     function slideShow() {

@@ -1,7 +1,7 @@
     function drawbar(type, data, data2 = [], name1, name2 = []) {
 
 
-        //defind plot size
+        //define plot size
         var labelArea = 100;
         var chart,
             bar_height = 20;
@@ -9,7 +9,7 @@
         var rightOffset = type == 'compare' ? widthBAR + 2 * labelArea + 100 : labelArea
         var rightText = type == 'compare' ? -20 + widthBAR + 2 * labelArea + 100 : -20 + labelArea
 
-
+        // define scales
         var xScale = d3.scale.linear()
             .range([0, widthBAR]);
         var y = d3.scale.ordinal()
@@ -27,13 +27,16 @@
             }
 
         } else {
-
             if (data.length > 0) {
                 maxYbar = d3.max([d3.max(data, function(d) { return d.value }), d3.max(data2, function(d) { return d.value })]);
             } else {
                 maxYbar = d3.max(data2, function(d) { return d.value });
             }
         }
+
+        xScale.domain([0, maxYbar]);
+        y.domain(data.map(function(d) { return d.label; }));
+        var yPosByIndex = function(d) { return y(d.label); };
 
         // define svg
         var svg = d3.select("#hash_chart0")
@@ -47,7 +50,6 @@
             .append("g")
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
-
 
         // no data in single mode
         if (data.length <= 0 & type == 'single') {
@@ -73,11 +75,6 @@
         }
 
         
-        xScale.domain([0, maxYbar]);
-        y.domain(data.map(function(d) { return d.label; }));
-        var yPosByIndex = function(d) { return y(d.label); };
-
-
         chart.selectAll("text.name2")
             .data(data)
             .enter().append("text")
@@ -99,32 +96,29 @@
             .attr("class", "right")
             .attr("width", 0) //
             .on("click", function(d) { 
+                d3.select('#slide2').selectAll('.description').remove()
+                    for (key in d.data) {
+                        d3.select('#slide2')
+                            .append("p")
+                            .attr("class", "description")
+                            .html(function() {
+                                return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + 
+                                    d.data[key]['text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+key+"'> View Live</a>"
+                            });
+                    }
 
-                 d3.select('#slide2').selectAll('.description').remove()
-
-                 for (key in d.data) {
-                    //d.data.key.text
-                    d3.select('#slide2').append("p")
-                     .attr("class", "description")
-                     .html(function() {
-                        return "<strong>"+d.data[key]['created_at'] +":</strong><br>" + 
-                            d.data[key]['text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+key+"'> View Live</a>"
-                    });
-                 }
-
-                  if (d3.selectAll(".bar_active")[0].length == 0) {
-                    slideShow()
-                  } else {
+                    if (d3.selectAll(".bar_active")[0].length == 0) {
+                        slideShow()
+                    } else {
                         firstF().then(secondF())
-                        };
-                 d3.selectAll(".bar_active").classed('bar_active', false);
-                 d3.select(this).classed('bar_active', true)
+                    };
+                d3.selectAll(".bar_active").classed('bar_active', false);
+                d3.select(this).classed('bar_active', true)
 
             })
             .transition()
             .duration(1500)
             .attr("width", function(d) {
-                //console.log(xScale(+d['value']))
                 return xScale(+d['value']);
             })
             .attr("height", y.rangeBand())
@@ -151,16 +145,8 @@
         // if compared
         if (type == 'compare') {
             if (data2.length > 0) {
-
-
-                y2.domain(data2.map(function(d) {
-                    return d.label;
-                }));
-
-
-                var yPosByIndex2 = function(d) {
-                    return y2(d.label);
-                };
+                y2.domain(data2.map(function(d) {return d.label;}));
+                var yPosByIndex2 = function(d) {return y2(d.label);};
 
                 chart.selectAll("rect.left")
                     .data(data2)
@@ -279,7 +265,6 @@
 
         /// add lengend
         var legendlist = name1.concat(name2)
-
         var legend_g = svg.selectAll('.legends4')
             .data(legendlist)
             .enter().append('g')
@@ -300,7 +285,6 @@
         legend_g.append('text')
         .attr("x", 20)
         .attr("y", 10)
-        //.attr("dy", ".35em")
         .text(function(d, i) {
             return d
         })
@@ -318,8 +302,6 @@
             d3.selectAll(".bar_active").classed('bar_active', false);
             $('#slide2').css('right', '-50%')
             $('#slide2').css('opacity', '0')
-            // $('#slide1').css('opacity', "0")
-            // $('.slide').css('box-shadow', "-31px 8px 180px 2px rgba(14, 16, 33, 0.5)")
         };
 
         function firstF() {
