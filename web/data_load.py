@@ -86,7 +86,7 @@ def load_timeserie_fuc(user0="H001061"):
 
 # function for load data for hashtage
 def load_hash_data(user0="H001061"):
-	hashdata= mongo.db.hashtages.find_one({"bioguide":user0}, {'_id': 0})
+	hashdata= mongo.db.hashtags.find_one({"bioguide":user0}, {'_id': 0})
 	return hashdata if hashdata != None else {}
 
 # function for loading data for urls
