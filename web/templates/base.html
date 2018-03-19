@@ -5,292 +5,82 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title>Follow Your Leaders</title>
     <!-- load style -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='temp/template.css') }}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='base_style.css') }}">
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='temp/template.css') }}"> -->
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap/bootstrap-toggle.min.css">
+    <link href="/static/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/jquery/jquery-ui.css">
+    <link rel="stylesheet" href="/static/css/base_style.css?version=03152018-3ss">
     <!-- load js library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='popper.min.js') }}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-    <script type="text/javascript" src="http://spin.js.org/spin.min.js"></script>
-    <script src="http://d3js.org/d3.v3.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="/static/cloud.js"></script>
-    <style type="text/css">
-    body {
-        width: 100%;
-    }
-
-    .linedot {
-        /*fill: #6bb7c7;*/
-        stroke: #fff;
-        stroke-width: 3;
-    }
-
-    .linedot:hover {
-        fill: steelblue;
-        cursor: pointer;
-    }
-
-    .description {
-        font-size: 13px;
-        text-align: left;
-    }
-
-    .slide {
-        position: absolute;
-        padding: 30px;
-        width: 30%;
-        height: 70%;
-        background-color: white;
-        opacity: 0;
-        border-radius: 10px;
-        right: -100%;
-        /*     color: white;*/
-        z-index: 2;
-        transition: all 0.2s cubic-bezier(0.71, -0.1, 0.09, 1.07);
-        overflow: scroll;
-        min-width: 500px;
-        -webkit-box-shadow: 10px 10px 34px 1px rgba(0, 0, 0, 0.75);
-        -moz-box-shadow: 10px 10px 34px 1px rgba(0, 0, 0, 0.75);
-        box-shadow: 10px 10px 34px 1px rgba(0, 0, 0, 0.75);
-    }
-
-    .popup_button_container {
-        display: inline-block;
-        margin: 10px 15px;
-        float: left;
-    }
-
-    .popup_button {
-
-        font-size: .5rem;
-
-        background-color: #1b1f3a;
-        height: 40px;
-        width: 40px;
-        border: 2px solid #ffffff;
-        display: block;
-        z-index: 100;
-        transition: all 0.4s cubic-bezier(0.85, -0.01, 0.21, 1);
-        color: white;
-        font-size: 20px;
-        text-align: center;
-    }
-
-
-    .popup_button:hover {
-        cursor: pointer;
-        opacity: 0.4;
-    }
-
-    .circle_active {
-        fill: yellow;
-    }
-
-    .wc_text {
-        cursor: pointer;
-    }
-
-    .wc_active {
-        fill: green!important;
-        background-color: red
-    }
-
-
-    .areaChart {
-        fill: url(#area-gradient);
-        opacity: 0.8;
-    }
-
-
-    .areaChart2 {
-        fill: url(#area-gradient2);
-        opacity: 0.8;
-    }
-
-    .d3-tip {
-        line-height: 1;
-        font-weight: bold;
-        padding: 12px;
-       /* background: rgba(0, 0, 0, 0.8);*/
-       /* color: #fff;*/
-        border-radius: 2px;
-    }
-    /* Creates a small triangle extender for the tooltip */
-
-    .d3-tip:after {
-        box-sizing: border-box;
-        display: inline;
-        font-size: 10px;
-        width: 100%;
-        line-height: 1;
-        /*color: rgba(0, 0, 0, 0.8);*/
-        content: "\25BC";
-        position: absolute;
-        text-align: center;
-    }
-    /* Style northward tooltips differently */
-
-    .d3-tip.n:after {
-        margin: -1px 0 0 0;
-        top: 100%;
-        left: 0;
-    }
-
-    .sec_leader {
-        display: none;
-    }
-
-
-    
-    #search {
-        /*position: absolute;*/
-        position: fixed;
-        top: 50px;
-        left: 0;
-        height: 100%;
-        border: 2px solid #ddd;
-        z-index: 3;
-        /*transform: translateX(-100%);*/
-        background-color: #ffffff;
-        transition: transform 0.3s, box-shadow 0.3s;
-        width: 20%;
-    }
-
-    #filter_btm_div {
-        position: fixed;
-        top: 50px;
-        border-radius: 20%;
-        margin:20px;
-        z-index:2;
-
-    }
-
-    #back_btm {
-        display:none;
-    }
-
-
-    #plot {
-        margin-top: 50px;
-        margin-left: 20%;
-        /* Same as the width of the sidenav */
-        padding-top: 20px
-    }
-
-    .footer {
-        width: 100%;
-        height: 100px;
-        position: fixed;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        padding: 1rem;
-        text-align: center;
-        z-index: 20;
-        background-color: #f8f8f8;
-        border: 1px solid #e7e7e7
-    }
-
-    .navbar {
-        position: fixed !important;
-        top: 0;
-        width: 100%;
-        z-index: 100;
-    }
-    /* for bar */
-
-    .chart {
-        margin: 10px;
-        padding-top: 10px;
-    }
-
-    .chart .right {
-        stroke: white;
-        /*fill: steelblue;*/
-    }
-
-    .chart .left {
-        stroke: white;
-        /*fill: indianred;*/
-    }
-
-    .chart rect:hover {
-        fill: #64707d;
-    }
-
-    .rightscore .leftscore {
-        fill: #24da82;
-    }
-
-    .chart text.name {
-        fill: black;
-    }
-
-    .chart text.title {
-        fill: #2216ff;
-    }
-
-    @media screen and (max-width: 1200px) {
-
-        #search {
-            
-            transform: translateX(-100%);
-            width: 50%;
-        }
-
-        #plot {
-            margin-left: 40px;
-            margin-right: 40px;
-        }
-        #back_btm {
-        display:block;
-        }
-    }
-    </style>
+    <!-- jquery -->
+    <script src="/static/jquery/jquery.min.js"></script>
+    <script src="/static/jquery/jquery-ui.js"></script>
+    <!-- bootstrap -->
+    <script src="/static/bootstrap/bootstrap.min.js"></script>
+    <script src="/static/bootstrap/bootstrap-toggle.min.js"></script>
+    <!-- d3 -->
+    <script src="/static/d3/d3.v3.min.js"></script>
+    <script src="/static/d3/d3.tip.v0.6.3.js"></script>
+    <script src="/static/d3/cloud.js"></script>
+    <!-- others -->
+    <script type="text/javascript" src="/static/js/popper.min.js"></script>
 </head>
+
+<!-- <nav class="navbar navbar-inverse"> -->
 <nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">Follow Your Leaders</a>
-        </div>
-        <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-            <!-- <li><a href="/legislators">Legislators</a></li> -->
-            <li><a href="/leaders">Leaders</a></li>
-            <li><a href="/group">Group</a></li>
-            <li><a href="/faq">FAQ</a></li>
-        </ul>
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#Navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Follow Your Leaders</a>
     </div>
+    <div class="collapse navbar-collapse" id="Navbar">
+      <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li><a href="/leaders">Leaders</a></li>
+            <li><a href="/faq">FAQ</a></li>
+      </ul>
+    </div>
+  </div>
 </nav>
 {% block content %}{% endblock %}
 <footer class="footer">
     <div class="container">
-        <div class="col-lg-3 col-md-6">
-            <h4>Follow</h4>
-            <ul>
-                <li><a href="http://www.github.com/casmlab">GitHub</a></li>
-                <li><a href="http://www.twitter.com/casmlab">Twitter</a></li>
-            </ul>
-            <p>Built with Bootstrap.</p>
-        </div>
-        <div class="col-lg-3 col-md-6">
-            <h4>Contact</h4>
-            <ul>
-                <li><a href="mailto:info@casmlab.org">info@casmlab.org</a></li>
-            </ul>
+        <div class="row" style='text-align: left'>
+            <div class=" col-xs-4 col-md-4 col-lg-5 align-text-bottom" style=''>
+                Copyright &copy;  Regents of the University of Michigan <span id="copyright"><script>document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))</script></span>
+            </div>
+            <div id='footerAddress' class=" col-xs-5 col-md-5 col-lg-5 align-text-bottom">
+                <p>University of Michigan, School of Information
+                    <br>105 S State St, Ann Arbor, MI, 48109.
+            </div>
+            <div class=" col-xs-3  col-md-2 col-lg-2 text-white align-text-bottom" style='text-align:right;font-size:25px'>
+                <div>
+                    <span>Contact:</span>
+                    <ul class="list-inline">
+                        <li class="list-inline-item" >
+                            <a class="btn-social btn-outline" href="https://github.com/casmlab" aria-label="second social link">
+                                <i class="fa fa-fw fab fa-github"></i>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="btn-social btn-outline" href="http://www.libbyh.com/" aria-label="Third social link">
+                                <i class="fa fa-fw fa-dribbble"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </footer>
+
+
+
 
 </html>

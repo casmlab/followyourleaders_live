@@ -1,0 +1,5 @@
+flask==0.12.2
+flask_pymongo==0.5.1
+flask_mongoengine==0.9.5
+pyyaml==3.12
+requests
