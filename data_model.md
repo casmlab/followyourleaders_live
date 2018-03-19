@@ -233,8 +233,18 @@ This collection contains information about the leaders. For members of the U.S. 
     "photo_url" : "https://pbs.twimg.com/profile_images/552515282728521729/bazgL2JV_normal.jpeg",
     "followers" : 120,
     "friends" : 5,
-    "recent_tweet_ids" : [],
-    "current" : 1
+    "current" : 1,
+    "recent_tweets" : {
+        "564820451508383746" : {
+            "created_at" : "2015-02-09 16:17:44",
+            "tweet_text" : "here's what the tweet said"
+        },
+        "564820451508383746" : {
+            "created_at" : "2015-02-09 16:17:44",
+            "tweet_text" : "here's what the tweet said"
+        },
+        [repeat max 10 times]
+    }
 }
 ```
 
