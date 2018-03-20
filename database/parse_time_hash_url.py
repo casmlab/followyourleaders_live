@@ -233,11 +233,11 @@ class followyourleaders(object):
 
 				a = time_item['dates'].keys()
 				
-				lst_keys = [k for k in time_item['dates'].keys()]
+				lst_keys = [k for k in a]
 
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
 				lst_keys.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
-				
+				print(lst_keys)	
 
 				for u in lst_keys:
 
@@ -248,11 +248,11 @@ class followyourleaders(object):
 
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
-					print(add_min)
+					# print(add_min)
 					date_index = date_index + temp[0:add_min]
-					print(date_index)
-					print(a for a in date_index)
-					print(len(date_index))
+					# print(date_index)
+					# print(a for a in date_index)
+					# print(len(date_index))
 
 					# update num_tweets_shown
 					num_tweets_shown = add_min
