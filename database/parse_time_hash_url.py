@@ -251,13 +251,13 @@ class followyourleaders(object):
 					date_index = date_index + temp[0:add_min]
 
 					# update num_tweets_shown
-					num_tweets_shown = add_min
+					num_tweets_shown = len(date_index)
 					print(num_tweets_shown)
 					if num_tweets_shown == 10:
 						break
 
 					print(date_index)
-					
+
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
