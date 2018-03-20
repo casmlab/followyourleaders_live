@@ -81,7 +81,7 @@ class followyourleaders(object):
 
 					# update specified leader's timeline collection from tweets
 					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {key_idx: {'url':url_push, 'created_at': date_push, 'hashtags': hash_push, 'tweet_text':text_push}}})
-				print(collection_timeline.find_one({"bioguide" : leader['bioguide']}))
+
 
 		print('>>> update_timeline_collection(self, tweets) ends!')
 
