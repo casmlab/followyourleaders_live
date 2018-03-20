@@ -253,7 +253,7 @@ class followyourleaders(object):
 
 					# update num_tweets_shown
 					num_tweets_shown = add_min
-					if num_tweets_shown <= 10:
+					if num_tweets_shown == 10:
 						break
 
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
