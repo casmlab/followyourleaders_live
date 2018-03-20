@@ -231,15 +231,16 @@ class followyourleaders(object):
 			# if we have this leader's data
 			if time_item != None:
 
+				print(time_item)
+
 				a = time_item['dates'].keys()
 				
 				lst_keys = [k for k in a]
 
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
 				lst_keys.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
-				print(lst_keys[:10])	
 
-				for u in lst_keys[:10]:
+				for u in lst_keys:
 
 					sublist = time_item['dates'][u]
 
@@ -247,17 +248,15 @@ class followyourleaders(object):
 
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
-					# print(add_min)
+
 					date_index = date_index + temp[0:add_min]
+
 
 					# update num_tweets_shown
 					num_tweets_shown = len(date_index)
-					print(num_tweets_shown)
 					if num_tweets_shown > 10:
 						break
 
-					print(date_index)
-					print(len(date_index))
 
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
 				followers = last_tweet['user']['followers_count']
