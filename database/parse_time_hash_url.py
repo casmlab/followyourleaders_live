@@ -250,12 +250,10 @@ class followyourleaders(object):
 					# print(add_min)
 					date_index = date_index + temp[0:add_min]
 					print(date_index)
-					# print(a for a in date_index)
-					# print(len(date_index))
 
 					# update num_tweets_shown
 					num_tweets_shown = add_min
-					if num_tweets_shown <= 0:
+					if num_tweets_shown <= 10:
 						break
 
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
