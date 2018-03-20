@@ -247,9 +247,9 @@ class followyourleaders(object):
 
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
-					print(add_min)
+					# print(add_min)
 					date_index = date_index + temp[0:add_min]
-					# print(date_index)
+					print(date_index)
 					# print(a for a in date_index)
 					# print(len(date_index))
 
