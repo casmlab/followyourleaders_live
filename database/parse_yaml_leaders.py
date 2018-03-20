@@ -100,6 +100,12 @@ class followyourleaders(object):
 						state = yaml['terms'][-1]['state']
 						chamber =  yaml['terms'][-1]['type']
 						party = yaml['terms'][-1]['party']
+						print(state)
+						print(chamber)
+						print(party)
+						print(yaml['terms'][-1]['state'])
+						print(yaml['terms'][-1]['type'])
+						print(yaml['terms'][-1]['party'])
 						
 						if 'religion' in yaml['bio']:
 							religion = yaml['bio']['religion']
