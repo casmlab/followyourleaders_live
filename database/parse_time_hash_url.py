@@ -63,8 +63,7 @@ class followyourleaders(object):
 					# define inserting/updating item format
 					text_push = tweet['text']
 					url_push = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
-					hash_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
-					'url':url}
+					hash_push = [a['text'] for a in tweet['entities']['hashtags']]
 					date_push = post_date_time
 
 
