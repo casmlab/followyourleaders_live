@@ -269,28 +269,11 @@ class followyourleaders(object):
 				print("Updating with recent Tweet info.")
 				collection_leaders.update({'_id': leader['_id']},{'$set': {"recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description}})
 
-				# "recent_tweets" : {text_idx:text_push,date_idx:date_push}
 				break
 
 
-# 					key_idx = "urls." + a['url'].split("t.co/")[1] + ".tweets." + tweet['id_str']
-# 					text_idx = key_idx + '.text'
-# 					text_push = tweet['text']
-# 					date_idx = key_idx + '.created_at'
-# 					date_push = post_date_time
-# 		print('>>> update_leaders(num_tweets_shown) ends!')
+		print('>>> update_leaders(num_tweets_shown) ends!')
 
-# "recent_tweets" : {
-#         "564820451508383746" : {
-#             "created_at" : "2015-02-09 16:17:44",
-#             "tweet_text" : "here's what the tweet said"
-#         },
-#         "564820451508383746" : {
-#             "created_at" : "2015-02-09 16:17:44",
-#             "tweet_text" : "here's what the tweet said"
-#         },
-#         [repeat max 10 times]
-    # }
 
 	#################################################################    INITIALIZING DB    ###################################################################
 
