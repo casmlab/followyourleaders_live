@@ -56,7 +56,7 @@ class followyourleaders(object):
 				key_idx = "dates." + post_date + "." + tweet['id_str']
 
 				try:
-					val = leader_timeline['dates'][post_date][tweet['id_str']]
+					val = leader_timeline['dates'][post_date][tweet['id_str']['tweet_text']]
 					print('Already logged this Tweet.')
 				except:
 					print('Adding new Tweet.')
