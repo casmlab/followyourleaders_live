@@ -38,7 +38,7 @@ class followyourleaders(object):
 
 		print('>>> update_timeline_collection(self, tweets) starts!')
 
-		for tweet in tweets[1000000:]:
+		for tweet in tweets[800000:]:
 			
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
 
