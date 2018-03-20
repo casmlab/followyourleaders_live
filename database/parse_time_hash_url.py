@@ -244,9 +244,9 @@ class followyourleaders(object):
 					sublist = time_item['dates'][u]
 
 					temp = [(key,value['created_at']) for key,value in sublist.items()]
-					print(temp)
-					temp.sort(key = lambda x: time.mktime(time.strptime(x[1],"%Y-%m-%d %H:%M:%S")),reverse=True)
 
+					temp.sort(key = lambda x: time.mktime(time.strptime(x[1],"%Y-%m-%d %H:%M:%S")),reverse=True)
+					print(temp)
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
 					# print(add_min)
