@@ -56,7 +56,7 @@ class followyourleaders(object):
 				key_idx = "dates." + post_date + "." + tweet['id_str']
 
 				try:
-					val = leader_timeline['dates'][post_date][tweet['id_str']['tweet_text']]
+					val = leader_timeline['dates'][post_date][tweet['id_str']]['tweet_text']
 					print('Already logged this Tweet.')
 				except:
 					print('Adding new Tweet.')
@@ -212,7 +212,7 @@ class followyourleaders(object):
 	# source data: 	'leader' collection in 'followyourleaders_prod' database;
 	#				'timeline' collection in 'followyourleaders_prod' database;
 	#				'tweets--drop' collection in 'followyourleaders_prod' database
-	# QUESTIONS: What is 'num_tweets_shown' why is it necessary? Is this to limit the amount of data that is return from timeline?
+
 
 	def update_leaders(self,num_tweets_shown):
 		print('>>> update_leaders(num_tweets_shown) starts!')
@@ -233,7 +233,7 @@ class followyourleaders(object):
 			# if we have this leader's data
 			if time_item != None:
 
-				print(time_item['text'])
+				print(time_item['text_item'])
 
 				a = time_item['dates'].keys()
 				
@@ -246,13 +246,13 @@ class followyourleaders(object):
 
 					sublist = time_item['dates'][u]
 
-					temp = [(key,value['created_at']) for key,value in sublist.items()]
-
+					date_info = [(key,value['created_at']) for key,value in sublist.items()]
+					text_info = [(key,value['tweet_text']) for key,value in sublist.items()]
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
 
-					date_index = date_index + temp[0:add_min]
-
+					date_index.append(date_info[0:add_min])
+					text_index.append(text_info[0:add_min])
 
 					# update num_tweets_shown
 					num_tweets_shown = len(date_index)
@@ -267,7 +267,7 @@ class followyourleaders(object):
 
 				# update user collection
 				print("Updating with recent Tweet info.")
-				collection_leaders.update({'_id': leader['_id']},{'$set': {"recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description}})
+				collection_leaders.update({'_id': leader['_id']},{'$set': {"recent_tweet_ids": {'created_at':[a[0] for a in date_index], 'tweet_text':[a[0] for a in text_index]}, 'followers': followers, 'friends':friends, 'description':description}})
 
 				break
 
