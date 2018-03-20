@@ -55,8 +55,12 @@ class followyourleaders(object):
 				# define update location
 				key_idx = "dates." + post_date + "." + tweet['id_str']
 
+				print(leader_timeline['dates'][post_date][tweet['id_str']]['tweet_text'])
+				print(leader_timeline['dates'][post_date][tweet['id_str']['tweet_text']])
+
 				try:
 					val = leader_timeline['dates'][post_date][tweet['id_str']]['tweet_text']
+
 					print('Already logged this Tweet.')
 				except:
 					print('Adding new Tweet.')
@@ -81,7 +85,7 @@ class followyourleaders(object):
 
 					# update specified leader's timeline collection from tweets
 					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {key_idx: {'url':url_push, 'created_at': date_push, 'hashtags': hash_push, 'tweet_text':text_push}}})
-
+			break
 
 		print('>>> update_timeline_collection(self, tweets) ends!')
 
