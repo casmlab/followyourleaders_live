@@ -100,8 +100,7 @@ class followyourleaders(object):
 						state = yaml['terms'][-1]['state']
 						chamber =  yaml['terms'][-1]['type']
 						party = yaml['terms'][-1]['party']
-						print(yaml['terms'])
-						
+
 						if 'religion' in yaml['bio']:
 							religion = yaml['bio']['religion']
 						else:
@@ -143,7 +142,7 @@ class followyourleaders(object):
 
 	def initialize_database(self):
 
-		self.create_yaml_collection()
+		# self.create_yaml_collection()
 		self.update_leaders_collection()
 
 
