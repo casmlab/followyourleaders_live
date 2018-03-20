@@ -237,9 +237,9 @@ class followyourleaders(object):
 
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
 				lst_keys.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
-				print(lst_keys)	
+				print(lst_keys[:10])	
 
-				for u in lst_keys:
+				for u in lst_keys[:10]:
 
 					sublist = time_item['dates'][u]
 					temp = [(key,value['created_at']) for key,value in sublist.items()]
