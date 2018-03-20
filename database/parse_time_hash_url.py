@@ -61,9 +61,12 @@ class followyourleaders(object):
 				except:
 					print('Adding new Tweet.')
 					# define inserting/updating item format
-					url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
-					item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
+					text_push = tweet['text']
+					url_push = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
+					hash_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
 					'url':url}
+					date_push = post_date_time
+
 
 					# if we dont have the leader's information in timeline collection, insert the leader's information
 					if  leader_timeline == None:
@@ -78,8 +81,8 @@ class followyourleaders(object):
 
 
 					# update specified leader's timeline collection from tweets
-					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {key_idx: item_push}})
-
+					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {key_idx: {'url':url_push, 'created_at': date_push, 'hashtags': hash_push, 'tweet_text':text_push}}})
+				break
 
 		print('>>> update_timeline_collection(self, tweets) ends!')
 
@@ -300,10 +303,10 @@ class followyourleaders(object):
 
 	def initialize_database(self,num_tweets_shown):
 
-		# self.update_timeline_collection(collection_tweet.find())
+		self.update_timeline_collection(collection_tweet.find())
 		# self.update_hashtag_collection(collection_tweet.find())
 		# self.update_url_collection(collection_tweet.find())
-		self.update_leaders(num_tweets_shown)
+		# self.update_leaders(num_tweets_shown)
 
 
 
