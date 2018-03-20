@@ -242,9 +242,9 @@ class followyourleaders(object):
 				for u in lst_keys[:10]:
 
 					sublist = time_item['dates'][u]
-					print(sublist)
-					temp = [(key,value['created_at']) for key,value in sublist.items()]
 
+					temp = [(key,value['created_at']) for key,value in sublist.items()]
+					print(temp)
 					temp.sort(key = lambda x: time.mktime(time.strptime(x[1],"%Y-%m-%d %H:%M:%S")),reverse=True)
 
 					# decide #twitter we need to insert
