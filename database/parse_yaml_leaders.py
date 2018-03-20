@@ -97,9 +97,9 @@ class followyourleaders(object):
 						else:
 							twitter_id = 'NA'
 						
-						state = yaml['terms'][0]['state']
-						chamber =  yaml['terms'][0]['type']
-						party = yaml['terms'][0]['party']
+						state = yaml['terms'][-1]['state']
+						chamber =  yaml['terms'][-1]['type']
+						party = yaml['terms'][-1]['party']
 						
 						if 'religion' in yaml['bio']:
 							religion = yaml['bio']['religion']
