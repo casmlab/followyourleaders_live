@@ -248,45 +248,43 @@ class followyourleaders(object):
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
 
-					print(sublist.items())
 					for id_str,info in sublist.items():
 
 						date_info = info['created_at']
 						text_info = info['tweet_text']
 
-						print(date_info)
-						print(text_info)
-
 						print("Updating with recent Tweet info.")
 						collection_leaders.update({'_id': leader['_id']},{'$set': {'recent_tweets': {id_str: {'created_at': date_info, 'tweet_text': text_info}}}})
-						print(collection_leaders.find_one({"_id": leader['_id']}))
+						
 
 						date_index += date_info[0:add_min]
 						text_index += text_info[0:add_min]
 
-
-						# date_index + temp[0:add_min]
-
-					# update num_tweets_shown
 						num_tweets_shown = len(date_index)
 						if num_tweets_shown >= 10:
 							break
 
-				print(len(date_index))
-				print(len(text_index))
 
-				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
-				followers = last_tweet['user']['followers_count']
-				friends = last_tweet['user']['friends_count']
-				description = last_tweet['user']['description']
+						# date_index + temp[0:add_min]
+					print(collection_leaders.find_one({"_id": leader['_id']}))
+					# update num_tweets_shown
+						
 
-				print("Updating with recent Tweet info.")
-				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description}})
-				print(collection_leaders.find_one({"_id": leader['_id']}))
-				
-				# update user collection
-				
-				break
+					print(len(date_index))
+					print(len(text_index))
+
+					last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
+					followers = last_tweet['user']['followers_count']
+					friends = last_tweet['user']['friends_count']
+					description = last_tweet['user']['description']
+
+					print("Updating with recent Tweet info.")
+					collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description}})
+					print(collection_leaders.find_one({"_id": leader['_id']}))
+					
+					# update user collection
+					
+					break
 
 
 		print('>>> update_leaders(num_tweets_shown) ends!')
