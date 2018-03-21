@@ -277,7 +277,7 @@ class followyourleaders(object):
 					
 					# update user collection
 					
-					break
+				break
 
 
 		print('>>> update_leaders(num_tweets_shown) ends!')
