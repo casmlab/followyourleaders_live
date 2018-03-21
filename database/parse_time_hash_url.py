@@ -286,7 +286,7 @@ class followyourleaders(object):
 
 	def initialize_database(self,num_tweets_shown):
 
-		self.update_timeline_collection(collection_tweet.find())
+		self.update_timeline_collection(collection_tweet)
 		# self.update_hashtag_collection(collection_tweet.find())
 		# self.update_url_collection(collection_tweet.find())
 		# self.update_leaders(num_tweets_shown)
