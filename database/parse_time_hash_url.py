@@ -244,13 +244,21 @@ class followyourleaders(object):
 					sublist = time_item['dates'][u]
 
 
-					date_info = [(key,value['created_at']) for key,value in sublist.items()]
-					text_info = [(key,value['tweet_text']) for key,value in sublist.items()]
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
 
-					date_index += date_info[0:add_min]
-					text_index += text_info[0:add_min]
+					
+					for tweet in sublist:
+
+						date_info = tweet['created_at']
+						text_info = tweet['tweet_text']
+
+						print("Updating with recent Tweet info.")
+						collection_leaders.update({'_id': leader['_id']},{'$set': {'recent_tweets': {date_info[0]: {'created_at': date_info[1], 'tweet_text': text_info}}}})
+						print(collection_leaders.find_one({"_id": leader['_id']}))
+
+						date_index += date_info[0:add_min]
+						text_index += text_info[0:add_min]
 
 					# update num_tweets_shown
 					num_tweets_shown = len(date_index)
@@ -263,11 +271,12 @@ class followyourleaders(object):
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
 
-				
-				# update user collection
 				print("Updating with recent Tweet info.")
 				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description}})
 				print(collection_leaders.find_one({"_id": leader['_id']}))
+				
+				# update user collection
+				
 				break
 
 
