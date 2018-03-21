@@ -252,8 +252,6 @@ class followyourleaders(object):
 					add_min = min(len(sublist),num_tweets_shown)
 					
 
-					# collection_leaders.update({'_id': leader['_id']},{'$set': {'recent_tweets.'+ id_str : {'created_at': date_info, 'tweet_text': text_info}}})
-					
 					date_index = date_index + date_info[0:add_min]
 					text_index = text_index + text_info[0:add_min]
 
@@ -261,26 +259,16 @@ class followyourleaders(object):
 					if num_tweets_shown >= 10:
 						break
 
-					# update num_tweets_shown
-						
-				for each in date_index:
-					print(each)
-				for each in text_index:
-					print(each)
-
+				
+				# update num_tweets_shown
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
 
+				# update leader collection
 				print("Updating with recent Tweet info.")
 				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description, 'recent_tweets': {date_index[0][0] : {'created_at': date_index[0][1], 'tweet_text': text_index[0][1]}}, date_index[1][0] : {'created_at': date_index[1][1], 'tweet_text': text_index[1][1]},date_index[2][0] : {'created_at': date_index[2][1], 'tweet_text': text_index[2][1]},date_index[3][0] : {'created_at': date_index[3][1], 'tweet_text': text_index[3][1]}, date_index[4][0] : {'created_at': date_index[4][1], 'tweet_text': text_index[4][1]},date_index[5][0] : {'created_at': date_index[5][1], 'tweet_text': text_index[5][1]},date_index[6][0] : {'created_at': date_index[6][1], 'tweet_text': text_index[6][1]},date_index[7][0] : {'created_at': date_index[7][1], 'tweet_text': text_index[7][1]},date_index[8][0] : {'created_at': date_index[8][1], 'tweet_text': text_index[8][1]},date_index[9][0] : {'created_at': date_index[9][1], 'tweet_text': text_index[9][1]}}})
-
-				print(collection_leaders.find_one({"_id": leader['_id']}))
-					
-					# update user collection
-					
-				break
 
 
 		print('>>> update_leaders(num_tweets_shown) ends!')
