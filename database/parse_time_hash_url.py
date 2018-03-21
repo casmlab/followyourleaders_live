@@ -254,7 +254,7 @@ class followyourleaders(object):
 						text_info = info['tweet_text']
 
 						print("Updating with recent Tweet info.")
-						collection_leaders.update({'_id': leader['_id']},{'$set': {'recent_tweets'.id_str: {'created_at': date_info, 'tweet_text': text_info}}}})
+						collection_leaders.update({'_id': leader['_id']},{'$push': {'recent_tweets': {id_str: {'created_at': date_info, 'tweet_text': text_info}}}})
 						
 
 						date_index += date_info[0:add_min]
