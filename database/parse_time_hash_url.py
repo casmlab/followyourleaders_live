@@ -42,7 +42,7 @@ class followyourleaders(object):
 		id_str = "id_str"
 		innvervalue = "960962340"
 
-		key = "%s.%s" % (user, id_str)
+		key = "{}.{}".format(user, id_str)
 
 		for tweet in tweets.find({key: innvervalue}):
 
