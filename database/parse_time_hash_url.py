@@ -38,7 +38,7 @@ class followyourleaders(object):
 
 		print('>>> update_timeline_collection(self, tweets) starts!')
 
-		for tweet in tweets.find({key: innvervalue}):
+		for tweet in tweets:
 
 			if tweet['user']['id_str'] == "960962340":
 
