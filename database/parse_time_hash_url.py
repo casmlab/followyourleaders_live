@@ -219,7 +219,7 @@ class followyourleaders(object):
 		# load data from leader collection
 		leaders = collection_leaders.find()
 
-		for leader in leaders:
+		for leader in leaders[200:]:
 
 			date_index = []
 			text_index = []
@@ -237,7 +237,7 @@ class followyourleaders(object):
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
 				lst_keys.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
 
-				for u in lst_keys[200:]:
+				for u in lst_keys:
 
 					sublist = time_item['dates'][u]
 
