@@ -255,7 +255,7 @@ class followyourleaders(object):
 					# collection_leaders.update({'_id': leader['_id']},{'$set': {'recent_tweets.'+ id_str : {'created_at': date_info, 'tweet_text': text_info}}})
 					
 					date_index = date_index + date_info[0:add_min]
-					text_index = date_index + text_info[0:add_min]
+					text_index = text_index + text_info[0:add_min]
 
 					num_tweets_shown = len(date_index)
 					if num_tweets_shown >= 10:
