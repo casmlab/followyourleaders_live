@@ -40,7 +40,6 @@ class followyourleaders(object):
 
 		for tweet in tweets:
 
-
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 			# leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
 
@@ -286,7 +285,7 @@ class followyourleaders(object):
 
 	def initialize_database(self,num_tweets_shown):
 
-		self.update_timeline_collection(collection_tweet)
+		self.update_timeline_collection(collection_tweet.find({"user"["id_str"]:"960962340"}))
 		# self.update_hashtag_collection(collection_tweet.find())
 		# self.update_url_collection(collection_tweet.find())
 		# self.update_leaders(num_tweets_shown)
@@ -308,7 +307,7 @@ if __name__ == '__main__':
 	db = connection['followyourleaders_prod']
 
 	# connect collection
-	collection_tweet = db['tweets--drop'].find_one({"user.id_str":"960962340"})
+	collection_tweet = db['tweets--drop']
 			# tweets collection
 	collection_leaders = db['leaders']		# leader collection
 	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
