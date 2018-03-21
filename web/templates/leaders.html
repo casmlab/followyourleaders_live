@@ -243,7 +243,7 @@
     <script type="text/javascript" src="/static/js/visualization/drawAreaFigure3.js?version=03152018"></script>
     <script type="text/javascript" src="/static/js/visualization/drawBar.js?version=03152018"></script>
     <script type="text/javascript" src="/static/js/visualization/colorbrewer.min.js?version=03152018"></script>
-    <script type="text/javascript" src="/static/js/visualization/drawWordCloud.js?version=03152018"></script>
+    <script type="text/javascript" src="/static/js/visualization/drawWordCloud.js?version=03172018"></script>
     <script type="text/javascript" src="/static/js/visualization/dataFormate.js?version=03152018"></script>
     <!-- making drop down file -->
     <script type="text/javascript" src="/static/js/visualization/makeDD.js?version=03152018"></script>    
@@ -484,13 +484,17 @@
         $('#recent_tweet_model').modal('show');
     });
 
+    function make_legend_name(leader) {
+        return [capitalizeFirstLetter(leader['chamber'])+'. '+leader['name']+' ('+leader['party'][0].toUpperCase()+'-'+leader['state'].toUpperCase()+')']
+    }
+
 
     ///////////////////////Function for scrolling and drawing /////////////////////////////////////////////////
     var Hash_Handler = function(){
         if ($('#hash_chart0').isOnScreen()) {
             console.log("in hash_chart!");
             var numberOfItem = 15;
-            compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawbar('single',databar.splice(0,numberOfItem),[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[]);
+            compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),make_legend_name(leader0),make_legend_name(leader1)):drawbar('single',databar.splice(0,numberOfItem),[],make_legend_name(leader0),[]);
             $(window).off("scroll", Hash_Handler);
         } 
     }
@@ -499,7 +503,7 @@
         if ($('#wcloud').isOnScreen()) {
             console.log("in wc!");
             var numberOfWord=100;
-            compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawWordCloud('single',datawc.splice(0,numberOfWord),[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[])
+            compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),make_legend_name(leader0),make_legend_name(leader1)):drawWordCloud('single',datawc.splice(0,numberOfWord),[],make_legend_name(leader0),[])
             $(window).off("scroll", wc_Handler);
         } 
     }
@@ -507,7 +511,7 @@
     var line_Handler = function(){
         if ($('#graphic').isOnScreen()) {
             var numberOfItem = 15;
-            compare==true? drawLineplot('compare',data_line0,data_line2,[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawLineplot('single',data_line0,[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[]);
+            compare==true? drawLineplot('compare',data_line0,data_line2,make_legend_name(leader0),make_legend_name(leader1)):drawLineplot('single',data_line0,[],make_legend_name(leader0),[]);
             $(window).off("scroll", line_Handler);
         } 
     }
@@ -533,6 +537,7 @@
         $(window).scroll(Hash_Handler);
         $(window).scroll(wc_Handler);
     });
+
 
 
 

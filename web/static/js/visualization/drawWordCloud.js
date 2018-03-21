@@ -162,7 +162,7 @@ function drawWordCloud(type, data1, data2, name1, name2) {
 
         cloud.enter()
             .append("text")
-            .style("font-family", "Impact")
+            // .style("font-family", "Impact")
             .style("fill", function(d, i) { return fill[i % fill.length]; })
             .attr("text-anchor", "middle")
             .attr('font-size', 1)
