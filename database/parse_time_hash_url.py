@@ -258,9 +258,10 @@ class followyourleaders(object):
 						break
 
 				print(text_index)
+				print(date_index)
 
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
-				print(last_tweet)
+				# print(collection_tweet.find_one({'id_str'}))
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
