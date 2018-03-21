@@ -263,8 +263,10 @@ class followyourleaders(object):
 
 					# update num_tweets_shown
 						
-				print(len(date_index))
-				print(len(text_index))
+				for each in date_index:
+					print(each)
+				for each in text_index:
+					print(each)
 
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
 				followers = last_tweet['user']['followers_count']
