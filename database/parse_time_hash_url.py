@@ -232,8 +232,6 @@ class followyourleaders(object):
 			# if we have this leader's data
 			if time_item != None:
 
-				print(time_item)
-
 				a = time_item['dates'].keys()
 				
 				lst_keys = [k for k in a]
@@ -244,6 +242,7 @@ class followyourleaders(object):
 				for u in lst_keys:
 
 					sublist = time_item['dates'][u]
+
 
 					date_info = [(key,value['created_at']) for key,value in sublist.items()]
 					text_info = [(key,value['tweet_text']) for key,value in sublist.items()]
@@ -264,6 +263,7 @@ class followyourleaders(object):
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
 
+				print(text_index)
 				# update user collection
 				print("Updating with recent Tweet info.")
 				collection_leaders.update({'_id': leader['_id']},{'$set': {"recent_tweet_ids": {'created_at':[a[0] for a in date_index], 'tweet_text':[a[0] for a in text_index]}, 'followers': followers, 'friends':friends, 'description':description}})
