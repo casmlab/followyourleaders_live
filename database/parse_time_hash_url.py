@@ -60,7 +60,7 @@ class followyourleaders(object):
 
 					try:
 						val = leader_timeline['dates'][post_date][tweet['id_str']]['tweet_text']
-						print(val)
+						print(leader_timeline['dates'][post_date][tweet['id_str']])
 						print('Already logged this Tweet.')
 					except:
 						print('Adding new Tweet.')
