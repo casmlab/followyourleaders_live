@@ -38,7 +38,13 @@ class followyourleaders(object):
 
 		print('>>> update_timeline_collection(self, tweets) starts!')
 
-		for tweet in tweets:
+		user = "user"
+		id_str = "id_str"
+		innvervalue = "960962340"
+
+		key = "%s.%s" % (user, id_str)
+
+		for tweet in tweets.find({key: innvervalue}):
 
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 			# leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
@@ -288,7 +294,8 @@ class followyourleaders(object):
 
 	def initialize_database(self,num_tweets_shown):
 
-		self.update_timeline_collection(collection_tweet.find({"user":{"id_str":"960962340"}}))
+		
+		self.update_timeline_collection(collection_tweet.find())
 		# self.update_hashtag_collection(collection_tweet.find())
 		# self.update_url_collection(collection_tweet.find())
 		# self.update_leaders(num_tweets_shown)
@@ -308,14 +315,14 @@ if __name__ == '__main__':
 	MONGODB_PORT = 27018
 	connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
 	db = connection['followyourleaders_prod']
-
+	
+    
 	# connect collection
-	collection_tweet = db['tweets--drop']
-			# tweets collection
+	collection_tweet = db['tweets--drop']   # tweets collection
 	collection_leaders = db['leaders']		# leader collection
-	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
-	collection_hashtags = db['hashtags'] # for updating tweets
-	collection_url = db['urls'] # for urls
+	collection_timeline = db['timelines']   # timeline collection (objectid, hashtags, time)
+	collection_hashtags = db['hashtags']    # for updating tweets
+	collection_url = db['urls'] 			# for urls
 
 	# number of tweets show in recent tweets section
 	num_tweets_shown=10
@@ -324,6 +331,7 @@ if __name__ == '__main__':
 	# initialize class instance
 	fyldb = followyourleaders()
 	# run functions in class
+
 	fyldb.initialize_database(num_tweets_shown)
 
 
