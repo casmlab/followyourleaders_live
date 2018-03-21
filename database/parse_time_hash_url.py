@@ -250,6 +250,8 @@ class followyourleaders(object):
 					
 					for tweet in sublist.keys():
 
+						print(tweet)
+
 						date_info = tweet['created_at']
 						text_info = tweet['tweet_text']
 
