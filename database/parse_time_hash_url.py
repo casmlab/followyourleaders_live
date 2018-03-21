@@ -237,12 +237,15 @@ class followyourleaders(object):
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
 				lst_keys.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
 
-				for u in lst_keys:
+				for u in lst_keys[200:]:
 
 					sublist = time_item['dates'][u]
 
 					date_info = [(id_str,info['created_at']) for id_str,info in sublist.items()]
-					text_info = [(id_str,info['tweet_text']) for id_str,info in sublist.items()]
+					try:
+						text_info = [(id_str,info['tweet_text']) for id_str,info in sublist.items()]
+					except:
+						print(sublist.items())
 
 
 					# decide #twitter we need to insert
