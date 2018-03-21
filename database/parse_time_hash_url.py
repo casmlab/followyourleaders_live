@@ -40,7 +40,7 @@ class followyourleaders(object):
 
 		for tweet in tweets:
 
-			if tweet['user']['id_str'] == "1155335864":
+			if tweet['user']['id_str'] == "1135486501":
 
 				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 				# leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
@@ -295,10 +295,10 @@ class followyourleaders(object):
 	def initialize_database(self,num_tweets_shown):
 
 		
-		# self.update_timeline_collection(collection_tweet.find())
+		self.update_timeline_collection(collection_tweet.find())
 		# self.update_hashtag_collection(collection_tweet.find())
 		# self.update_url_collection(collection_tweet.find())
-		self.update_leaders(num_tweets_shown)
+		# self.update_leaders(num_tweets_shown)
 
 
 
