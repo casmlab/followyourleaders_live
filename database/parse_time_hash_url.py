@@ -248,26 +248,22 @@ class followyourleaders(object):
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
 
-					for id_str,info in sublist.items():
 
-						date_info = info['created_at']
-						text_info = info['tweet_text']
-						recent_tweets = 'recent_tweets'
+					date_info = [id_str,info['created_at'] for id_str,info in sublist.items()]
+					text_info = [id_str,info['tweet_text'] for id_str,info in sublist.items()]
+					recent_tweets = 'recent_tweets'
 
-						print("Updating with recent Tweet info.")
-						collection_leaders.update({'_id': leader['_id']},{'$set': {'recent_tweets.'+ id_str : {'created_at': date_info, 'tweet_text': text_info}}})
-						
+					# collection_leaders.update({'_id': leader['_id']},{'$set': {'recent_tweets.'+ id_str : {'created_at': date_info, 'tweet_text': text_info}}})
+					
+					date_index += date_info[0:add_min]
+					text_index += text_info[0:add_min]
 
-						date_index += date_info[0:add_min]
-						text_index += text_info[0:add_min]
-
-						num_tweets_shown = len(date_index)
-						if num_tweets_shown > 10:
-							break
+					num_tweets_shown = len(date_index)
+					if num_tweets_shown >= 10:
+						break
 
 
 						# date_index + temp[0:add_min]
-					print(collection_leaders.find_one({"_id": leader['_id']}))
 					# update num_tweets_shown
 						
 
@@ -280,7 +276,16 @@ class followyourleaders(object):
 					description = last_tweet['user']['description']
 
 					print("Updating with recent Tweet info.")
-					collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description}})
+					collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description, 'recent_tweets': {id_str[0] : {'created_at': date_info[0], 'tweet_text': text_info[0]}},
+						id_str[1] : {'created_at': date_info[1], 'tweet_text': text_info[1]},
+						id_str[2] : {'created_at': date_info[2], 'tweet_text': text_info[2]},
+						id_str[3] : {'created_at': date_info[3], 'tweet_text': text_info[3]},
+						id_str[4] : {'created_at': date_info[4], 'tweet_text': text_info[4]},
+						id_str[5] : {'created_at': date_info[5], 'tweet_text': text_info[5]},
+						id_str[6] : {'created_at': date_info[6], 'tweet_text': text_info[6]},
+						id_str[7] : {'created_at': date_info[7], 'tweet_text': text_info[7]},
+						id_str[8] : {'created_at': date_info[8], 'tweet_text': text_info[8]},
+						id_str[9] : {'created_at': date_info[9], 'tweet_text': text_info[9]}}})
 					print(collection_leaders.find_one({"_id": leader['_id']}))
 					
 					# update user collection
