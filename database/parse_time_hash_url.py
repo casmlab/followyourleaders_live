@@ -248,7 +248,7 @@ class followyourleaders(object):
 					add_min = min(len(sublist),num_tweets_shown)
 
 					
-					for tweet in sublist:
+					for tweet in sublist.keys():
 
 						date_info = tweet['created_at']
 						text_info = tweet['tweet_text']
@@ -259,6 +259,9 @@ class followyourleaders(object):
 
 						date_index += date_info[0:add_min]
 						text_index += text_info[0:add_min]
+
+
+						# date_index + temp[0:add_min]
 
 					# update num_tweets_shown
 					num_tweets_shown = len(date_index)
