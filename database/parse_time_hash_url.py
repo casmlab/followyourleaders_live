@@ -243,15 +243,14 @@ class followyourleaders(object):
 
 					sublist = time_item['dates'][u]
 
-					date_index = []
-					text_index = []
+					
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
 
 
 					date_info = [(id_str,info['created_at']) for id_str,info in sublist.items()]
 					text_info = [(id_str,info['tweet_text']) for id_str,info in sublist.items()]
-					recent_tweets = 'recent_tweets'
+					
 
 					# collection_leaders.update({'_id': leader['_id']},{'$set': {'recent_tweets.'+ id_str : {'created_at': date_info, 'tweet_text': text_info}}})
 					
