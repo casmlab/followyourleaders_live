@@ -218,7 +218,6 @@ class followyourleaders(object):
 
 		# load data from leader collection
 		leaders = collection_leaders.find()
-		print("hi")
 
 		for leader in leaders:
 
@@ -227,8 +226,6 @@ class followyourleaders(object):
 
 			# check whether we have his/her Twitter data
 			time_item = collection_timeline.find_one({"bioguide" : leader['bioguide']})
-
-			print("hi")
 
 			# if we have this leader's data
 			if time_item != None:
