@@ -180,7 +180,7 @@
                     </div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-                <!-- hashtages plot -->
+                <!-- Hashtags plot -->
                 <div class="graph-wrapper fullscreen" >
                     <center><h1>Hashtags</h1></center>
                     <div id="hashtags_chart"></div>
@@ -240,11 +240,11 @@
     </footer>
 
     <!-- load drawing  function js files -->
-    <script type="text/javascript" src="/static/js/visualization/draw_Timelines.js?version=031s52018"></script>
-    <script type="text/javascript" src="/static/js/visualization/draw_URLs.js?version=031520s18"></script>
-    <script type="text/javascript" src="/static/js/visualization/colorbrewer.min.js?version=03152018"></script>
-    <script type="text/javascript" src="/static/js/visualization/draw_Hashtags.js?version=0ss3s172018"></script>
-    <script type="text/javascript" src="/static/js/visualization/data_Formate.js?version=03ass152018"></script>
+    <script type="text/javascript" src="/static/js/visualization/draw_Timelines.js?version=03192018"></script>
+    <script type="text/javascript" src="/static/js/visualization/draw_URLs.js?version=03192018"></script>
+    <script type="text/javascript" src="/static/js/visualization/colorbrewer.min.js?version=03192018"></script>
+    <script type="text/javascript" src="/static/js/visualization/draw_Hashtags.js?version=03192018"></script>
+    <script type="text/javascript" src="/static/js/visualization/data_Format.js?version=03192018"></script>
     <!-- making drop down file -->
     <script type="text/javascript" src="/static/js/visualization/makeDD.js?version=03152018"></script>    
     <!-- load execute function -->
@@ -314,7 +314,7 @@
     all_filter={{all_name_id|tojson}};
     data_Timelines_Raw={{timelines_0|tojson}};
     data_URLs_Raw={{urls_0|tojson}};
-    data_Hashtages_Raw={{hashtags_0|tojson}};
+    data_Hashtags_Raw={{hashtags_0|tojson}};
     leader0={{basic0|tojson}};
 
     /////////////////start:  data formatting /////////////////////////////////////////
@@ -322,18 +322,18 @@
     parseDate = d3.time.format('%Y-%m-%d').parse;
     data_Timelines=format_timelines_data(data_Timelines_Raw)
     data_URLs=format_urls_data(data_URLs_Raw)
-    data_Hashtages=format_hashtags_data(data_Hashtages_Raw)
+    data_Hashtags=format_hashtags_data(data_Hashtags_Raw)
     var leader1;
 
     // if it is a compare mode
     if (compare==true) {
         data_Timelines_Raw_2={{timelines_1|tojson}};
-        data_Hashtages_Raw_2={{hashtags_1|tojson}};
+        data_Hashtags_Raw_2={{hashtags_1|tojson}};
         data_URLs_Raw_2={{urls_1|tojson}};
         leader1={{basic1|tojson}};
         data_Timelines_2=format_timelines_data(data_Timelines_Raw_2);
         data_URLs_2=format_urls_data(data_URLs_Raw_2);
-        data_Hashtages_2=format_hashtags_data(data_Hashtages_Raw_2);
+        data_Hashtags_2=format_hashtags_data(data_Hashtags_Raw_2);
     }
 
     ///////////////////////// making Dropdown in the filter //////////////////////////////////
@@ -488,7 +488,7 @@
     var hashtags_handler = function(){
         if ($('#hashtags_chart').isOnScreen()) {
             var numberOfWord=100;
-            compare==true? draw_Hashtags('compare',data_Hashtages.splice(0,numberOfWord),data_Hashtages_2.splice(0,numberOfWord),make_legend_name(leader0),make_legend_name(leader1)):draw_Hashtags('single',data_Hashtages.splice(0,numberOfWord),[],make_legend_name(leader0),[])
+            compare==true? draw_Hashtags('compare',data_Hashtags.splice(0,numberOfWord),data_Hashtags_2.splice(0,numberOfWord),make_legend_name(leader0),make_legend_name(leader1)):draw_Hashtags('single',data_Hashtags.splice(0,numberOfWord),[],make_legend_name(leader0),[])
             $(window).off("scroll", hashtags_handler);
         } 
     }
