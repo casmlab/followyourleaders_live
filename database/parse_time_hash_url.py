@@ -41,6 +41,7 @@ class followyourleaders(object):
 		for tweet in tweets:
 
 			if tweet['user']['id_str'] == "1155335864":
+				
 				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 				# leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
 
@@ -85,6 +86,7 @@ class followyourleaders(object):
 						collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {key_idx: {'url':url_push, 'created_at': date_push, 'hashtags': hash_push, 'tweet_text':text_push}}})
 			else:
 				print("Not in here.")
+
 		print('>>> update_timeline_collection(self, tweets) ends!')
 
 
@@ -225,7 +227,7 @@ class followyourleaders(object):
 		# load data from leader collection
 		leaders = collection_leaders.find()
 
-		for leader in leaders[200:]:
+		for leader in leaders[360:]:
 
 			date_index = []
 			text_index = []
