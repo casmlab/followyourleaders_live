@@ -263,8 +263,8 @@ class followyourleaders(object):
 
 					# update num_tweets_shown
 						
-					print(len(date_index))
-					print(len(text_index))
+				print(len(date_index))
+				print(len(text_index))
 
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
 				followers = last_tweet['user']['followers_count']
@@ -272,7 +272,8 @@ class followyourleaders(object):
 				description = last_tweet['user']['description']
 
 				print("Updating with recent Tweet info.")
-				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description, 'recent_tweets': {date_index[0][0] : {'created_at': date_index[0][1], 'tweet_text': text_index[0][1]}}}})
+				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description, 'recent_tweets': {date_index[0][0] : {'created_at': date_index[0][1], 'tweet_text': text_index[0][1]}}date_index[1][0] : {'created_at': date_index[1][1], 'tweet_text': text_index[1][1]},date_index[2][0] : {'created_at': date_index[2][1], 'tweet_text': text_index[2][1]},date_index[3][0] : {'created_at': date_index[3][1], 'tweet_text': text_index[3][1]}, date_index[4][0] : {'created_at': date_index[4][1], 'tweet_text': text_info[4]},date_index[5][0] : {'created_at': date_index[5][1], 'tweet_text': text_index[5][1]},date_index[6][0] : {'created_at': date_index[6][1], 'tweet_text': text_index[6][1]},date_index[7][0] : {'created_at': date_index[7][1], 'tweet_text': text_index[7][1]},date_index[8][0] : {'created_at': date_index[8][1], 'tweet_text': text_index[8][1]},date_index[9][0] : {'created_at': date_index[9][1], 'tweet_text': text_index[9][1]}}})
+
 				print(collection_leaders.find_one({"_id": leader['_id']}))
 					
 					# update user collection
