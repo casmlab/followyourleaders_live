@@ -257,11 +257,10 @@ class followyourleaders(object):
 					if num_tweets_shown >= 10:
 						break
 
-				print(text_index)
-				print(date_index[0][0])
+				print(date_index[0][0][0])
 
-				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
-				# print(collection_tweet.find_one({'id_str'}))
+				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0][0]})
+				print(last_tweet)
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
