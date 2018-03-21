@@ -308,7 +308,7 @@ if __name__ == '__main__':
 	db = connection['followyourleaders_prod']
 
 	# connect collection
-	collection_tweet = db['tweets--drop'].find({"user.id_str":"960962340"})
+	collection_tweet = db['tweets--drop'].find_one({"user.id_str":"960962340"})
 			# tweets collection
 	collection_leaders = db['leaders']		# leader collection
 	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
