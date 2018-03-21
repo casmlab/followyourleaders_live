@@ -266,7 +266,7 @@ class followyourleaders(object):
 				
 				# update user collection
 				print("Updating with recent Tweet info.")
-				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description, "recent_tweets": {a[0] for a in date_index: {'created_at': a[1], 'tweet_text':[a[0] for a in text_index]}}}})
+				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description, "recent_tweets": {[a[0] for a in date_index]: {'created_at': a[1], 'tweet_text':[a[0] for a in text_index]}}}})
 				print(collection_leaders.find_one({"_id": leader['_id']}))
 				break
 
