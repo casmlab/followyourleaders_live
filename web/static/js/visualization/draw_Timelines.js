@@ -1,4 +1,4 @@
-function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
+function draw_Timelines(type, data1, data2 = [], name1, name2 = []) {
 
     /*-- find minimums and maximums for axis --*/
     var minY, maxY, mindate, maxdate;
@@ -35,7 +35,7 @@ function drawLineplot(type, data1, data2 = [], name1, name2 = []) {
         .domain([0, maxY])
 
     /*-- adding svg --*/
-    var svg = d3.select('#graphic').append("svg").attr({
+    var svg = d3.select('#timelines_chart').append("svg").attr({
         'width': width + margin.left + margin.right,
         'height': height + margin.top + margin.bottom,
     });
