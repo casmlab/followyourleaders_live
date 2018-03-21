@@ -232,7 +232,7 @@ class followyourleaders(object):
 			# if we have this leader's data
 			if time_item != None:
 
-				print(time_item['tweet_text'])
+				print(time_item)
 
 				a = time_item['dates'].keys()
 				
