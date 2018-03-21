@@ -257,13 +257,15 @@ class followyourleaders(object):
 					if num_tweets_shown > 10:
 						break
 
+				print(text_index)
 
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
+				print(last_tweet)
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
 
-				print(text_index)
+				
 				# update user collection
 				print("Updating with recent Tweet info.")
 				collection_leaders.update({'_id': leader['_id']},{'$set': {"recent_tweet_ids": {'created_at':[a[0] for a in date_index], 'tweet_text':[a[0] for a in text_index]}, 'followers': followers, 'friends':friends, 'description':description}})
