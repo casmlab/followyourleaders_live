@@ -100,8 +100,11 @@ class followyourleaders(object):
 
 		print('>>> update_hashtags_collection(self, tweets) starts!')
 
+		print(tweets)
+
 		for tweet in tweets:
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
+			print(leader)
 
 			# check whether the user that made the Tweet is a leader in collection_leaders or not
 			if leader != None:
