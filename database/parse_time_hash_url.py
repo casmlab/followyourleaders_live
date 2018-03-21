@@ -249,18 +249,18 @@ class followyourleaders(object):
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
 
-					date_index.append(date_info[0:add_min])
-					text_index.append(text_info[0:add_min])
+					date_index += date_info[0:add_min]
+					text_index += text_info[0:add_min]
 
 					# update num_tweets_shown
 					num_tweets_shown = len(date_index)
 					if num_tweets_shown >= 10:
 						break
 
-				print(date_index[0][0][0])
+				print(len(text_index))
+				print(len(date_index))
 
-				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0][0]})
-				print(last_tweet)
+				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
