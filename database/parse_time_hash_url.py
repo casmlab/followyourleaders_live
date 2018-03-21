@@ -41,7 +41,7 @@ class followyourleaders(object):
 		for tweet in tweets:
 
 			if tweet['user']['id_str'] == "1155335864":
-				
+
 				leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
 				# leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
 
@@ -60,6 +60,7 @@ class followyourleaders(object):
 
 					try:
 						val = leader_timeline['dates'][post_date][tweet['id_str']]['tweet_text']
+						print(val)
 						print('Already logged this Tweet.')
 					except:
 						print('Adding new Tweet.')
