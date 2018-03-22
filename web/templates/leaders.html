@@ -64,7 +64,7 @@
                 <!-- bio -->
                 <div class="graph-wrapper fullscreen text-capitalize">
                     <!-- if compare mode -->
-                    {% if ((basic2 is defined) and ("name" in basic2) )%}
+                    {% if ((basic1 is defined) and ("name" in basic1) )%}
                     <div  class='row bioContainer' >
                         <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
                             <div class='leaderbio'>
@@ -93,25 +93,25 @@
                         </div>
                         <div class='col-md-6' style='text-align:center;margin-bottom: 20px;'>
                             <div class='leaderbio'>
-                                <img src="{{basic2['photo_url']}}" alt="img0" class="img-thumbnail">
-                                <h2 class='text-capitalize' >{{basic2['chamber']}}. {{basic2['name']}}</h2>
+                                <img src="{{basic1['photo_url']}}" alt="img0" class="img-thumbnail">
+                                <h2 class='text-capitalize' >{{basic1['chamber']}}. {{basic1['name']}}</h2>
                                 <a id='recent_tweet_2' class='recent_tweet' href="#">10 most recent tweets</a>
                                 <table class='leaderTable'>
                                     <tr>
                                         <td>twitter account</td>
-                                        <td>  <a target='_blank' href="https://twitter.com/{{basic2['twitter_name']}}"">@{{basic2['twitter_name']}}</a></td>
+                                        <td>  <a target='_blank' href="https://twitter.com/{{basic1['twitter_name']}}"">@{{basic1['twitter_name']}}</a></td>
                                     </tr>
                                     <tr>
                                         <td>Chamber</td>
-                                        <td>{{basic2['chamber_name']}}</td>
+                                        <td>{{basic1['chamber_name']}}</td>
                                     </tr>
                                     <tr>
                                         <td>Party</td>
-                                        <td>{{basic2['party']}}</td>
+                                        <td>{{basic1['party']}}</td>
                                     </tr>
                                     <tr>
                                         <td>State</td>
-                                        <td>{{basic2['state']}}</td>
+                                        <td>{{basic1['state']}}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -155,7 +155,7 @@
                  <!-- time series plot -->
                 <div class="graph-wrapper fullscreen">
                     <center><h1>Tweets over time</h1></center>
-                    <div id="graphic"></div>
+                    <div id="timelines_chart"></div>
                     <div id='slide1' class='slide'>
                         <table class='slide_header_table' id='slide_header_table_1'>
                             <tr>
@@ -166,10 +166,10 @@
                     </div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-                <!-- hashtags plot -->
+                <!-- urls plot -->
                 <div class="graph-wrapper fullscreen">
                     <center><h1> URLs</h1></center>
-                    <div id="hash_chart0"></div>
+                    <div id="urls_chart"></div>
                     <div id='slide2' class='slide'>
                         <table class='slide_header_table' id='slide_header_table_2'>
                             <tr>
@@ -180,10 +180,10 @@
                     </div>
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
                 </div>
-                <!-- word cloud plot -->
+                <!-- Hashtags plot -->
                 <div class="graph-wrapper fullscreen" >
                     <center><h1>Hashtags</h1></center>
-                    <div id="wcloud"></div>
+                    <div id="hashtags_chart"></div>
                     <div id='slide3' class='slide'>
                         <table class='slide_header_table' id='slide_header_table_3'>
                             <tr>
@@ -240,11 +240,11 @@
     </footer>
 
     <!-- load drawing  function js files -->
-    <script type="text/javascript" src="/static/js/visualization/drawAreaFigure3.js?version=03152018"></script>
-    <script type="text/javascript" src="/static/js/visualization/drawBar.js?version=03152018"></script>
-    <script type="text/javascript" src="/static/js/visualization/colorbrewer.min.js?version=03152018"></script>
-    <script type="text/javascript" src="/static/js/visualization/drawWordCloud.js?version=03152018"></script>
-    <script type="text/javascript" src="/static/js/visualization/dataFormate.js?version=03152018"></script>
+    <script type="text/javascript" src="/static/js/visualization/draw_Timelines.js?version=03192018"></script>
+    <script type="text/javascript" src="/static/js/visualization/draw_URLs.js?version=03192018"></script>
+    <script type="text/javascript" src="/static/js/visualization/colorbrewer.min.js?version=03192018"></script>
+    <script type="text/javascript" src="/static/js/visualization/draw_Hashtags.js?version=03192018"></script>
+    <script type="text/javascript" src="/static/js/visualization/data_Format.js?version=03192018"></script>
     <!-- making drop down file -->
     <script type="text/javascript" src="/static/js/visualization/makeDD.js?version=03152018"></script>    
     <!-- load execute function -->
@@ -311,42 +311,29 @@
     function capitalizeFirstLetter(string) {return string.charAt(0).toUpperCase() + string.slice(1);}
     
     // data for making dd
-    all_filter={{all_name_id|tojson}}
-    //data for making area plot
-    lineData={{timeseries_0|tojson}}
-
-    // data for bar chart
-    barraw={{hash_0|tojson}}
-
-    // data for url
-    url={{url_0|tojson}}
-    //
-    leader0={{basic0|tojson}}
-    var leader1;
-
-
+    all_filter={{all_name_id|tojson}};
+    data_Timelines_Raw={{timelines_0|tojson}};
+    data_URLs_Raw={{urls_0|tojson}};
+    data_Hashtags_Raw={{hashtags_0|tojson}};
+    leader0={{basic0|tojson}};
 
     /////////////////start:  data formatting /////////////////////////////////////////
     // define time formate
     parseDate = d3.time.format('%Y-%m-%d').parse;
-    
-    data_line0=format_linedata(lineData)
-    //databar=format_bardata(barraw)
-    databar=format_url(url)
-
-    // data for word cloud
-    datawc=format_wc_data(barraw)
+    data_Timelines=format_timelines_data(data_Timelines_Raw)
+    data_URLs=format_urls_data(data_URLs_Raw)
+    data_Hashtags=format_hashtags_data(data_Hashtags_Raw)
+    var leader1;
 
     // if it is a compare mode
     if (compare==true) {
-        lineData2={{timeseries_2|tojson}};
-        barraw2={{hash_2|tojson}};
-        url2={{url_2|tojson}};
-        leader1={{basic2|tojson}};
-        data_line2=format_linedata(lineData2);
-        //databar2=format_bardata(barraw2);
-        databar2=format_url(url2);
-        datawc2=format_wc_data(barraw2);
+        data_Timelines_Raw_2={{timelines_1|tojson}};
+        data_Hashtags_Raw_2={{hashtags_1|tojson}};
+        data_URLs_Raw_2={{urls_1|tojson}};
+        leader1={{basic1|tojson}};
+        data_Timelines_2=format_timelines_data(data_Timelines_Raw_2);
+        data_URLs_2=format_urls_data(data_URLs_Raw_2);
+        data_Hashtags_2=format_hashtags_data(data_Hashtags_Raw_2);
     }
 
     ///////////////////////// making Dropdown in the filter //////////////////////////////////
@@ -400,7 +387,7 @@
     
     // define plot size
     var margin = { top: 70, right: 70, bottom: 50, left: 100 },
-        width = $('#graphic').width() - margin.left - margin.right;
+        width = $('#timelines_chart').width() - margin.left - margin.right;
     var height = $(window).height()-margin.top - margin.bottom-300;
 
     ///////////////////////////////////////////////// define right left user //////////////////////////////////////////////
@@ -484,31 +471,33 @@
         $('#recent_tweet_model').modal('show');
     });
 
+    function make_legend_name(leader) {
+        return [capitalizeFirstLetter(leader['chamber'])+'. '+leader['name']+' ('+leader['party'][0].toUpperCase()+'-'+leader['state'].toUpperCase()+')']
+    }
+
 
     ///////////////////////Function for scrolling and drawing /////////////////////////////////////////////////
-    var Hash_Handler = function(){
-        if ($('#hash_chart0').isOnScreen()) {
-            console.log("in hash_chart!");
+    var urls_handler = function(){
+        if ($('#urls_chart').isOnScreen()) {
             var numberOfItem = 15;
-            compare==true? drawbar('compare',databar.splice(0,numberOfItem),databar2.splice(0,numberOfItem),[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawbar('single',databar.splice(0,numberOfItem),[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[]);
-            $(window).off("scroll", Hash_Handler);
+            compare==true? draw_URLs('compare',data_URLs.splice(0,numberOfItem),data_URLs_2.splice(0,numberOfItem),make_legend_name(leader0),make_legend_name(leader1)):draw_URLs('single',data_URLs.splice(0,numberOfItem),[],make_legend_name(leader0),[]);
+            $(window).off("scroll", urls_handler);
         } 
     }
 
-    var wc_Handler = function(){
-        if ($('#wcloud').isOnScreen()) {
-            console.log("in wc!");
+    var hashtags_handler = function(){
+        if ($('#hashtags_chart').isOnScreen()) {
             var numberOfWord=100;
-            compare==true? drawWordCloud('compare',datawc.splice(0,numberOfWord),datawc2.splice(0,numberOfWord),[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawWordCloud('single',datawc.splice(0,numberOfWord),[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[])
-            $(window).off("scroll", wc_Handler);
+            compare==true? draw_Hashtags('compare',data_Hashtags.splice(0,numberOfWord),data_Hashtags_2.splice(0,numberOfWord),make_legend_name(leader0),make_legend_name(leader1)):draw_Hashtags('single',data_Hashtags.splice(0,numberOfWord),[],make_legend_name(leader0),[])
+            $(window).off("scroll", hashtags_handler);
         } 
     }
 
-    var line_Handler = function(){
-        if ($('#graphic').isOnScreen()) {
+    var timelines_handler = function(){
+        if ($('#timelines_chart').isOnScreen()) {
             var numberOfItem = 15;
-            compare==true? drawLineplot('compare',data_line0,data_line2,[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[capitalizeFirstLetter(leader1['chamber'])+'. '+leader1['name']]):drawLineplot('single',data_line0,[],[capitalizeFirstLetter(leader0['chamber'])+'. '+leader0['name']],[]);
-            $(window).off("scroll", line_Handler);
+            compare==true? draw_Timelines('compare',data_Timelines,data_Timelines_2,make_legend_name(leader0),make_legend_name(leader1)):draw_Timelines('single',data_Timelines,[],make_legend_name(leader0),[]);
+            $(window).off("scroll", timelines_handler);
         } 
     }
 
@@ -529,10 +518,11 @@
 
     // exercutive
     $(document).ready(function(){
-        $(window).scroll(line_Handler);
-        $(window).scroll(Hash_Handler);
-        $(window).scroll(wc_Handler);
+        $(window).scroll(timelines_handler);
+        $(window).scroll(urls_handler);
+        $(window).scroll(hashtags_handler);
     });
+
 
 
 

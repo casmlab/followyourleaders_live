@@ -1,4 +1,4 @@
-function drawWordCloud(type, data1, data2, name1, name2) {
+function draw_Hashtags(type, data1, data2, name1, name2) {
 
     // create formatted data for drawing word clouds
     var word_entries = [],
@@ -22,7 +22,7 @@ function drawWordCloud(type, data1, data2, name1, name2) {
     var Maximu = d3.max([d3.max(word_entries, function(d) { return d.value }), d3.max(word_entries2, function(d) { return d.value })]);
     
     // add svg
-    var svg = d3.select('#wcloud')
+    var svg = d3.select('#hashtags_chart')
         .append("svg")
         .attr('width', width + margin.left + margin.right)
         .attr('height', height + margin.top + margin.bottom)
@@ -162,7 +162,7 @@ function drawWordCloud(type, data1, data2, name1, name2) {
 
         cloud.enter()
             .append("text")
-            .style("font-family", "Impact")
+            // .style("font-family", "Impact")
             .style("fill", function(d, i) { return fill[i % fill.length]; })
             .attr("text-anchor", "middle")
             .attr('font-size', 1)

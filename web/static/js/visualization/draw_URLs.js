@@ -1,4 +1,4 @@
-    function drawbar(type, data, data2 = [], name1, name2 = []) {
+    function draw_URLs(type, data, data2 = [], name1, name2 = []) {
 
 
         //define plot size
@@ -32,7 +32,7 @@
         xScale.domain([0, maxYbar]);
 
         // define svg
-        var svg = d3.select("#hash_chart0")
+        var svg = d3.select("#urls_chart")
             .append('svg')
             .attr('class', 'chart')
             .attr('width', width + margin.left + margin.right)

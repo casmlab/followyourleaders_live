@@ -1,4 +1,4 @@
-    function format_linedata(data)  {
+    function format_timelines_data(data)  {
 
         data_line=[]
         for (key in data.dates){
@@ -32,9 +32,7 @@
     };
 
 
-
-    // defined bar data
-    function format_wc_data(data)  {
+    function format_hashtags_data(data)  {
         temp=[]
         for (key in data.hashtags) {
             var obj = {};
@@ -55,7 +53,7 @@
 
 
     // defined url
-    function format_url(data)  {
+    function format_urls_data(data)  {
         temp=[]
         for (key in data.urls) {
             var obj = {};
