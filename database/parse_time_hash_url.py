@@ -39,8 +39,9 @@ class followyourleaders(object):
 		print('>>> update_timeline_collection(self, tweets) starts!')
 
 		for tweet in tweets:
-			
-			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
+
+			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
+			# leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})	
 
 			# check whether the user that made the Tweet is a leader in collection_leaders or not
 			if leader != None:
@@ -56,14 +57,16 @@ class followyourleaders(object):
 				key_idx = "dates." + post_date + "." + tweet['id_str']
 
 				try:
-					val = leader_timeline['dates'][post_date][tweet['id_str']]
+					val = leader_timeline['dates'][post_date][tweet['id_str']]['tweet_text']
 					print('Already logged this Tweet.')
 				except:
 					print('Adding new Tweet.')
 					# define inserting/updating item format
-					url = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
-					item_push = {'hashtags': [a['text'] for a in tweet['entities']['hashtags']],'created_at':post_date_time,
-					'url':url}
+					text_push = tweet['text']
+					url_push = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
+					hash_push = [a['text'] for a in tweet['entities']['hashtags']]
+					date_push = post_date_time
+
 
 					# if we dont have the leader's information in timeline collection, insert the leader's information
 					if  leader_timeline == None:
@@ -78,8 +81,7 @@ class followyourleaders(object):
 
 
 					# update specified leader's timeline collection from tweets
-					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {key_idx: item_push}})
-
+					collection_timeline.update({'bioguide': leader['bioguide']},{'$set': {key_idx: {'url':url_push, 'created_at': date_push, 'hashtags': hash_push, 'tweet_text':text_push}}})
 
 		print('>>> update_timeline_collection(self, tweets) ends!')
 
@@ -98,8 +100,11 @@ class followyourleaders(object):
 
 		print('>>> update_hashtags_collection(self, tweets) starts!')
 
+		print(tweets)
+
 		for tweet in tweets:
 			leader = collection_leaders.find_one({"twitter_id" : tweet['user']['id_str']})
+			print(leader)
 
 			# check whether the user that made the Tweet is a leader in collection_leaders or not
 			if leader != None:
@@ -210,14 +215,13 @@ class followyourleaders(object):
 	# source data: 	'leader' collection in 'followyourleaders_prod' database;
 	#				'timeline' collection in 'followyourleaders_prod' database;
 	#				'tweets--drop' collection in 'followyourleaders_prod' database
-	# QUESTIONS: What is 'num_tweets_shown' why is it necessary? Is this to limit the amount of data that is return from timeline?
+
 
 	def update_leaders(self,num_tweets_shown):
 		print('>>> update_leaders(num_tweets_shown) starts!')
 
 		# load data from leader collection
 		leaders = collection_leaders.find()
-
 
 		for leader in leaders:
 
@@ -227,45 +231,48 @@ class followyourleaders(object):
 			# check whether we have his/her Twitter data
 			time_item = collection_timeline.find_one({"bioguide" : leader['bioguide']})
 
-
 			# if we have this leader's data
 			if time_item != None:
 
 				a = time_item['dates'].keys()
 				
-				lst_keys = [k for k in time_item['dates'].keys()]
+				lst_keys = [k for k in a]
 
 				# sort by time https://stackoverflow.com/questions/5166842/sort-dates-in-python-array
 				lst_keys.sort(key = lambda x: time.mktime(time.strptime(x,"%Y-%m-%d")),reverse=True)
-				
 
 				for u in lst_keys:
 
 					sublist = time_item['dates'][u]
-					temp = [(key,value['created_at']) for key,value in sublist.items()]
 
-					temp.sort(key = lambda x: time.mktime(time.strptime(x[1],"%Y-%m-%d %H:%M:%S")),reverse=True)
+					date_info = [(id_str,info['created_at']) for id_str,info in sublist.items()]
+					text_info = [(id_str,info['tweet_text']) for id_str,info in sublist.items()]
+
 
 					# decide #twitter we need to insert
 					add_min = min(len(sublist),num_tweets_shown)
-					date_index = date_index + temp[0:add_min]
+					
 
-					# update num_tweets_shown
-					num_tweets_shown = add_min
-					if num_tweets_shown <= 0:
+					date_index = date_index + date_info[0:add_min]
+					text_index = text_index + text_info[0:add_min]
+
+					num_tweets_shown = len(date_index)
+					if num_tweets_shown >= 10:
 						break
 
+				
+				# update num_tweets_shown
 				last_tweet = collection_tweet.find_one({"id_str" : date_index[0][0]})
 				followers = last_tweet['user']['followers_count']
 				friends = last_tweet['user']['friends_count']
 				description = last_tweet['user']['description']
 
-				# update user collection
+				# update leader collection
 				print("Updating with recent Tweet info.")
-				collection_leaders.update({'_id': leader['_id']},{'$set': {"recent_tweet_ids": [ a[0] for a in date_index], 'followers': followers, 'friends':friends, 'description':description}})
+				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description, 'recent_tweets': {date_index[0][0] : {'created_at': date_index[0][1], 'tweet_text': text_index[0][1]}}, date_index[1][0] : {'created_at': date_index[1][1], 'tweet_text': text_index[1][1]},date_index[2][0] : {'created_at': date_index[2][1], 'tweet_text': text_index[2][1]},date_index[3][0] : {'created_at': date_index[3][1], 'tweet_text': text_index[3][1]}, date_index[4][0] : {'created_at': date_index[4][1], 'tweet_text': text_index[4][1]},date_index[5][0] : {'created_at': date_index[5][1], 'tweet_text': text_index[5][1]},date_index[6][0] : {'created_at': date_index[6][1], 'tweet_text': text_index[6][1]},date_index[7][0] : {'created_at': date_index[7][1], 'tweet_text': text_index[7][1]},date_index[8][0] : {'created_at': date_index[8][1], 'tweet_text': text_index[8][1]},date_index[9][0] : {'created_at': date_index[9][1], 'tweet_text': text_index[9][1]}}})
+
 
 		print('>>> update_leaders(num_tweets_shown) ends!')
-
 
 
 	#################################################################    INITIALIZING DB    ###################################################################
@@ -278,6 +285,7 @@ class followyourleaders(object):
 
 	def initialize_database(self,num_tweets_shown):
 
+		
 		self.update_timeline_collection(collection_tweet.find())
 		self.update_hashtag_collection(collection_tweet.find())
 		self.update_url_collection(collection_tweet.find())
@@ -298,13 +306,14 @@ if __name__ == '__main__':
 	MONGODB_PORT = 27018
 	connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
 	db = connection['followyourleaders_prod']
-
+	
+    
 	# connect collection
-	collection_tweet = db['tweets--drop']		# tweets collection
+	collection_tweet = db['tweets--drop']   # tweets collection
 	collection_leaders = db['leaders']		# leader collection
-	collection_timeline = db['timelines'] # timeline collection (objectid, hashtags, time)
-	collection_hashtags = db['hashtags'] # for updating tweets
-	collection_url = db['urls'] # for urls
+	collection_timeline = db['timelines']   # timeline collection (objectid, hashtags, time)
+	collection_hashtags = db['hashtags']    # for updating tweets
+	collection_url = db['urls'] 			# for urls
 
 	# number of tweets show in recent tweets section
 	num_tweets_shown=10
@@ -313,6 +322,7 @@ if __name__ == '__main__':
 	# initialize class instance
 	fyldb = followyourleaders()
 	# run functions in class
+
 	fyldb.initialize_database(num_tweets_shown)
 
 
