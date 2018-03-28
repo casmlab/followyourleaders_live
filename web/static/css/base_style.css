@@ -3,8 +3,15 @@
         width: 100%;
     }
     .wrap {
-    margin-top: 50px;
+    margin-top: 100px;
     margin-bottom: 100px;
+    }
+
+    /* logo */
+    #logo_img{
+        height:70px;
+        width:auto;
+        margin:5px 0px;
     }
 
     .linedot {
