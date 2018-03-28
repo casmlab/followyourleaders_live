@@ -18,7 +18,7 @@ import urllib
 from collections import defaultdict
 import itertools
 import requests
-from urlparse import urlparse
+from urllib import parse
 
 
 
@@ -137,9 +137,9 @@ class followyourleaders(object):
 					
 					try:
 						val = leader_hashtags['hashtags'][a['text']]['tweets'][tweet['id_str']]
-						print('Already logged this Tweet.')
+                        # print('Already logged this Tweet.')
 					except:
-						print('Adding new Tweets.')
+                        # print('Adding new Tweets.')
 						# define inserting/updating item format
 						collection_hashtags.update({'bioguide':leader['bioguide']},{'$set':{text_idx:text_push,date_idx:date_push}})
 
@@ -187,7 +187,7 @@ class followyourleaders(object):
 				#update urls collection from tweets
 				for a in tweet['entities']['urls']:
 
-					parsed_uri = urlparse(a['expanded_url']).netloc.replace('.', '\u002e')
+					parsed_uri = parse(a['expanded_url']).netloc.replace('.', '\u002e')
 					key_idx = "urls." + parsed_uri + ".tweets." + tweet['id_str']
 					text_idx = key_idx + '.text'
 					text_push = tweet['text']
@@ -270,7 +270,7 @@ class followyourleaders(object):
 				description = last_tweet['user']['description']
 
 				# update leader collection
-				print("Updating with recent Tweet info.")
+                # print("Updating with recent Tweet info.")
 				collection_leaders.update({'_id': leader['_id']},{'$set': {'followers': followers, 'friends':friends, 'description':description, 'recent_tweets': {date_index[0][0] : {'created_at': date_index[0][1], 'tweet_text': text_index[0][1]}}, date_index[1][0] : {'created_at': date_index[1][1], 'tweet_text': text_index[1][1]},date_index[2][0] : {'created_at': date_index[2][1], 'tweet_text': text_index[2][1]},date_index[3][0] : {'created_at': date_index[3][1], 'tweet_text': text_index[3][1]}, date_index[4][0] : {'created_at': date_index[4][1], 'tweet_text': text_index[4][1]},date_index[5][0] : {'created_at': date_index[5][1], 'tweet_text': text_index[5][1]},date_index[6][0] : {'created_at': date_index[6][1], 'tweet_text': text_index[6][1]},date_index[7][0] : {'created_at': date_index[7][1], 'tweet_text': text_index[7][1]},date_index[8][0] : {'created_at': date_index[8][1], 'tweet_text': text_index[8][1]},date_index[9][0] : {'created_at': date_index[9][1], 'tweet_text': text_index[9][1]}}})
 
 
@@ -305,13 +305,13 @@ if __name__ == '__main__':
 	# link to followyourleaders_prod db in mongo
 	print('>>> establishing mongo connection')
 	MONGODB_HOST = 'localhost'
-	MONGODB_PORT = 27018
+	MONGODB_PORT = 27017
 	connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-	db = connection['followyourleaders_prod']
+	db = connection['followyourleaders_test']
 	
     
 	# connect collection
-	collection_tweet = db['tweets--drop']   # tweets collection
+	collection_tweet = db['tweets']   # tweets collection
 	collection_leaders = db['leaders']		# leader collection
 	collection_timeline = db['timelines']   # timeline collection (objectid, hashtags, time)
 	collection_hashtags = db['hashtags']    # for updating tweets
