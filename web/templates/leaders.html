@@ -206,7 +206,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal">&times;</button>
-              <h4 class="modal-title">10 Recent tweets</h4>
+              <h2 class="modal-title">10 Recent tweets</h2>
             </div>
             <div id='recent_tweet_model_text' class="modal-body">
             </div>
@@ -449,13 +449,13 @@
     $( document ).ready(function() {
             $("html, body").scrollTop(0)
     });
-
+    
     // Bootstrap Model
     $('#recent_tweet_1').click(function(){
         $('#recent_tweet_model_text').empty();
         if ('recent_tweets' in leader0) {
             for (k in leader0['recent_tweets']) {
-                $('#recent_tweet_model_text').append("<strong>"+leader0['recent_tweets']['created_at'] +":</strong><br>" + leader0['recent_tweets']['tweet_text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+k+"'> View Live</a>");
+                $('#recent_tweet_model_text').append("<p><strong>"+leader0['recent_tweets'][k]['created_at'] +":</strong><br>" + leader0['recent_tweets'][k]['tweet_text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+k+"'> View Live</a></p>");
 
             }
         } else { $('#recent_tweet_model_text').append( "<p>Sorry ! No data has founded</p>" );}
@@ -466,7 +466,7 @@
         $('#recent_tweet_model_text').empty();
         if ('recent_tweets' in leader1) {
             for (k in leader1['recent_tweets']) {
-                $('#recent_tweet_model_text').append("<strong>"+leader1['recent_tweets']['created_at'] +":</strong><br>" + leader1['recent_tweets']['tweet_text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+k+"'> View Live</a>");
+                $('#recent_tweet_model_text').append("<p><strong>"+leader1['recent_tweets'][k]['created_at'] +":</strong><br>" + leader1['recent_tweets'][k]['tweet_text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+k+"'> View Live</a></p>");
             }
         } else { $('#recent_tweet_model_text').append( "<p>Sorry ! No data has founded</p>" );}
         $('#recent_tweet_model').modal('show');
