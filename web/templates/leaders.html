@@ -453,9 +453,10 @@
     // Bootstrap Model
     $('#recent_tweet_1').click(function(){
         $('#recent_tweet_model_text').empty();
-        if ('recent_tweet_ids' in leader0) {
-            for (k in leader0['recent_tweet_ids']) {
-                $('#recent_tweet_model_text').append("<p> Tweet ID: <a target='_blank' href="+'https://twitter.com/statuses/'+leader0['recent_tweet_ids'][k]+">"+leader0['recent_tweet_ids'][k]+"</a></p>");
+        if ('recent_tweets' in leader0) {
+            for (k in leader0['recent_tweets']) {
+                $('#recent_tweet_model_text').append("<strong>"+leader0['recent_tweets']['created_at'] +":</strong><br>" + leader0['recent_tweets']['tweet_text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+k+"'> View Live</a>");
+
             }
         } else { $('#recent_tweet_model_text').append( "<p>Sorry ! No data has founded</p>" );}
         $('#recent_tweet_model').modal('show');
@@ -463,9 +464,9 @@
 
     $('#recent_tweet_2').click(function(){
         $('#recent_tweet_model_text').empty();
-        if ('recent_tweet_ids' in leader1) {
-            for (k in leader1['recent_tweet_ids']) {
-                $('#recent_tweet_model_text').append("<p> Tweet ID: <a target='_blank' href="+'https://twitter.com/statuses/'+leader1['recent_tweet_ids'][k]+">"+leader1['recent_tweet_ids'][k]+"</a></p>");
+        if ('recent_tweets' in leader1) {
+            for (k in leader1['recent_tweets']) {
+                $('#recent_tweet_model_text').append("<strong>"+leader1['recent_tweets']['created_at'] +":</strong><br>" + leader1['recent_tweets']['tweet_text']+"<br><a target='_blank' href='"+'https://twitter.com/statuses/'+k+"'> View Live</a>");
             }
         } else { $('#recent_tweet_model_text').append( "<p>Sorry ! No data has founded</p>" );}
         $('#recent_tweet_model').modal('show');
