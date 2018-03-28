@@ -70,7 +70,7 @@
                             <div class='leaderbio'>
                                 <img src="{{basic0['photo_url']}}" alt="img0" class="img-thumbnail">
                                 <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
-                                <a id='recent_tweet_1' class='recent_tweet' href="#">10 most recent tweets</a>
+                                <a id='recent_tweet_1' class='recent_tweet' href="#">10 recent tweets</a>
                                 <table class='leaderTable'>
                                     <tr>
                                         <td>twitter account</td>
@@ -95,7 +95,7 @@
                             <div class='leaderbio'>
                                 <img src="{{basic1['photo_url']}}" alt="img0" class="img-thumbnail">
                                 <h2 class='text-capitalize' >{{basic1['chamber']}}. {{basic1['name']}}</h2>
-                                <a id='recent_tweet_2' class='recent_tweet' href="#">10 most recent tweets</a>
+                                <a id='recent_tweet_2' class='recent_tweet' href="#">10 recent tweets</a>
                                 <table class='leaderTable'>
                                     <tr>
                                         <td>twitter account</td>
@@ -126,7 +126,7 @@
                             </div>
                             <div class='col-lg-6' style='vertical-align: top;padding:30px'>
                                 <h2 class='text-capitalize' >{{basic0['chamber']}}. {{basic0['name']}}</h2>
-                                <a id='recent_tweet_1' class='recent_tweet' href="#">10 most recent tweets</a>
+                                <a id='recent_tweet_1' class='recent_tweet' href="#">10 recent tweets</a>
                                 <table class='leaderTable'>
                                     <tr>
                                         <td>twitter account</td>
@@ -151,16 +151,30 @@
                     {% endif %}
                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>        
                 </div>
+                <!-- Hashtags plot -->
+                <div class="graph-wrapper fullscreen" >
+                    <center><h1>Most Frequently Tweeted Hashtags</h1></center>
+                    <div id="hashtags_chart"></div>
+                    <div id='slide3' class='slide'>
+                        <table class='slide_header_table' id='slide_header_table_3'>
+                            <tr>
+                                <td align="left"><input type="button" id="close_btn_3" class='close_btn' value="X"></td>
+                                <td align="center" id='slide_title_3'><h2> Tweets' Detail </h2></td>
+                            </tr>
+                        </table>
+                    </div>
+                     <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
+                </div>
                 
                  <!-- time series plot -->
                 <div class="graph-wrapper fullscreen">
-                    <center><h1>Tweets over time</h1></center>
+                    <center><h1>Number of Tweets Per Day</h1></center>
                     <div id="timelines_chart"></div>
                     <div id='slide1' class='slide'>
                         <table class='slide_header_table' id='slide_header_table_1'>
                             <tr>
                                 <td align="left"><input type="button" id="close_btn_1" class='close_btn' value="X"></td>
-                                <td align="center" id='slide_title_1'><h2> Tweets Detail </h2></td>
+                                <td align="center" id='slide_title_1'><h2> Tweets' Detail </h2></td>
                             </tr>
                         </table>
                     </div>
@@ -168,27 +182,13 @@
                 </div>
                 <!-- urls plot -->
                 <div class="graph-wrapper fullscreen">
-                    <center><h1> URLs</h1></center>
+                    <center><h1>Most Frequently Tweeted URLs</h1></center>
                     <div id="urls_chart"></div>
                     <div id='slide2' class='slide'>
                         <table class='slide_header_table' id='slide_header_table_2'>
                             <tr>
                                 <td align="left"><input type="button" id="close_btn_2" class='close_btn' value="X"></td>
-                                <td align="center" id='slide_title_2'><h2> Tweets Detail </h2></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <a class='scrollbtn scroller' href="#section03"><span></span>Scroll</a>
-                </div>
-                <!-- Hashtags plot -->
-                <div class="graph-wrapper fullscreen" >
-                    <center><h1>Hashtags</h1></center>
-                    <div id="hashtags_chart"></div>
-                    <div id='slide3' class='slide'>
-                        <table class='slide_header_table' id='slide_header_table_3'>
-                            <tr>
-                                <td align="left"><input type="button" id="close_btn_3" class='close_btn' value="X"></td>
-                                <td align="center" id='slide_title_3'><h2> Tweets Detail </h2></td>
+                                <td align="center" id='slide_title_2'><h2> Tweets' Detail </h2></td>
                             </tr>
                         </table>
                     </div>
