@@ -18,7 +18,7 @@ import urllib
 from collections import defaultdict
 import itertools
 import requests
-from urllib import parse
+from urllib.parse import urlparse
 
 
 
@@ -58,9 +58,9 @@ class followyourleaders(object):
 
 				try:
 					val = leader_timeline['dates'][post_date][tweet['id_str']]['tweet_text']
-					print('Already logged this Tweet.')
+                    # print('Already logged this Tweet.')
 				except:
-					print('Adding new Tweet.')
+                    # print('Adding new Tweet.')
 					# define inserting/updating item format
 					text_push = tweet['text']
 					url_push = 'https://twitter.com/' + tweet['user']['screen_name'] + '/status/' + tweet['id_str']
@@ -187,7 +187,7 @@ class followyourleaders(object):
 				#update urls collection from tweets
 				for a in tweet['entities']['urls']:
 
-					parsed_uri = parse(a['expanded_url']).netloc.replace('.', '\u002e')
+					parsed_uri = urlparse(a['expanded_url']).netloc.replace('.', '\u002e')
 					key_idx = "urls." + parsed_uri + ".tweets." + tweet['id_str']
 					text_idx = key_idx + '.text'
 					text_push = tweet['text']
@@ -196,9 +196,9 @@ class followyourleaders(object):
 
 					try:
 						val = leader_url['urls'][parsed_uri]['tweets'][tweet['id_str']]
-						print('Already logged this Tweet.')
+                        #print('Already logged this Tweet.')
 					except:
-						print('Adding new Tweets.')
+                        #print('Adding new Tweets.')
 						# define inserting/updating item format
 						collection_url.update({'bioguide': leader['bioguide']},{'$set': {text_idx:text_push,date_idx:date_push,
 							key_idx+'.expanded_url':a['expanded_url'].replace('.', '\u002e'),key_idx+'.url':a['url'].replace('.', '\u002e')}})
@@ -288,8 +288,8 @@ class followyourleaders(object):
 	def initialize_database(self,num_tweets_shown):
 
 		
-		self.update_timeline_collection(collection_tweet.find())
-		self.update_hashtag_collection(collection_tweet.find())
+#        self.update_timeline_collection(collection_tweet.find())
+#        self.update_hashtag_collection(collection_tweet.find())
 		self.update_url_collection(collection_tweet.find())
 		self.update_leaders(num_tweets_shown)
 
