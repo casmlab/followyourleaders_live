@@ -2,7 +2,7 @@
 .DS_Store
 
 # Config file
-config.py
+web/config.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
