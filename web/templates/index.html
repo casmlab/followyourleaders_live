@@ -18,6 +18,7 @@ img {
 }
 
 
+
 /* Slideshow container */
 
 .slideshow-container {
@@ -105,6 +106,54 @@ img {
     background-color: #717171;
 }
 
+.slideshow-container {
+
+box-shadow: 10px 10px 34px 1px rgba(0, 0, 0, 0.75);
+margin-top:10px
+}
+
+
+
+
+/* button */
+.msgBtn {
+  border-radius: 4px;
+  background-color: steelblue;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+/*  width: 200px;*/
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.msgBtn span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.msgBtn span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.msgBtn:hover span {
+  padding-right: 25px;
+}
+
+.msgBtn:hover span:after {
+  opacity: 1;
+  right: 0;
+}
 
 /* Fading animation */
 
@@ -136,8 +185,14 @@ img {
 */
 
 /* On smaller screens, decrease text size */
+
 </style>
 <div class="wrap container">
+    <div class="jumbotron" style='margin-top:20px;padding:20px 60px;border:1px dotted black;'>
+        <p>
+            Politicians increasingly use social media as part of their communication strategies. Follow Your Leaders helps you see and compare what members of the US Congress do on Twitter. The images below are examples of the kinds of comparisons you can make. You can see their most-used hashtags, most-tweeted URLs, and how many tweets per day they post. View a single leader's activity (link to random leader) or compare two leaders (link to Pelosi-Ryan comparison).
+        </p>
+    </div>
     <div class="slideshow-container">
         <div class="mySlides fade">
             <div class="numbertext">1 / 3</div>
@@ -169,6 +224,13 @@ img {
         <span class="dot" onclick="currentSlide(2)"></span>
         <span class="dot" onclick="currentSlide(3)"></span>
     </div>
+
+    <div style='display:flex;justify-content: space-around;margin:50px 0px'>
+        <button type="submit" class="msgBtn" onclick="location.href='/leaders'"  ><span>View One Leader</span></button>
+        <button type="submit" class="msgBtn" onclick="location.href='/leaders?leader0=P000197&leader1=R000570'"  ><span>Compare Two Leaders</span></button>
+        <button type="submit" class="msgBtn" onclick="location.href='/faq'"  ><span>Learn More</span></button>
+    </div> 
+    
     <script>
     var slideIndex = 1;
     showSlides(slideIndex);
@@ -197,8 +259,5 @@ img {
         dots[slideIndex - 1].className += " active";
     }
     </script>
-    <div class="jumbotron">
-        <p>Follow Your Leaders helps you see and compare what members of the US Congress do on Twitter. The images above are examples-click on the links in the header to view and compare individual members.</p>
-    </div>
 </div>
 {% endblock %}

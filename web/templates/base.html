@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/static/bootstrap/bootstrap-toggle.min.css">
     <link href="/static/fontawesome-free-5.0.8/web-fonts-with-css/css/fontawesome-all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/jquery/jquery-ui.css">
-    <link rel="stylesheet" href="/static/css/base_style.css?version=03152018-3ss">
+    <link rel="stylesheet" href="/static/css/base_style.css?version=0320sss2018-3ss">
     <!-- load js library -->
     <!-- jquery -->
     <script src="/static/jquery/jquery.min.js"></script>
@@ -32,15 +32,17 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#Navbar">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#Navbar" style='margin-top:25px'>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>                        
       </button>
-      <a class="navbar-brand" href="/">Follow Your Leaders</a>
+      <div >
+          <a href="/"><img src="/static/img/logo.png" id='logo_img'></a>
+      </div>
     </div>
     <div class="collapse navbar-collapse" id="Navbar">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav"  style='margin-top:25px'>
             <li><a href="/">Home</a></li>
             <li><a href="/leaders">Leaders</a></li>
             <li><a href="/faq">FAQ</a></li>
@@ -50,15 +52,16 @@
 </nav>
 {% block content %}{% endblock %}
 <footer class="footer">
-    <div class="container">
+    <div class="row" style='margin:0px 100px'>
         <div class="row" style='text-align: left'>
-            <div class=" col-xs-4 col-md-4 col-lg-5 align-text-bottom" style=''>
+            <div class=" col-xs-9 col-md-8 col-lg-8 align-text-bottom" style=''>
+                Follow Your Leaders helps you see and compare what members of the US Congress do on Twitter. Brought to you by <a href="mailto:hemphill-research@umich.edu" target="_top">Libby Hemphill's Research Group</a> at <a target='_blank' href="https://www.si.umich.edu/">UMSI</a>. US Capitol icon based on work by <a target='_blank' href="https://thenounproject.com/search/?q=605803&i=605803">Shashank Singh on The Noun Project</a>.
             </div>
-            <div id='footerAddress' class=" col-xs-5 col-md-5 col-lg-5 align-text-bottom">
+ <!--            <div id='footerAddress' class=" col-xs-5 col-md-5 col-lg-5 align-text-bottom">
               
-            </div>
-            <div class=" col-xs-3  col-md-2 col-lg-2 text-white align-text-bottom" style='text-align:right;font-size:25px'>
-                <div>
+            </div> -->
+            <div class=" col-xs-3  col-md-4 col-lg-4 text-white align-text-bottom" style='text-align:right;font-size:25px'>
+                <div style='float:right'>
                     <ul class="list-inline">
                         <li class="list-inline-item" >
                             <a class="btn-social btn-outline" href="https://github.com/casmlab" aria-label="second social link">

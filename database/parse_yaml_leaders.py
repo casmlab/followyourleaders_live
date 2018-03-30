@@ -142,7 +142,7 @@ class followyourleaders(object):
 
 	def initialize_database(self):
 
-		# self.create_yaml_collection()
+		self.create_yaml_collection()
 		self.update_leaders_collection()
 
 
@@ -157,9 +157,9 @@ if __name__ == '__main__':
 	# link to followyourleaders_prod db in mongo
 	print('>>> establishing mongo connection')
 	MONGODB_HOST = 'localhost'
-	MONGODB_PORT = 27018
+	MONGODB_PORT = 27017
 	connection = MongoClient(MONGODB_HOST, MONGODB_PORT)
-	db = connection['followyourleaders_prod']
+	db = connection['followyourleaders']
 
 	# connect collection
 	collection_yaml = db['yaml']		# yaml collection
