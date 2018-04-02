@@ -4,6 +4,7 @@ COPY web/requirements.txt /opt/app/
 RUN pip install --no-cache-dir -r /opt/app/requirements.txt
 RUN pip install gunicorn
 RUN pip install flup
+RUN pip install eventlet
 COPY web /opt/app
 EXPOSE 8000
 WORKDIR /opt/app
