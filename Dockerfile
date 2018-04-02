@@ -7,4 +7,4 @@ RUN pip install flup
 COPY web /opt/app
 EXPOSE 8000
 WORKDIR /opt/app
-ENTRYPOINT gunicorn wsgi:app  --bind 0.0.0.0:8000  --workers 4
+ENTRYPOINT gunicorn --worker-class eventlet --log-level debug wsgi:app  --bind 0.0.0.0:8000  --workers 4
